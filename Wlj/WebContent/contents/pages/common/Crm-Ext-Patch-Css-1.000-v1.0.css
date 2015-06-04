@@ -1,0 +1,9 @@
+/**
+ ��дext-all.css���࣬ȥ����!important��
+���border�����£�����屻���ֺ��λ�����
+*/
+.x-masked-relative {
+	position: absolute !important ;
+}
+.my_row_set_blue table *{color:blue;}
+.my_row_set_red table *{color:red;}

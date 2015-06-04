@@ -1,0 +1,552 @@
+@charset "utf-8";
+/* CSS Document */
+.in_head{
+	width:100%;	
+}
+.in_top{
+	height:39px;
+	position:relative;
+	z-index:1;
+	top:0;
+	left:0;	
+}
+.in_menu{
+	height:37px;
+	padding:0px 14px 0px 14px;
+}
+.in_tab{
+	width:100%;
+	height:33px;
+	overflow:hidden;	
+}
+.in_logo{
+	width:440px;
+	height:39px;
+}
+.in_fun{
+	height:39px;
+	white-space:nowrap;
+	overflow:hidden;
+	padding:0px 15px 0px 15px;
+	position:absolute;
+	right:0px;
+	left:auto;
+	top:0px;
+	_width:440px; 
+	text-align:right;
+}
+.in_fun_p{
+	display: inline-block;
+ *display:inline;
+ *zoom:1;
+	white-space:nowrap;
+	word-break:keep-all;
+	height:35px;
+	line-height:39px;
+	padding:4px 0px 0px 0px;
+}
+.in_fun_p a{
+	float:left;
+	display:block;
+	width:32;
+	height:32px;
+	margin:0px 0px 0px 5px;	
+}
+.tab_iframe{
+	width:99%;
+	margin:0 auto;
+}
+/**主菜单**/
+.in_menu_ul{
+	min-width:980px;
+	_width:expression(this.offsetWidth <980 ? '980px': true); 
+	white-space:nowrap;
+	word-break:keep-all;
+	height:37px;
+}
+.in_menu_ul .lv1{
+	display: inline-block;
+ *display:inline;
+ *zoom:1;
+	float:left;
+	position:relative;
+	z-index:3;
+	top:0;
+	left:0;
+}
+.in_menu_ul .lv1 a{
+	display: inline-block;
+ *display:inline;
+ *zoom:1;
+	height:36px;
+	line-height:36px;
+}
+.in_menu_ul .lv1 a i{
+	display: inline-block;
+ *display:inline;
+ *zoom:1;
+	height:36px;
+	line-height:36px;
+	cursor:pointer;
+	padding:0px 15px 0px 15px;
+}
+.in_menu_ul .lv1 a:hover, .in_menu_ul .lv1 a:hover i{
+	text-decoration:none;
+}
+/**二级菜单**/
+.in_menu_ul .menu_lv2{
+ 	width:675px;
+	overflow:hidden;
+	position:absolute;
+	z-index:1;
+	top:36px;
+	left:0;
+	white-space:nowrap;
+	word-break:keep-all;
+}
+.in_menu_ul .menu_lv2IE6{
+ 	width:705px;
+	overflow:hidden;
+	position:absolute;
+	z-index:1;
+	top:36px;
+	left:0;
+	white-space:nowrap;
+	word-break:keep-all;
+}
+.in_menu_ul .menu_lv2_div{
+   	display: inline-block;
+ *display:inline;
+ *zoom:1;
+ 	max-width:920px;
+	overflow:hidden;
+ 	padding:9px 23px 9px 23px;
+	position:relative;
+    _float:left;
+}
+.in_menu_ul .menu_lv2_con{
+	display: inline-block;
+ *display:inline;
+ *zoom:1;
+	overflow:hidden;
+	_width:expression(this.offsetWidth > 920 ? '920px': true); 
+}
+.in_menu_ul .menu_lv2_ul .lv2{
+	float:left;
+	width:155px;
+	height:300px;
+	overflow:auto;
+	overflow-x:hidden
+}
+.in_menu_ul .menu_lv2_ul .lv2 a, .in_menu_ul .menu_lv2_ul .lv2 a i{
+	height:22px;
+	line-height:22px;	
+}
+.menu_lv2_mask{
+	position:absolute;
+	z-index:2;
+	top:0;
+	right:2px;
+	width:22px;
+	height:1000px;	
+}
+.in_menu_ul .menu_lv2_ul{
+	width:10000px;
+	float:left;
+	white-space:nowrap;
+	word-break:keep-all;
+}
+.in_menu_ul .menu_lv2_left{
+	position:absolute;
+	z-index:1;
+	top:50%;
+	margin-top:-34px;
+	left:0;
+}
+.in_menu_ul .menu_lv2_right{
+	position:absolute;
+	z-index:3;
+	top:50%;
+	margin-top:-34px;
+	right:-1px;
+}
+.in_menu_ul .menu_lv2_left a, .in_menu_ul .menu_lv2_right a{
+	display:block;
+	width:23px;
+	height:57px;
+}
+/**三级菜单**/
+.in_menu_ul .menu_lv3_ul .lv3 a, .in_menu_ul .menu_lv3_ul .lv3 a i{
+	height:22px;
+	line-height:22px;	
+}
+/**4级菜单以后**/
+.in_menu_ul .lv_sub{
+	padding:0px 0px 0px 0px;	
+}
+.in_menu_ul .lv_sub li a{
+	width:100%;	
+}
+.in_menu_ul .lv_sub li a i{
+	text-indent:0.2em;	
+}
+/**页签**/
+.in_tab_div{
+	height:33px;
+	overflow:hidden;
+	padding:0px 15px 0px 15px;	
+}
+.in_tab_ul{
+	white-space:nowrap	
+}
+.in_tab_ul li{
+	display: inline-block;
+ *display:inline;
+ *zoom:1;
+	float:left;
+	height:33px;
+	overflow:hidden;
+	margin:0px 5px 0px 0px;
+}
+.in_tab_ul li a{
+	display: inline-block;
+ *display:inline;
+ *zoom:1;
+	height:33px;
+	overflow:hidden;
+	position:relative;
+	z-index:1;
+	top:0;
+	left:0;
+	padding:0px 18px 0px 0px;
+	cursor:pointer;
+}
+.in_tab_ul li a i{
+	float:left;
+	width:70px;
+	height:33px;
+	overflow:hidden;
+	white-space:nowrap;
+	text-align:center;
+	-o-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+	line-height:33px;
+	padding:0px 0px 0px 16px;
+}
+.in_tab_ul li a .close{
+	position:absolute;
+	width:18px;
+	height:16px;
+	top:9px;
+	right:4px;	
+	cursor:default;
+}
+.in_contents{
+	padding:14px 0px 14px 0px;	
+}
+/**首页框**/
+.in_box_line{
+	padding:0px 0px 12px 0px;
+	overflow:hidden;
+	clear:both;	
+}
+.in_box{
+	width:49%;
+	_width:48%;
+	margin:0px 0px 0px 1%;
+	_margin:0px 0px 12px 1%;
+	float:left;
+	overflow:hidden;
+}
+.in_box_top{
+	height:28px;
+	line-height:28px;	
+}
+.in_box_topbg{
+	height:28px;
+	line-height:28px;
+}
+.in_box_topbg .in_box_topp{
+	height:28px;
+	line-height:28px;
+	cursor:default;
+	padding:0px 0px 0px 10px;
+}
+.in_box_topbg .in_box_topp .icon{
+	text-align:center;
+	padding:6px 0px 0px 0px;	
+}
+.in_box_topbg .in_box_topp .tit{
+	text-indent:.3em;	
+}
+.in_box_topp span{
+	float:left;
+}
+.in_box_conbg{
+	padding:0px 4px 4px 4px;	
+}
+.in_box_content{
+	position:relative;
+	z-index:1;
+	top:0;
+	left:0;
+	overflow:hidden;
+}
+/**日历**/
+.calendar_bg{
+	height:157px;
+	padding:0px 0px 57px 0px;
+	overflow:hidden;
+	width:100%;
+	position:relative;
+	z-index:1;
+	top:0;
+	left:0;
+}
+.calendar_ym p{
+	white-space:nowrap;
+	word-break:keep-all;	
+}
+.calendar_ym .calendar_ym_p{
+	text-align:center;
+	height:26px;
+	line-height:26px;
+	position:relative;
+	z-index:1;
+	top:0;
+	left:0;
+}
+.calendar_tit_p{
+	height:24px;
+	line-height:24px;
+	text-align:center;
+}
+.calendar_tit_p span{
+	width:14%;
+	float:left;
+	text-align:center;
+	cursor:default;
+}
+.calendar_date_p{
+	height:20px;
+	line-height:20px;
+	text-align:center;
+}
+.calendar_date_p span{
+	width:14%;
+	float:left;
+	text-align:center;
+	cursor:pointer;
+}
+.calendar_date_p span i{
+	display: inline-block;
+ *display:inline;
+ *zoom:1;
+ 	padding:0px 7px 0px 7px;
+	text-align:center;
+	height:20px;
+	overflow:hidden;
+}
+/**日程列表**/
+.rc_list{
+	position:absolute;
+	top:157px;
+	left:0;
+	z-index:2;
+	height:50px;
+	width:100%;
+	overflow:hidden;
+	padding:7px 0px 0px 0px;
+	cursor:default;
+}
+.rc_div{
+	width:100%;
+	height:23px;
+	line-height:23px;
+	overflow:hidden;
+	white-space:nowrap;
+	word-break:keep-all;	
+}
+.rc_div .rc_p{
+	width:36%;
+	height:23px;
+	overflow:hidden;
+	white-space:nowrap;
+	word-break:keep-all;
+	-o-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+	float:left;
+	padding:0px 0px 0px 18px;
+}
+.rc_info{
+	float:right;
+	width:40%;
+	height:23px;
+	text-align:right;
+	overflow:hidden;
+	white-space:nowrap;
+	word-break:keep-all;
+	-o-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+	padding:0px 18px 0px 0px;
+}
+.rc_info .line{
+	padding:0px 7px 0px 7px;	
+}
+/**提醒**/
+.my_tip{
+	height:214px;
+	overflow:hidden;	
+}
+.my_tip_list{
+	height:150px;
+	overflow:hidden;
+	position:relative;
+	z-index:1;
+	top:0;
+	left:0;
+	padding:8px 0px 0px 0px;	
+}
+.my_tip_tit{
+	height:56px;
+	line-height:56px;	
+}
+.my_tip_tit p{
+	padding:0px 0px 0px 57px;	
+}
+.my_tip_div{
+	position:relative;
+	z-index:1;
+	top:0;
+	left:0;
+	height:35px;
+	line-height:35px;
+	overflow:hidden;
+	cursor:default;
+}
+.my_tip_div .tit{
+	width:36%;
+	height:35px;
+	overflow:hidden;
+	white-space:nowrap;
+	word-break:keep-all;
+	-o-text-overflow: ellipsis;
+	text-overflow: ellipsis;	
+}
+.my_tip_num{
+	position:absolute;
+	z-index:1;
+	top:8px;
+	right:29px;
+}
+.my_tip_num p{
+	display: inline-block;
+ *display:inline;
+ *zoom:1;
+ height:35px;
+ line-height:35px;
+ overflow:hidden;
+}
+.my_tip_num p span{
+	float:left;
+	height:17px;
+ 	line-height:17px;
+	padding:0px 0px 0px 12px;	
+}
+.my_tip_num p span i{
+	float:left;
+	height:17px;
+	line-height:17px;
+	text-align:center;
+	padding:0px 12px 0px 0px;	
+}
+/**系统公告**/
+.in_sys_ul{
+	cursor:default;
+	padding:0px 12px 0px 12px;	
+}
+.in_sys_ul li{
+	overflow:hidden;
+	line-height:35px;
+	vertical-align:middle;
+}
+.in_sys_line{
+	height:35px;
+	line-height:35px;
+	overflow:hidden;
+	position:relative;
+	z-index:1;
+	top:0;
+	left:0;
+}
+.in_sys_p{
+	height:35px;
+	line-height:35px;
+	white-space:nowrap;
+	word-break:keep-all;
+	overflow:hidden;	
+}
+.in_sys_p span, .in_sys_p a{
+	float:left;
+	margin:0px 10px 0px 0px;
+}
+.in_sys_p a{
+	width:36%;
+	overflow:hidden;
+	white-space:nowrap;
+	word-break:keep-all;
+	-o-text-overflow: ellipsis;
+	text-overflow: ellipsis;	
+}
+.in_sys_p .type{
+	width:11px;
+	height:35px;
+}
+.in_sys_line .name{
+	position:absolute;
+	z-index:1;
+	top:0;
+	right:12px;
+	width:16%;	
+	height:35px;
+	text-align:right;
+	line-height:35px;
+	overflow:hidden;
+	white-space:nowrap;
+	word-break:keep-all;
+	-o-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+}
+/**分页**/
+.page{
+	width:100%;
+	height:35px;
+	line-height:35px;
+	overflow:hidden;
+	white-space:nowrap;
+	word-break:keep-all;
+	text-align:center;
+	cursor:default;
+}
+.page p{
+	display: inline-block;
+ *display:inline;
+ *zoom:1;
+}
+.page p span, .page p a{
+	float:left;
+	margin:0px 3px 0px 3px;
+}
+.page p .pre{
+	padding:0px 0px 0px 10px;
+	margin:0px 12px 0px 0px;	
+}
+.page p .next{
+	padding:0px 10px 0px 0px;
+	margin:0px 0px 0px 12px;	
+}
+
+
+
+
+

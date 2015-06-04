@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html >
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>We also need a index</title>
+	<link rel="stylesheet" type="text/css" href="contents/wljFrontFrame/styles/search/searchthemes/blue/login.css" />
+	<script type="text/javascript" src="contents/commonjs/jquery-1.5.2.min.js"></script>
+	<script type="text/javascript">
+		function setLoginUi(){
+			if (window.PIE) {
+		        $("#loginContainer").each(function() {
+		            PIE.attach(this);
+		        });
+		    }
+			$("#username,#password").each(function() {
+				$(this).hover(function() {
+					$(this).parent("li").addClass("fulCheck");
+				}, function() {
+					if (!$(this).is(":focus")) {
+						$(this).parent("li").removeClass("fulCheck");
+					}
+				});
+				$(this).focus(function() {
+					$(this).parent("li").addClass("fulCheck");
+				});
+				$(this).blur(function() {
+					$(this).parent("li").removeClass("fulCheck");
+				});
+			});
+			$("#loginContainer,#versionInfo").fadeIn(
+				1000,
+				function(){
+					 $("").fadeIn();
+					 }
+			);
+		};
+	//	var basepath = 
+		function login(){
+			window.location.href = "contents/wljFrontFrame/JSsearch_index.html";
+		}
+	</script>
+</head>
+<body onload="setLoginUi()">
+		<div id="loginContainer">
+			<div id="logo"></div>
+			<div id="loginIco"></div>
+			<div id="formContainer">
+				<ul>
+					<li><input type="text" id="username" /></li>
+					<li><input type="password" id="password" /></li>
+					<li><a id="submitBtn" href="javascript:void(0);" onclick="login();" >登 录</a>
+				</ul>
+			</div>			
+		</div>
+		<div id="versionInfo">v1.0.0</div>
+</body>
+</html>

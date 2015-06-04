@@ -1,0 +1,1 @@
+var responseText = {"json":{"data":[{"ID":"87729","TASK_NAME":"反馈客户满意度","TASK_TYPE":"我创建的任务","PUBLISHED":"陈萌","TRANSACTOR":"蔡琴","PUBLISHED_TIME":"2014-12-01","BELONG_ORG":"宇信易诚","STATUS":"已完成","TASK_SCHEDULE":"已分配","FINISHED_TIME":"2015-03-31","REMARK":"请尽快审批","EXPECTED_END_TIME":"2015-03-31","TASK_SPECIFICATION":"说明","IS_CONFIRM":"是"}]}};

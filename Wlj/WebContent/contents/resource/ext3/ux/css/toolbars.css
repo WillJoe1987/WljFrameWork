@@ -1,0 +1,242 @@
+/*!
+ * Ext JS Library 3.3.1
+ * Copyright(c) 2006-2010 Sencha Inc.
+
+ */
+#container {
+    width:600px;
+    height:400px;
+    border:3px solid #c3daf9;
+}
+.titleInput{
+	opacity:1;
+	height:15px;
+	position:absolute;
+	top:3px;
+	right:15px;
+	z-index:12;
+	padding-bottom:5px;
+	font:normal 11px tahoma, arial, helvetica;
+	color:#416aa3;
+	white-space: nowrap;
+	padding:4px 0;
+}
+.addIconCss {
+    background-image: url( ../../resources/images/default/button/zj.gif ) !important;
+}
+.setCfg {
+	margin-top: 3px;
+	margin-bottom: 0px;
+	margin-right: 36px;
+	background: transparent no-repeat 0 0;
+	border-bottom: 0px solid;
+	width:18px;
+	position:absolute;
+	right:0;
+	top:1;
+	height : 5;
+	z-index:10;
+	cursor:pointer;
+	background-image:url(../../resources/images/default/button/sz.gif) !important;
+	border-bottom-color:#8db2e3;
+}
+.setCfg:hover{
+	background-color: #b5b8c8;
+	border-color:#8db2e3;
+}
+.saveCfg {
+	margin-top: 3px;
+	margin-right: 18px;
+	background: transparent no-repeat 0 0;
+	border-bottom: 0px solid;
+	width:18px;
+	position:absolute;
+	right:0;
+	top:1;
+	z-index:10;
+	cursor:pointer;
+	background-image:url(../../resources/images/default/button/bc.gif) !important;;
+	border-bottom-color:#8db2e3;
+}
+.saveCfg:hover{
+	background-color: #b5b8c8;
+	border-color:#8db2e3;
+}
+.saveCfg-disabled {
+	margin-top: 3px;
+	margin-right: 18px;
+	background: transparent no-repeat 0 0;
+	border-bottom: 0px solid;
+	width:18px;
+	position:absolute;
+	right:0;
+	top:1;
+	z-index:10;
+	cursor:pointer;
+	background-image:url(../../resources/images/default/button/bc.gif) !important;;
+	border-bottom-color:#8db2e3;
+	opacity:.5;
+	-moz-opacity:.5;
+	filter:alpha(opacity=50);
+	cursor:default;
+}
+.cancelCfg {
+	margin-top: 3px;
+	margin-right: 36px;
+	background: transparent no-repeat 0 0;
+	border-bottom: 0px solid;
+	width:18px;
+	position:absolute;
+	right:0;
+	top:1;
+	z-index:10;
+	cursor:pointer;
+	background-image:url(../../resources/images/default/button/zr-1.gif) !important;
+	border-bottom-color:#8db2e3;
+}
+.cancelCfg:hover{
+	background:#b5b8c8;
+}
+.editIconCss {
+    background-image: url( ../../resources/images/default/button/xg.gif ) !important;
+}
+.deleteIconCss {
+    background-image: url( ../../resources/images/default/button/sc.gif ) !important;
+}
+.detailIconCss {
+    background-image: url( ../../resources/images/default/button/gh2.gif) !important;
+}
+.searchIconCss {
+    background-image: url( ../../resources/images/default/button/shc.gif ) !important;
+}
+.resetIconCss {
+    background-image: url( ../../resources/images/default/button/cz.gif ) !important;
+}
+.saveIconCss {
+    background-image: url( ../../resources/images/default/button/bc.gif ) !important;
+}
+.closeIconCss {
+    background-image: url( ../../resources/images/default/button/zr-1.gif ) !important;
+}
+.importIconCss {
+    background-image: url( ../../resources/images/default/button/dr.gif ) !important;
+}
+.exportIconCss {
+    background-image: url( ../../resources/images/default/button/zr.gif ) !important;
+}
+.printIconCss {
+    background-image: url( ../../resources/images/default/button/dy.gif ) !important;
+}
+.publishIconCss {
+    background-image: url( ../../resources/images/default/button/zs.gif ) !important;
+}
+//¸½¼þ
+.affixIconCss {
+    background-image: url( ../../resources/images/default/button/zdbh1.gif ) !important;
+}
+.completeIconCss {
+    background-image: url( ../../resources/images/default/button/qd.gif ) !important;
+}
+.dailyIconCss {
+    background-image: url( ../../resources/images/default/button/plzj.gif ) !important;
+}
+.dailyDetailIconCss {
+    background-image: url( ../../resources/images/default/button/qr.gif ) !important;
+}
+.taskDistrIconCss {
+    background-image: url( ../../resources/images/default/button/tj.gif ) !important;
+}
+.ReadIconCss {
+    background-image: url( ../../resources/images/default/button/zdbh.gif ) !important;
+}
+.optionIconCss {
+    background-image: url( ../../resources/images/default/button/sz.gif ) !important;
+}
+.shenpiIconCss {
+    background-image: url( ../../resources/images/default/button/zdbh.gif ) !important;
+}
+.xinyongkaIconCss {
+    background-image: url( ../../resources/images/default/button/dysz.gif ) !important;
+}
+.copyCss {
+    background-image: url( ../../resources/images/default/button/fb.gif ) !important;
+}
+.toOtherCss {
+    background-image: url( ../../resources/images/default/button/cz.gif ) !important;
+}
+.endCss {
+    background-image: url( ../../resources/images/default/button/sc-1.gif ) !important;
+}
+.searchMaxMirrorIconCss{
+ 	background-image: url( ../../resources/images/default/sizer/nw-handle.gif) !important;
+}
+.searchMinMirrorIconCss{
+ 	background-image: url( ../../resources/images/default/sizer/se-handle-dark.gif) !important;
+}
+.realDaXiaoIconCss{
+ 	background-image: url( ../../resources/images/default/button/shc.gif) !important;
+}
+.fitDaXiaoIconCss{
+ 	background-image: url( ../../resources/images/default/button/tj-1.gif) !important;
+}
+.treeIconCss{
+ 	background-image: url( ../../resources/images/default/button/zs.gif) !important;
+}
+.youJiIconCss{
+ 	background-image: url( ../../resources/images/default/grid/columns.gif) !important;
+}
+.circleIconCss{
+ 	background-image: url( ../../resources/images/default/menu/group-checked.gif) !important;
+}
+.custSelectIconCss{
+ 	background-image: url( ../../resources/images/default/button/fh-1.gif) !important;
+}
+.custGroupMemIconCss{
+ 	background-image: url( ../../resources/images/default/button/zs.gif) !important;
+}
+.maintainIconCss{
+ 	background-image: url( ../../resources/images/default/button/fb.gif) !important;
+}
+.guiRuIconCss{
+ 	background-image: url( ../../resources/images/default/button/dysz1.gif) !important;
+}
+.btn-panel td {
+    padding-left:5px;
+}
+
+h2 {
+    color:#083772 !important;
+    margin: 20px 0 0 !important;
+    padding: 5px;
+    background:#eee;
+    width:400px;
+}
+
+h3 {
+    font-weight:normal !important;
+}
+
+.company {
+  float: left;
+  width: 179px;
+  height: 30px;
+  margin: 5px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.company h3 {
+  font-weight: bold !important;
+}
+
+.company .up {
+    color: green;
+}
+
+.company .down {
+    color: red;
+}
+
+.company.x-view-selected {
+    background-color: #efefef;
+}

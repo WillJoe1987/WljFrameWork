@@ -1,0 +1,633 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>YCGrid HTML Demo</title>
+    <link type="text/css" href="../main.css" rel="stylesheet" />
+    <style type="text/css">
+    body, td, th {
+	    font-size: 12px;
+	    color: #222;
+	    outline: none;
+	}
+	
+	* {
+	    font-family: 微软雅黑, 宋体;
+	}
+	
+	body {
+	    background-color: #fff;
+	    margin: 0;
+	    padding: 0;
+	}
+	
+	div, ul, li, form, p {
+	    margin: 0;
+	    padding: 0;
+	    list-style: none;
+	    border: none;
+	}
+	
+	.temp-sp{
+		position:absolute;
+		left:750px;
+		top:630px;
+		width:220px;
+		height: 600px;
+	}
+	.yc-mainMenu{
+		top:1000px;
+		left:50px;
+	}
+	.yc-themeSettings{	
+		z-index:501;
+		top:1400px;
+		left:580px;
+	}
+	.yc-chartContainer{	
+		top:1400px;
+		left:20px;
+	}
+    </style>
+</head>
+<body>
+    <!--01 yc-grid(单行) sta-->
+    <div class="yc-grid" style="width:100%;height:250px;">
+        <div class="yc-grid-header" style="width:100%;">
+            <div class="ygh-container" style="/*width:XXpx;*/">
+                <div class="ygh-hd" style="width:30px;">序号</div>
+                <div class="ygh-hd" style="width:200px;"><div class="ygh-hd-text">产品名称</div><div class="ygh-hd-ctrl"></div></div>
+                <div class="ygh-hd" style="/*width:XXpx;*/"><div class="ygh-hd-text ygh-hd-order-desc">产品编号</div><div class="ygh-hd-ctrl"></div></div>
+                <div class="ygh-hd ygh-hd-hover" style="/*width:XXpx;*/"><div class="ygh-hd-text">产品类别</div><div class="ygh-hd-ctrl"></div></div>
+                <div class="ygh-hd ygh-hd-right" style="/*width:XXpx;*/"><div class="ygh-hd-text">认购金额</div><div class="ygh-hd-ctrl"></div></div>
+                <div class="ygh-hd" style="/*width:XXpx;*/"><div class="ygh-hd-text">发布日期</div><div class="ygh-hd-ctrl"></div></div>
+                <div class="ygh-hd ygh-hd-center" style="/*width:XXpx;*/"><div class="ygh-hd-text">截止日期</div><div class="ygh-hd-ctrl"></div></div>
+                <div class="ygh-hd" style="/*width:XXpx;*/"><div class="ygh-hd-text">产品状态</div><div class="ygh-hd-ctrl"></div></div>
+            </div>
+        </div>
+        <div class="yc-grid-center" style="/*width:XXpx;*/height: 200px;">
+            <div class="ygc-container" style="/*width:XXpx;height:XXpx;*/">
+                <div class="ygc-row ygc-row-odd" style="/*width:XXpx;*/">
+                    <div class="ygc-cell ygc-cell-no" style="width:30px;">1</div>
+                    <div class="ygc-cell" style="width:200px;">"金葵花"焦点联动系列之标普500</div>
+                    <div class="ygc-cell" style="/*width:XXpx;*/">104322</div>
+                    <div class="ygc-cell" style="/*width:XXpx;*/">国内理财</div>
+                    <div class="ygc-cell ygc-cell-right" style="/*width:XXpx;*/">￥10,000.00</div>
+                    <div class="ygc-cell" style="/*width:XXpx;*/">2014-04-29</div>
+                    <div class="ygc-cell ygc-cell-center" style="/*width:XXpx;*/">2014-10-28</div>
+                    <div class="ygc-cell" style="/*width:XXpx;*/">已发布</div>
+                </div>
+                <div class="ygc-row" style="/*width:XXpx;*/">
+                    <div class="ygc-cell ygc-cell-no" style="width:30px;">2</div>
+                    <div class="ygc-cell" style="width:200px;">"金葵花"焦点联动系列之标普500</div>
+                    <div class="ygc-cell" style="/*width:XXpx;*/">104322</div>
+                    <div class="ygc-cell" style="/*width:XXpx;*/">国内理财</div>
+                    <div class="ygc-cell ygc-cell-right" style="/*width:XXpx;*/">￥9,000.00</div>
+                    <div class="ygc-cell" style="/*width:XXpx;*/">2014-04-29</div>
+                    <div class="ygc-cell ygc-cell-center" style="/*width:XXpx;*/">2014-10-28</div>
+                    <div class="ygc-cell" style="/*width:XXpx;*/">已发布</div>
+                </div>
+                <div class="ygc-row ygc-row-odd ygc-row-selected" style="/*width:XXpx;*/">
+                    <div class="ygc-cell ygc-cell-no" style="width:30px;">3</div>
+                    <div class="ygc-cell" style="width:200px;">"金葵花"焦点联动系列之标普500</div>
+                    <div class="ygc-cell" style="/*width:XXpx;*/">104322</div>
+                    <div class="ygc-cell" style="/*width:XXpx;*/">国内理财</div>
+                    <div class="ygc-cell ygc-cell-right" style="/*width:XXpx;*/">￥500.00</div>
+                    <div class="ygc-cell" style="/*width:XXpx;*/">2014-04-29</div>
+                    <div class="ygc-cell ygc-cell-center" style="/*width:XXpx;*/">2014-10-28</div>
+                    <div class="ygc-cell" style="/*width:XXpx;*/">已发布</div>
+                </div>
+                <div class="ygc-row" style="/*width:XXpx;*/">
+                    <div class="ygc-cell ygc-cell-no" style="width:30px;">4</div>
+                    <div class="ygc-cell" style="width:200px;">"金葵花"焦点联动系列之标普500</div>
+                    <div class="ygc-cell" style="/*width:XXpx;*/">104322</div>
+                    <div class="ygc-cell" style="/*width:XXpx;*/">国内理财</div>
+                    <div class="ygc-cell ygc-cell-right" style="/*width:XXpx;*/">￥110,000.00</div>
+                    <div class="ygc-cell" style="/*width:XXpx;*/">2014-04-29</div>
+                    <div class="ygc-cell ygc-cell-center" style="/*width:XXpx;*/">2014-10-28</div>
+                    <div class="ygc-cell" style="/*width:XXpx;*/">已发布</div>
+                </div>
+                <div class="ygc-row ygc-row-odd" style="/*width:XXpx;*/">
+                    <div class="ygc-cell ygc-cell-no" style="width:30px;">5</div>
+                    <div class="ygc-cell" style="width:200px;">"金葵花"焦点联动系列之标普500</div>
+                    <div class="ygc-cell" style="/*width:XXpx;*/">104322</div>
+                    <div class="ygc-cell" style="/*width:XXpx;*/">国内理财</div>
+                    <div class="ygc-cell ygc-cell-right" style="/*width:XXpx;*/">￥8,000.00</div>
+                    <div class="ygc-cell" style="/*width:XXpx;*/">2014-04-29</div>
+                    <div class="ygc-cell ygc-cell-center" style="/*width:XXpx;*/">2014-10-28</div>
+                    <div class="ygc-cell" style="/*width:XXpx;*/">已发布</div>
+                </div>
+            </div>
+        </div>
+        <div class="yc-grid-footer">
+            <div class="ygf-pager-info">
+                共有5条记录，每页20条，当前第1/1页
+            </div>
+            <div class="ygf-pager-ctrl">
+                <a title="首页" href="#" class="ygf-pFirst ygf-pFirst-dis"></a>
+                <a title="上一页" href="#" class="ygf-pPrev"></a>
+                <a title="下一页" href="#" class="ygf-pNext"></a>
+                <a title="尾页" href="#" class="ygf-pLast"></a>
+                转到第<input class="txt-pageNo" type="text" />页，
+                每页<select class="sl-PageNum"><option></option></select>条记录
+            </div>
+        </div>
+    </div>
+    <!--01 yc-grid(单行) end-->
+
+    <br/>
+
+    <!--02 yc-group-grid(分组) sta-->
+    <div class="yc-grid yc-group-grid" style="width:100%;height:350px;">
+        <div class="yc-grid-header" style="width:100%;">
+            <div class="ygh-container" style="/*width:XXpx;*/">
+                <div class="ygh-hd ygh-hd-no" style="/*width:XXpx;*/">序号</div>
+                <div class="ygh-hd" style="width:300px;"><div class="ygh-hd-text">产品基本信息</div><div class=" ygh-hd-ctrl"></div></div>
+                <div class="ygh-hd" style="width:250px;"><div class="ygh-hd-text ygh-hd-order-asc">期限/费率</div><div class="ygh-hd-ctrl"></div></div>
+                <div class="ygh-hd" style="width:300px;"><div class="ygh-hd-text">产品特征项</div><div class="ygh-hd-ctrl"></div></div>
+                <div class="ygh-hd" style="width:250px;"><div class="ygh-hd-text">其它信息</div><div class="ygh-hd-ctrl"></div></div>
+            </div>
+        </div>
+        <div class="yc-grid-center" style="/*width:XXpx;*/height: 285px;">
+            <div class="ygc-container" style="/*width:XXpx;height:XXpx;*/">
+                <div class="ygc-row ygc-row-odd" style="/*width:XXpx;*/ height: 80px;">
+                    <div class="ygc-cell ygc-cell-no" style="/*width:XXpx;*/ height: 80px; line-height: 80px;">1</div>
+                    <div class="ygc-cell" style="width: 300px; height: 80px;">
+                        <div class="yegc-14" style="width:300px;">金葵花——焦点联动系列之黄金表现联动理财计划(133天)</div>
+                        <div class="yegc-12" style="width:150px;"><span>编号：</span>104342</div>
+                        <div class ="yegc-12" style="width:150px;"><span>类别：</span>国内理财</div>
+                    </div>
+                    <div class="ygc-cell" style="width: 250px; height: 80px;">
+                        <div class="yegc-12  ygc-cell-order-field-asc"><span>发布日期：</span>2014-02-15</div>
+                        <div class="yegc-12"><span>截止日期：</span>2014-08-14</div>
+                        <div class="yegc-12" style="width:125px;"><span>利率：</span>3.550%</div>
+                        <div class="yegc-12" style="width:125px;"><span>费率：</span>8.642%</div>
+                    </div>
+                    <div class="ygc-cell" style="width: 300px; height: 80px;">
+                        <div class="yegc-12" style="width:150px;"><span>年化收益：</span>5.50%/年</div>
+                        <div class="yegc-12" style="width:150px;"><span>销售费率：</span>4.2%/年</div>
+                        <div class="yegc-12" style="width:150px;"><span>规模下限：</span>5.50%/年</div>
+                        <div class="yegc-12" style="width:150px;"><span>管理费率：</span>4.2%/年</div>
+                        <div class="yegc-12" style="width:150px;"><span>规模上限：</span>5.50%/年</div>
+                        <div class="yegc-12" style="width:150px;"><span>理财期限：</span>4.2%/年</div>
+                        <div class="ygc-cell-more">
+                            <div class="yegc-12" style="width:150px;"><span>收益类型：</span>保本浮动</div>
+                            <div class="yegc-12" style="width:150px;"><span>风险程度：</span>低</div>
+                            <div class="yegc-12" style="width:150px;"><span>销售地区：</span>四川</div>
+                            <div class="yegc-12" style="width:150px;"><span>规模下限：</span>5.50%/年</div>
+                            <div class="yegc-12" style="width:150px;"><span>管理费率：</span>4.2%/年</div>
+                            <div class="yegc-12" style="width:150px;"><span>货币种类：</span>人民币</div>
+                        </div>
+                    </div>
+                    <div class="ygc-cell" style="width: 250px; height: 80px;">
+                        <div class="yegc-12"><span>产品状态：</span>已发布</div>
+                        <div class="yegc-12"><span>创建日期：</span>2014-04-30</div>
+                        <div class="yegc-12"><span>创建人：</span>张三右</div>
+                    </div>
+                </div>
+                <div class="ygc-row" style="height:80px;">
+                    <div class="ygc-cell ygc-cell-no" style="height:80px;line-height:80px;">2</div>
+                    <div class="ygc-cell" style="width: 300px; height: 80px;">
+                        <div class="yegc-14" style="width:300px;">金葵花——焦点联动系列之黄金表现联动理财计划(133天)</div>
+                        <div class="yegc-12" style="width:150px;"><span>编号：</span>104342</div>
+                        <div class="yegc-12" style="width:150px;"><span>类别：</span>国内理财</div>
+                    </div>
+                    <div class="ygc-cell" style="width: 250px; height: 80px;">
+                        <div class="yegc-12 ygc-cell-order-field-asc"><span>发布日期：</span>2014-02-16</div>
+                        <div class="yegc-12"><span>截止日期：</span>2014-08-15</div>
+                        <div class="yegc-12" style="width:125px;"><span>利率：</span>3.550%</div>
+                        <div class="yegc-12" style="width:125px;"><span>费率：</span>8.642%</div>
+                    </div>
+                    <div class="ygc-cell" style="width: 300px; height: 80px;">
+                        <div class="yegc-12" style="width:150px;"><span>年化收益：</span>5.50%/年</div>
+                        <div class="yegc-12" style="width:150px;"><span>销售费率：</span>4.2%/年</div>
+                        <div class="yegc-12" style="width:150px;"><span>规模下限：</span>5.50%/年</div>
+                        <div class="yegc-12" style="width:150px;"><span>管理费率：</span>4.2%/年</div>
+                        <div class="yegc-12" style="width:150px;"><span>规模上限：</span>5.50%/年</div>
+                        <div class="yegc-12" style="width:150px;"><span>理财期限：</span>4.2%/年</div>
+                        <div class="ygc-cell-more">
+                            <div class="yegc-12" style="width:150px;"><span>收益类型：</span>保本浮动</div>
+                            <div class="yegc-12" style="width:150px;"><span>风险程度：</span>低</div>
+                            <div class="yegc-12" style="width:150px;"><span>销售地区：</span>四川</div>
+                            <div class="yegc-12" style="width:150px;"><span>规模下限：</span>5.50%/年</div>
+                            <div class="yegc-12" style="width:150px;"><span>管理费率：</span>4.2%/年</div>
+                            <div class="yegc-12" style="width:150px;"><span>货币种类：</span>人民币</div>
+                        </div>
+                    </div>
+                    <div class="ygc-cell" style="width: 250px; height: 80px;">
+                        <div class="yegc-12"><span>产品状态：</span>已发布</div>
+                        <div class="yegc-12"><span>创建日期：</span>2014-04-30</div>
+                        <div class="yegc-12"><span>创建人：</span>张三右</div>
+                    </div>
+                </div>
+                <div class="ygc-row ygc-row-odd  ygc-row-selected" style=" height:80px;">
+                    <div class="ygc-cell ygc-cell-no" style="height:80px;line-height:80px;">3</div>
+                    <div class="ygc-cell" style="width: 300px; height: 80px;">
+                        <div class="yegc-14" style="width:300px;">金葵花——焦点联动系列之黄金表现联动理财计划(133天)</div>
+                        <div class="yegc-12" style="width:150px;"><span>编号：</span>104342</div>
+                        <div class="yegc-12" style="width:150px;"><span>类别：</span>国内理财</div>
+                    </div>
+                    <div class="ygc-cell" style="width: 250px; height: 80px;">
+                        <div class="yegc-12 ygc-cell-order-field-asc"><span>发布日期：</span>2014-02-17</div>
+                        <div class="yegc-12"><span>截止日期：</span>2014-08-16</div>
+                        <div class="yegc-12" style="width:125px;"><span>利率：</span>3.550%</div>
+                        <div class="yegc-12" style="width:125px;"><span>费率：</span>8.642%</div>
+                    </div>
+                    <div class="ygc-cell" style="width: 300px; height: 80px;">
+                        <div class="yegc-12" style="width:150px;"><span>年化收益：</span>5.50%/年</div>
+                        <div class="yegc-12" style="width:150px;"><span>销售费率：</span>4.2%/年</div>
+                        <div class="yegc-12" style="width:150px;"><span>规模下限：</span>5.50%/年</div>
+                        <div class="yegc-12" style="width:150px;"><span>管理费率：</span>4.2%/年</div>
+                        <div class="yegc-12" style="width:150px;"><span>规模上限：</span>5.50%/年</div>
+                        <div class="yegc-12" style="width:150px;"><span>理财期限：</span>4.2%/年</div>
+                        <div class="ygc-cell-more">
+                            <div class="yegc-12" style="width:150px;"><span>收益类型：</span>保本浮动</div>
+                            <div class="yegc-12" style="width:150px;"><span>风险程度：</span>低</div>
+                            <div class="yegc-12" style="width:150px;"><span>销售地区：</span>四川</div>
+                            <div class="yegc-12" style="width:150px;"><span>规模下限：</span>5.50%/年</div>
+                            <div class="yegc-12" style="width:150px;"><span>管理费率：</span>4.2%/年</div>
+                            <div class="yegc-12" style="width:150px;"><span>货币种类：</span>人民币</div>
+                        </div>
+                    </div>
+                    <div class="ygc-cell" style="width: 250px; height: 80px;">
+                        <div class="yegc-12"><span>产品状态：</span>已发布</div>
+                        <div class="yegc-12"><span>创建日期：</span>2014-04-30</div>
+                        <div class="yegc-12"><span>创建人：</span>张三右</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yc-grid-footer">
+            <div class="ygf-pager-info">
+                共有3条记录，每页20条，当前第1/1页
+            </div>
+            <div class="ygf-pager-ctrl">
+                <a title="首页" href="#" class="ygf-pFirst ygf-pFirst-dis"></a>
+                <a title="上一页" href="#" class="ygf-pPrev"></a>
+                <a title="下一页" href="#" class="ygf-pNext"></a>
+                <a title="尾页" href="#" class="ygf-pLast"></a>
+                转到第<input class="txt-pageNo" type="text" />页，
+                每页<select class="sl-PageNum"><option></option></select>条记录
+            </div>
+        </div>
+    </div>
+    <!--02 yc-group-grid(分组) end-->
+
+    <!--01&02 逻辑实现/说明：-->
+    <!--
+        1、yc-grid(单行)、yc-group-grid(分组)；    
+        2、yc-grid、yc-group-grid共用同一套css，HTML结构基本一致，使用或实现时注意保持HTML标签结构及其class值不变；
+        3、HTML Demo中的style属性值即为逻辑实现时需要手动赋值/动态计算得出的参数，如：width,height等；
+        4、yc-grid的width/height值默认为父级容器widht/height的100%(可手动设置、动态获取)；
+        5、yc-grid、yc-grid-header、yc-grid-center、yc-grid-footer的width值相等，默认为父级容器宽度的100%(可手动设置、动态获取)；
+        6、ygh-container的width值等于其子元素ygh-hd的width之和（默认为父级容器宽度的100%，需要手动/动态赋值）；
+        7、yc-grid-center的height值等于yc-grid的height减去（yc-grid-header与yc-grid-footer的height之和）50或65，滚动条在该容器中实现；
+        8、ygc-container的width等于其子元素ygc-row的width，hegiht等于当所有于其子元素ygc-row的height之和；
+        9、ygc-row的widht等于其子元素ygc-cell的width之和（不小于yc-grid的width，保持充满状态），height：单行默认25px,分组形式需要手动设置；
+        10、ygc-cell的widht默认为10%，需要手动设置（注意与表头ygh-hd等宽）；
+        11、滚动条建议在yc-grid-center中实现，当水平滚动时须联动ygh-container同步滚动/位移；
+        12、排序逻辑：单击表头按设置的默认字段排序（手动设置排序字段，单行状态时只有一个字段无需设置），点击表头右侧正序/逆序菜单时展开子菜单列出当前分组下的所有字段让用户选择排序字段。
+    -->
+    
+    <!--03 yc-menu（表格右键菜单） sta-->
+    <div class="yc-menu" style="/*width: XXpx;*/top:330px;left:520px;">
+    	<a class="ycm-item" href="javascript:void(0);"><div class="ycm-text ico-g-27">详细</div></a>
+    	<a class="ycm-item ycm-item-disable" href="javascript:void(0);"><div class="ycm-text ico-g-30">修改</div></a>
+    	<a class="ycm-item" href="javascript:void(0);"><div class="ycm-text ico-g-3">删除</div></a>
+    	<div class="ycm-line"></div>
+    	<a class="ycm-item" href="javascript:void(0);"><div class="ycm-text ico-g-27">产品介绍</div></a>
+    	<a class="ycm-item" href="javascript:void(0);"><div class="ycm-text ico-g-29">产品特征项</div></a>
+    	<a class="ycm-item ycm-item-selected" href="javascript:void(0);"><div class="ycm-text ico-g-27">产品XX信息<div class="ycm-more"></div></div></a>
+			<div class="yc-menu" style="/*width: XXpx;*/left:158px;top:140px;display: block;">
+				<a class="ycm-item" href="javascript:void(0);"><div class="ycm-text ico-g-27">AA信息</div></a>
+				<a class="ycm-item" href="javascript:void(0);"><div class="ycm-text ico-g-27">BB信息</div></a>
+				<a class="ycm-item" href="javascript:void(0);"><div class="ycm-text ico-g-27">CC信息</div></a>
+			</div>
+    	<div class="ycm-line"></div>
+    	<a class="ycm-item" href="javascript:void(0);"><div class="ycm-text">产品对照关系</div></a>
+    	<a class="ycm-item" href="javascript:void(0);"><div class="ycm-text ico-g-11">目标客户设定</div></a>
+    </div>
+    <!--03 yc-menu（表格右键菜单） end-->
+    
+    <!--04 yc-menu（表头菜单） sta-->
+    <div class="yc-menu" style="width: 90px;top:25px;left:525px;">
+    	<a class="ycm-item" href="javascript:void(0);"><div class="ycm-text ico-g-101">正序</div></a>
+    	<a class="ycm-item" href="javascript:void(0);"><div class="ycm-text ico-g-102">逆序</div></a>
+    	<div class="ycm-line"></div>
+    	<a class="ycm-item ycm-item-selected" href="javascript:void(0);"><div class="ycm-text ico-g-4">列<div class="ycm-more"></div></div></a>
+			<div class="yc-menu" style="/*width: XXpx;*/left:98px;top:65px;display: block;">
+				<a class="ycm-item ycm-item-checked" href="javascript:void(0);"><div class="ycm-text">产品名称</div></a>
+				<a class="ycm-item ycm-item-checked" href="javascript:void(0);"><div class="ycm-text">产品编号</div></a>
+				<a class="ycm-item ycm-item-uncheck" href="javascript:void(0);"><div class="ycm-text">产品类别</div></a>
+				<a class="ycm-item ycm-item-checked" href="javascript:void(0);"><div class="ycm-text">认购金额</div></a>
+				<a class="ycm-item ycm-item-checked" href="javascript:void(0);"><div class="ycm-text">发布日期</div></a>
+				<a class="ycm-item ycm-item-checked" href="javascript:void(0);"><div class="ycm-text">截止日期</div></a>
+			</div>
+    </div>
+    <!--04 yc-menu（表头菜单） end-->
+    
+    <!--03&04 逻辑实现/说明：-->
+    <!--
+        1、yc-menu，菜单/右键菜单样式；
+        2、菜单默认宽度150px,可根据菜单项长度自定义设置宽度;
+		3、高度自适应，行高默认25px（无须设置，后面定位子菜单会用到该值）；
+		4、考虑到性能效率问题，父级与子菜单未采用嵌套方式，意味着子级菜单需要根据父级菜单位置、其本身尺寸（高度）、待出现位置（可能超出可视区域边界）来实时计算出坐标位置，赋值left/top值，浮动显示在预期位置；
+		5、子级菜单相对父级菜单，其left=(父级菜单宽度+8)px；
+		6、子级菜单相对父级菜单，其top=(父级菜单及其同辈菜单数量*25+15)px；
+    -->
+    
+    <!--05 操作指引  sta-->
+    <div class="ycl-ico" title="提示"></div>
+    <div class="yc-lead" style="/*top/left/right/bottom*/">
+	    <div class="ycl-head">
+	    	<div class="yclh-tab yclh-tab-selected">操作指引</div>
+	    	<div class="yclh-tab">系统帮助</div>
+	    </div>
+	    <div class="ycl-container" style="display:block;">
+	    	<div class="ycl-remark">关联业务：<span class="yclr-red">▇</span>当前业务<span class="yclr-blue">▇</span>其它业务<span class="yclr-cc">提示：“鼠标划入”业务名称预览业务介绍；“点击”进入该业务流程。</span></div>
+	    	<div class="ycl-group">
+    			<div class="yclg-menu"><div class="yclg-menu-text">客户查询</div></div>
+    			<div class="yclg-menu yglg-menu-selected"><div class="yclg-menu-text">创建客户群</div></div>
+    			<div class="yclg-menu"><div class="yclg-menu-text">批量创建商机</div></div>
+    			<div class="yclg-menu"><div class="yclg-menu-text">分配商机</div></div>
+	    		<div class="yclg-dis">业务名称：这里是业务概要介绍……</div>
+	    		<div class="yclg-dis yclg-dis-show">业务名称：这里是业务概要介绍，这里是业务概要介绍，这里是业务概要介绍，这里是业务概要介绍，这里是业务概要介绍，这里是业务概要介绍里是业务概要介绍，这里是业务概要介绍。</div>
+	    		<div class="yclg-dis">业务名称：这里是业务概要介绍……</div>
+	    		<div class="yclg-dis">业务名称：这里是业务概要介绍……</div>
+	    	</div>
+	    	<div class="ycl-group">
+    			<div class="yclg-menu"><div class="yclg-menu-no">1</div><div class="yclg-menu-text">客户查询</div></div>
+    			<div class="yclg-menu yglg-menu-selected"><div class="yclg-menu-no">2</div><div class="yclg-menu-text">创建客户群</div></div>
+    			<div class="yclg-menu"><div class="yclg-menu-no">3</div><div class="yclg-menu-text">客户群评级</div></div>
+    			<div class="yclg-menu"><div class="yclg-menu-no">4</div><div class="yclg-menu-text">创建营销活动</div></div>
+    			<div class="yclg-menu"><div class="yclg-menu-no">5</div><div class="yclg-menu-text">营销活动审批</div></div>
+	    		<div class="yclg-dis">业务名称：这里是业务概要介绍……</div>
+	    		<div class="yclg-dis yclg-dis-show">业务名称：这里是业务概要介绍，这里是业务概要介绍，这里是业务概要介绍，这里是业务概介绍，这里是业务概要介绍，这里是业务概要介绍，这里是业务概要介绍里是业务概要介绍，这里是业务概要介绍。</div>
+	    		<div class="yclg-dis">业务名称：这里是业务概要介绍……</div>
+	    		<div class="yclg-dis">业务名称：这里是业务概要介绍……</div>
+	    		<div class="yclg-dis">业务名称：这里是业务概要介绍……</div>
+	    	</div>	    	
+	    	<div class="ycl-group">
+    			<div class="yclg-menu"><div class="yclg-menu-no">1</div><div class="yclg-menu-text">客户查询</div></div>
+    			<div class="yclg-menu yglg-menu-selected"><div class="yclg-menu-no">2</div><div class="yclg-menu-text">创建客户群</div></div>
+    			<div class="yclg-menu"><div class="yclg-menu-no">3</div><div class="yclg-menu-text">客户积分查询</div></div>
+    			<div class="yclg-menu"><div class="yclg-menu-no">4</div><div class="yclg-menu-text">积分兑换</div></div>
+	    		<div class="yclg-dis">业务名称：这里是业务概要介绍……</div>
+	    		<div class="yclg-dis yclg-dis-show">业务名称：这里是业务概要介绍，这里是业务概要要介绍，这里是业务概要介绍，这里是业务概要介绍，这里是业务概要介绍里是业务概要介绍，这里是业务概要介绍。</div>
+	    		<div class="yclg-dis">业务名称：这里是业务概要介绍……</div>
+	    		<div class="yclg-dis">业务名称：这里是业务概要介绍……</div>
+	    	</div>
+	    </div>
+	    <div class="ycl-container">
+	    	这里是系统帮助(预留布局)……！
+	    </div>
+    </div>
+    <!--05 操作指引  end-->
+    
+    <!--05 逻辑实现/说明：-->
+    <!--
+        1、yc-lead，提示UI布局，ycl-ico，图标；
+        2、须设置yc-lead的浮动位置/坐标，如:top/left/right/bottom;
+        4、ycl-ico默认位置为相对其父容器right:5px，bottom:5px。
+    -->
+    
+    <!--06 客户视图菜单  sta-->
+    <div class="temp-sp">
+    	<a href="javascript:void(0);" class="menu-cv" title="客户信息概览"><div class="m-cv-text ico-d-4">客户信息概览</div><div class="m-cv-close ico-d-95"></div></a>
+    	<a href="javascript:void(0);" class="menu-cv" title="客户基本信息"><div class="m-cv-text ico-d-11">客户基本信息</div><div class="m-cv-close ico-d-95"></div></a>
+    	<a href="javascript:void(0);" class="menu-cv menu-cv-selected" title="客户家庭信息"><div class="m-cv-text ico-w-56">客户家庭信息</div><div class="m-cv-close ico-w-95"></div></a>
+    	<a href="javascript:void(0);" class="menu-cv" title="客户财务信息"><div class="m-cv-text ico-d-60">客户财务信息</div><div class="m-cv-close ico-d-95"></div></a>
+    	<a href="javascript:void(0);" class="menu-cv" title="客户信用信息"><div class="m-cv-text ico-d-9">客户信用信息</div><div class="m-cv-close ico-d-95"></div></a>
+    	<a href="javascript:void(0);" class="menu-cv" title="客户电子管理信息"><div class="m-cv-text ico-d-32">客户电子管理信息</div><div class="m-cv-close ico-d-95"></div></a>
+    	<a href="javascript:void(0);" class="menu-cv" title="关联客户信息"><div class="m-cv-text ico-d-83">关联客户信息</div><div class="m-cv-close ico-d-95"></div></a>
+    	<a href="javascript:void(0);" class="menu-cv" title="归属信息"><div class="m-cv-text ico-d-78">归属信息</div><div class="m-cv-close ico-d-95"></div></a>
+    	<a href="javascript:void(0);" class="menu-cv" title="客户他行信息"><div class="m-cv-text ico-d-62">客户他行信息</div><div class="m-cv-close ico-d-95"></div></a>
+    </div>
+    <!--06 客户视图菜单  end-->
+    <!--06 逻辑实现/说明：-->
+    <!--
+        1、仅需要工<a></a>标签，<div class="temp-sp">仅此处临时使用。
+    -->
+    
+    <!--07 主菜单  sta-->
+    <div class="yc-mainMenu">
+    	<ul>
+    		<li><a href="javascript:void(0);" class="yc-mmLink">客户管理</a></li>
+    		<li><a href="javascript:void(0);" class="yc-mmLink">客户经理管理</a></li>
+    		<li><a href="javascript:void(0);" class="yc-mmLink">工作平台</a></li>
+    		<li><a href="javascript:void(0);" class="yc-mmLink yc-mmLink-selected">营销管理</a>
+				<!-- 子菜单组 开始 -->
+    			<div class="yc-mmContainer">
+			    	<div class="ym-mmc-left"></div>
+			    	<div class="ym-mmc-right"></div>
+			    	<div class="yc-mmcContent">
+			    		<!-- 第1组菜单 开始 -->
+				    	<div class="yc-mmcGroup">
+							<ul>
+								<li title="营销活动管理">营销活动管理</li>
+								<li>
+									<ul>
+										<li><a href="javascript:void(0);" title="营销活">营销活动</a></li>
+										<li><a href="javascript:void(0);" title="我的营销活动">我的营销活动</a></li>
+										<li class="yc-mmgParent yc-mmgpOpen" title="XXXX"><span>四级菜单XXX</span></li>
+										<li>
+											<ul>
+												<li><a href="javascript:void(0);" title="XXXX">五级菜单XXX</a></li>
+												<li><a href="javascript:void(0);" title="XXXX">五级菜单XXX</a></li>
+												<li><a href="javascript:void(0);" title="XXXX">五级菜单XXX</a></li>
+												<li><a href="javascript:void(0);" title="XXXX">五级菜单XXX</a></li>
+											</ul>
+										</li>
+										<li><a href="javascript:void(0);" title="营销活动审批">营销活动审批</a></li>
+										<li class="yc-mmgParent yc-mmgpOpen" title="营销活动跟踪"><span>营销活动跟踪</span></li>
+										<li>
+											<ul>
+												<li><a href="javascript:void(0);" title="营销活动信息跟踪">营销活动信息跟踪</a></li>
+												<li><a href="javascript:void(0);" title="客户经理营销活动跟踪">客户经理营销活动跟踪</a></li>
+												<li><a href="javascript:void(0);" title="机构营销活动跟踪">机构营销活动跟踪</a></li>
+												<li><a href="javascript:void(0);" title="营销活动模板管理">营销活动模板管理</a></li>
+												<li class="yc-mmgParent yc-mmgpOpen" title="XXXX"><span>四级菜单XXX</span></li>
+												<li>
+													<ul>
+														<li><a href="javascript:void(0);" title="XXXX">五级菜单XXX</a></li>
+														<li><a href="javascript:void(0);" title="XXXX">五级菜单XXX</a></li>
+														<li><a href="javascript:void(0);" title="XXXX">五级菜单XXX</a></li>
+														<li><a href="javascript:void(0);" title="XXXX">五级菜单XXX</a></li>
+													</ul>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</div>			
+			    		<!-- 第1组菜单 结束 -->
+			    		
+			    		<!-- 第2组菜单 开始 -->
+				    	<div class="yc-mmcGroup">
+							<ul>
+								<li title="XXXX">营销任务管理</li>
+								<li>
+									<ul>
+										<li><a href="javascript:void(0);" title="XXXX">我的营销任务</a></li>
+										<li><a href="javascript:void(0);" title="XXXX">营销任务下达</a></li>
+										<li class="yc-mmgParent yc-mmgpClose" title="XXXX"><span>营销任务跟踪</span></li>
+										<li style="display:none;">
+											<ul>
+												<li><a href="javascript:void(0);" title="XXXX">营销指标</a></li>
+												<li><a href="javascript:void(0);" title="XXXX">营销任务</a></li>
+												<li><a href="javascript:void(0);" title="XXXX">我的营销任务</a></li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</div>			
+			    		<!-- 第2组菜单 结束 -->
+			    		
+			    		<!-- 第3组菜单 开始 -->
+				    	<div class="yc-mmcGroup">
+							<ul>
+								<li title="XXXX">商机管理</li>
+								<li>
+									<ul>
+										<li><a href="javascript:void(0);" title="XXXX">商机查询</a></li>
+										<li><a href="javascript:void(0);" title="XXXX">我的商机</a></li>
+										<li><a href="javascript:void(0);" title="XXXX">销售漏斗</a></li>
+										<li class="yc-mmgParent yc-mmgpOpen" title="XXXX"><span>商机达成分析</span></li>
+										<li>
+											<ul>
+												<li><a href="javascript:void(0);" title="XXXX">客户经理商机达成</a></li>
+												<li><a href="javascript:void(0);" title="XXXX">网点商机达成</a></li>
+												<li><a href="javascript:void(0);" title="XXXX">支行商机达成</a></li>
+												<li><a href="javascript:void(0);" title="XXXX">分行商机达成</a></li>
+												
+												
+												<li><a href="javascript:void(0);" title="XXXX">客户经理商机达成</a></li>
+												<li><a href="javascript:void(0);" title="XXXX">网点商机达成</a></li>
+												<li><a href="javascript:void(0);" title="XXXX">支行商机达成</a></li>
+												<li><a href="javascript:void(0);" title="XXXX">分行商机达成</a></li>									
+												<li><a href="javascript:void(0);" title="XXXX">客户经理商机达成</a></li>
+												<li><a href="javascript:void(0);" title="XXXX">网点商机达成</a></li>
+												<li><a href="javascript:void(0);" title="XXXX">支行商机达成</a></li>
+												<li><a href="javascript:void(0);" title="XXXX">分行商机达成</a></li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</div>			
+			    		<!-- 第3组菜单 结束 -->    		
+			    		
+			    		<!-- 第4组菜单 开始 -->
+				    	<div class="yc-mmcGroup">
+							<ul>
+								<li title="XXXX">营销参数配置</li>
+								<li>
+									<ul>
+										<li><a href="javascript:void(0);" title="营销模板管理">营销模板管理</a></li>
+										<li><a href="javascript:void(0);" title="XXXX">渠道信息管理</a></li>
+										<li><a href="javascript:void(0);" title="XXXX">营销区域管理</a></li>
+										<li class="yc-mmgParent yc-mmgpOpen" title="XXXX"><span>商机达成分析</span></li>
+										<li>
+											<ul>
+												<li><a href="javascript:void(0);" title="XXXX">客户经理商机达成</a></li>
+												<li><a href="javascript:void(0);" title="XXXX">网点商机达成</a></li>
+												<li><a href="javascript:void(0);" title="XXXX">支行商机达成</a></li>
+												<li><a href="javascript:void(0);" title="XXXX">分行商机达成</a></li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</div>			
+			    		<!-- 第4组菜单 结束 -->
+			    	</div>
+			    </div>
+    			<!-- 子菜单组 结束 -->
+    		</li>
+    		<li><a href="javascript:void(0);" class="yc-mmLink">产品管理</a></li>
+    		<li><a href="javascript:void(0);" class="yc-mmLink">服务管理</a></li>
+    		<li><a href="javascript:void(0);" class="yc-mmLink">统计分析</a></li>
+    		<li><a href="javascript:void(0);" class="yc-mmLink">财富管理</a></li>
+    		<li><a href="javascript:void(0);" class="yc-mmLink">系统平台</a></li>
+    	</ul>
+    </div>
+    <!--07 主菜单  end-->
+    <!--07 逻辑实现/说明：-->
+    <!--
+        1、yc-mainMenu：主菜单/一级菜单容器，yc-mmContainer:子菜单组；
+        2、仅需控制yc-mainMenu容器的浮动位置。
+    -->
+    
+    <!--08 主题设置  sta-->
+    <div class="yc-themeSettings">
+    	<div class="yc-ts-Title"><span class="yc-tstText">皮肤设置</span></div>
+    	<div class="yc-tsContent">
+    		<a class="yc-tscLink" href="javascript:void(0);"><img alt="" src="../pics/index/themes_pic_01.jpg"><div class="yc-tsclsIco"></div></a>
+    		<a class="yc-tscLink yc-tscLinkSelected" href="javascript:void(0);"><img alt="" src="../pics/index/themes_pic_02.jpg"><div class="yc-tsclsIco"></div></a>
+    	</div>
+    	<div class="yc-ts-Title"><span class="yc-tstText">背景设置</span></div>
+    	<div class="yc-tsContent">
+    		<a class="yc-tscLink" href="javascript:void(0);"><img alt="" src="../pics/index/index_bg_01.jpg"><div class="yc-tsclsIco"></div></a>
+    		<a class="yc-tscLink" href="javascript:void(0);"><img alt="" src="../pics/index/index_bg_02.jpg"><div class="yc-tsclsIco"></div></a>
+    		<a class="yc-tscLink yc-tscLinkSelected" href="javascript:void(0);"><img alt="" src="../pics/index/index_bg_01.jpg"><div class="yc-tsclsIco"></div></a>
+    		<a class="yc-tscLink" href="javascript:void(0);"><img alt="" src="../pics/index/index_bg_02.jpg"><div class="yc-tsclsIco"></div></a>
+    	</div>
+    	<div class="yc-ts-Title"><span class="yc-tstText">字号设置</span></div>
+    	<div class="yc-tsContent">
+    		<input type="radio" id="ra_normal" name="ra_fontsize" /><label for="ra_normal">正常(默认)</label>
+    		<input type="radio" id="ra_max" name="ra_fontsize" /><label for="ra_max">大号</label>
+    	</div>
+    	<div class="yc-ts-Title"></div>
+    	<div class="yc-tsContent">
+    		<a class="yc-tsbt" href="javascript:void(0);" title="保存设置">保存设置</a>
+    		<a class="yc-tsbt" href="javascript:void(0);" title="恢复默认">恢复默认</a>
+    		<span class="yc-tsRemark">提示：恢复默认将还原首页个性化与主题到初始状态。</span>
+    	</div>
+    </div>
+    <!--08 主题设置  end-->
+    <!--08 逻辑实现/说明：-->
+    <!--
+        1、XXXX；
+        2、XXXX。
+    -->
+    <!--09 首页图表  sta-->
+    <div class="yc-chartContainer">
+	    <div class="yc-chartList">
+			<div class="yc-chartDiv" title="XXX">机构贷款客户增长TOP10</div>
+			<div class="yc-chartDiv" title="XXX">机构贷款客户增长TOP10</div>
+			<div class="yc-chartDiv" title="XXX">机构贷款客户增长TOP10</div>
+			<div class="yc-chartDiv" title="XXX">机构贷款客户增长TOP10</div>
+			<div class="yc-chartDiv" title="XXX">机构贷款客户增长TOP10</div>
+			<div class="yc-chartDiv" title="XXX">机构贷款客户增长TOP10</div>
+			<div class="yc-chartDiv" title="XXX">机构贷款客户增长TOP10</div>
+			<div class="yc-chartDiv" title="XXX">机构贷款客户增长TOP10</div>
+			<div class="yc-chartDiv" title="XXX">机构贷款客户增长TOP10</div>
+			<div class="yc-chartDiv" title="XXX">机构贷款客户增长TOP10</div>
+			<div class="yc-chartDiv" title="XXX">机构贷款客户增长TOP10</div>
+			<div class="yc-chartDiv" title="XXX">机构贷款客户增长TOP10</div>
+			<div class="yc-chartDiv" title="XXX">机构贷款客户增长TOP10</div>
+			<div class="yc-chartDiv" title="XXX">机构贷款客户增长TOP10</div>
+			<div class="yc-chartDiv" title="XXX">机构贷款客户增长TOP10</div>
+			<div class="yc-chartDiv" title="XXX">机构贷款客户增长TOP10</div>
+			<div class="yc-chartDiv" title="XXX">机构贷款客户增长TOP10</div>
+			<div class="yc-chartDiv" title="XXX">机构贷款客户增长TOP10</div>
+			<div class="yc-chartDiv" title="XXX">机构贷款客户增长TOP10</div>
+			<div class="yc-chartDiv" title="XXX">机构贷款客户增长TOP10</div>
+			<div class="yc-chartDiv" title="XXX">机构贷款客户增长TOP10</div>
+			<div class="yc-chartDiv" title="XXX">机构贷款客户增长TOP10</div>
+			<div class="yc-chartDiv" title="XXX">机构贷款客户增长TOP10</div>
+			<div class="yc-chartDiv" title="XXX">机构贷款客户增长TOP10</div>
+		</div>
+    </div>
+    <!--09 首页图表  end-->
+    <!--09 逻辑实现/说明：-->
+    <!--
+        1、XXXX；
+        2、XXXX。
+    -->
+    
+    
+</body>
+</html>

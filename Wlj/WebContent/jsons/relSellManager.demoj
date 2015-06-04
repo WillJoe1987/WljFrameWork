@@ -1,0 +1,21 @@
+var responseText = {"json":{"data":[{
+"ECOSPHERE_NAME":"频繁转账他行关系价值营销商机",
+"ECOSPHERE_DESC":"张XX每月向他行李XX转账5000元以上金额超过三次",
+"CUST_NAME":"张XX",
+"SELL_MSG":"减免手续费",
+"CREATE_DATE":"2015-03-17 23:50:25",
+"ASSIGN_DATE":"2015-03-17 23:50:28",
+"ECOSPHERE_TYPE" : "跟踪",
+"SELL_RESULT":"接触",
+"ORG_NAME":"总行战略客户部",
+"MGR":"李兰"},{
+"ECOSPHERE_NAME":"频繁转账他行关系价值营销商机",
+"ECOSPHERE_DESC":"张XX每月向他行李XX转账5000元以上金额超过三次",
+"CUST_NAME":"李XX",
+"SELL_MSG":"存款利率上浮10%",
+"CREATE_DATE":"2015-03-17 23:50:25",
+"ASSIGN_DATE":"2015-03-17 23:50:28",
+"ECOSPHERE_TYPE" : "跟踪",
+"SELL_RESULT":"接触",
+"ORG_NAME":"总行战略客户部",
+"MGR":"李兰"}]}};

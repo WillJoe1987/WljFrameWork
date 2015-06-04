@@ -1,0 +1,1 @@
+var responseText = {"json":{"data":[{"ID":"20150301","INDUSTRY":"IT行业","REGISTER_CAPITAL":"50万","REVENUE":"100万","IF_FLAG":"否","SAVE_SIZE":"10万~100万","DEPTS":"1%","COMPANY_SIZE":"2"},{"ID":"20150302","INDUSTRY":"服务行业","REGISTER_CAPITAL":"10万","REVENUE":"50万","IF_FLAG":"是","SAVE_SIZE":"10万","DEPTS":"2%","COMPANY_SIZE":"3"}]}};

@@ -1,0 +1,1 @@
+var responseText = {"json":{"data":[{"ID":"20150301","MAIN_CUST_MGR":"赵红","CUST_NAME":"张伟","ORG_ID":"东华支行","MARKET_TYPE_T":"1","MARKET_TYPE":"2","MARKET_TYPE_SUB":"3","MARKET_TRA":"驱动式营销策略"},{"ID":"20150301","MAIN_CUST_MGR":"林海","CUST_NAME":"陈化","ORG_ID":"南京分行","MARKET_TYPE_T":"4","MARKET_TYPE":"2","MARKET_TYPE_SUB":"1","MARKET_TRA":"驱动式营销策略"}]}};

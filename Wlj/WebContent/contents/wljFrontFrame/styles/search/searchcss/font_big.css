@@ -1,0 +1,15 @@
+ /*
+create date：2014-08-19 15:10
+created by：YuchengTech-UedTeam-WY
+file name：font_big.css
+remark：字号（大号）
+last update：2014-08-19 15:10
+*/
+body,td,th,.user_info .blue,.x-btn-text,.x-form-item-label,.x-form-field,.x-btn-noicon .x-btn-small .x-btn-text,
+.x-window-dlg .ext-mb-text, .x-window-dlg .x-window-header-text,.ygh-hd,.ygc-cell,a.x-menu-item
+{font-size: 14px;}
+.yc-mmcGroup ul li, .yc-mmcGroup ul li a, .yc-mmcGroup ul li i,.tile_fun_name,.x-panel-header
+{font-size: 15px;}
+.user_info_p,.layout .w2h2 .tile_tip_tit .tit,a.yc-mmLink:link, a.yc-mmLink:visited
+{font-size: 16px;}
+.yc-tsRemark,.x-form-trigger{font-size: 12px;}

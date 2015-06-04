@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>ICO Preview</title>
+    <link type="text/css" href="../../main.css" rel="stylesheet" />
+	<script type="text/javascript" src="../../../../../../js/jquery-1.7.2.min.js"></script>
+    <style type="text/css">
+    body, td, th {
+	    font-size: 12px;
+	    color: #222;
+	    outline: none;
+	}
+	
+	* {
+	    font-family: 微软雅黑, 宋体;
+	}
+	
+	body {
+	    background-color: #fff;
+	    margin: 0;
+	    padding: 0;
+	}
+	
+	div, ul, li, form, p {
+	    margin: 0;
+	    padding: 0;
+	    list-style: none;
+	    border: none;
+	}
+	.remark-temp{
+		clear:left;
+		padding: 10px;
+		background-color: #eee;
+		border: 1px #dadada solid;
+	}
+	.rt-title{
+		font-size: 18px;
+		font-weight: bold;
+	}
+	.rt-remark{
+		line-height:18px;
+		display: block;
+	}
+	.tile-temp{
+		float:left;
+		width:65px;
+		height:65px;
+		margin:5px;
+		background-color: #4690d1;
+	}
+	.bt-temp{
+		float:left;
+		height:16px;
+		width:16px;
+		margin:5px;
+		background-color: #4690d1;
+		border: 1px #77b3e8 solid;
+	}
+	.menu-temp{
+		float:left;
+		height:16px;
+		width:16px;
+		margin:5px;
+		background-color: #dae2ef;
+		border: 1px #ebf0f7 solid;
+	}
+	#bt-w-container,#bt-d-container{
+		background-color: #4690d1;
+	}
+	
+	#bt-g-container{
+		background-color: #dae2ef;
+	}
+	.cl-temp{
+		clear: both;
+	}	
+	.tile-temp-noc{
+		float:left;
+		width:65px;
+		height:65px;
+		margin:5px;
+	}
+    </style>
+    <script type="text/javascript">
+    $(function(){
+    	loadTileIco("tile-container",100,"tile-temp","t");
+    	loadTileIco("bt-w-container",100,"bt-temp","w");
+    	loadTileIco("bt-g-container",103,"menu-temp","g");
+    	loadTileIco("bt-d-container",100,"bt-temp","d");
+    });
+    
+    function loadTileIco(id,n,cn,s){
+    	var _s="";
+    	for(var i=1;i<=n;i++){
+    		_s+="<div class=\""+cn+" ico-"+s+"-"+i+"\" title=\"className:&nbsp;&nbsp;ico-"+s+"-"+i+"\"></div>";
+    	}
+    	_s+="<div class=\"cl-temp\"></div>";
+    	$("#"+id).append(_s);
+    };
+    </script>
+</head>
+<body>
+    <!--01 ico-t-n(磁贴ico) sta-->
+    <!--说明：当前提供100个ico，调用时须在标签class值中追加“ico-t-n”，
+    	多个className以空格(英文)隔开，如：
+    	<div class="XXXX ico-t-98"></div>
+    	-->
+    <div class="remark-temp">
+    	<span class="rt-title">一、磁贴图标</span>
+    	<span class="rt-remark">
+    		1、当前提供100个ico，调用时须在标签class值中追加“ico-t-n”，多个className以空格(英文)隔开，如：&lt;div class="XXX ico-t-66"&gt;&lt;/div&gt;
+    		<br/>2、图标尺寸：48px*48px，png格式，样式类名称范围ico-t-1至ico-t-100；
+    		<br/>3、图标文件路径：WebContent/contents/wljFrontFrame/styles/search/searchthemes/orange/pics/ico/tile/。
+    	</span>
+    </div>
+    <div id="tile-container"></div>
+    <!--01 ico-t-n(磁贴ico) end-->
+    
+    <!--02 ico-w-n(按钮ico 白色系) sta-->
+        <div class="remark-temp">
+    	<span class="rt-title">二、按钮图标(白色系)</span>
+    	<span class="rt-remark">
+    		1、当前提供100个ico，调用时须在标签class值中追加“ico-w-n”，多个className以空格(英文)隔开，如：&lt;div class="XXX ico-w-23"&gt;&lt;/div&gt;
+    		<br/>2、图标尺寸：16px*16px，png格式，样式类名称范围ico-w-1至ico-w-100；
+    		<br/>3、图标文件路径：WebContent/contents/wljFrontFrame/styles/search/searchthemes/orange/pics/ico/btn/white/。
+    	</span>
+    </div>
+    <div id="bt-w-container"></div>
+    <!--02 ico-w-n(按钮ico 白色系) end-->
+ 
+    <!--03 ico-g-n(菜单/右键菜单ico 灰色系) sta-->
+        <div class="remark-temp">
+    	<span class="rt-title">三、菜单/右键菜单图标(灰色系)</span>
+    	<span class="rt-remark">
+    		1、当前提供103个ico，调用时须在标签class值中追加“ico-g-n”，多个className以空格(英文)隔开，如：&lt;div class="XXX ico-g-69"&gt;&lt;/div&gt;
+    		<br/>2、图标尺寸：16px*16px，png格式，样式类名称范围ico-g-1至ico-g-103；
+    		<br/>3、图标文件路径：WebContent/contents/wljFrontFrame/styles/search/searchthemes/orange/pics/ico/btn/gray/。
+    	</span>
+    </div>
+    <div id="bt-g-container"></div>
+    <!--03 ico-g-n(菜单/右键菜单ico 灰色系) end-->
+    
+    <!--04 ico-d-n(按钮ico 深色系) sta-->
+        <div class="remark-temp">
+    	<span class="rt-title">四、按钮图标(深色系) 用于面板组件 右侧操作按钮</span>
+    	<span class="rt-remark">
+    		1、当前提供100个ico，调用时须在标签class值中追加“ico-d-n”，多个className以空格(英文)隔开，如：&lt;div class="XXX ico-d-69"&gt;&lt;/div&gt;
+    		<br/>2、图标尺寸：16px*16px，png格式，样式类名称范围ico-d-1至ico-d-100；
+    		<br/>3、图标文件路径：WebContent/contents/wljFrontFrame/styles/search/searchthemes/orange/pics/ico/btn/dark/。
+    	</span>
+    </div>
+    <div id="bt-d-container"></div>
+    <!--04 ico-d-n(按钮ico 深色系) end-->
+    
+    <!--05 tile_cn(磁贴背景颜色) sta-->
+        <div class="remark-temp">
+    	<span class="rt-title">五、磁贴背景颜色</span>
+    	<span class="rt-remark">
+    		1、当前提供10种磁贴背景颜色，调用时须在标签class值中追加“tile_cn”，多个className以空格(英文)隔开，如：&lt;div class="XXX tile_c5"&gt;&lt;/div&gt;
+    	</span>
+    </div>
+    <div id="tile-color-container">
+    	<div class="tile-temp-noc tile_c1" title="tile_c1"></div>
+    	<div class="tile-temp-noc tile_c2" title="tile_c2"></div>
+    	<div class="tile-temp-noc tile_c3" title="tile_c3"></div>
+    	<div class="tile-temp-noc tile_c4" title="tile_c4"></div>
+    	<div class="tile-temp-noc tile_c5" title="tile_c5"></div>
+    	<div class="tile-temp-noc tile_c6" title="tile_c6"></div>
+    	<div class="tile-temp-noc tile_c7" title="tile_c7"></div>
+    	<div class="tile-temp-noc tile_c8" title="tile_c8"></div>
+    	<div class="tile-temp-noc tile_c9" title="tile_c9"></div>
+    	<div class="tile-temp-noc tile_c10" title="tile_c10"></div>
+    </div>
+    <!--05 tile-color-n(磁贴背景颜色) end-->
+    
+</body>
+</html>
