@@ -1,9 +1,0 @@
-@charset "utf-8";
-/* CSS Document */
-html{
-	*overflow-y:auto;	
-}
-body{
-	background:none;
-	overflow:auto;	
-}
