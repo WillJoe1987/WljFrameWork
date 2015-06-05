@@ -41,8 +41,6 @@
 	}
 	
 	scriptVersionControl("/contents/frameControllers/Wlj-search-APP-cfg.js");
-	scriptVersionControl("/contents/pages/common/Com.yucheng.crm.common.CustFlow.js");
-	scriptVersionControl("/contents/pages/common/Com.yucheng.crm.common.FusionChartPanel.js");
-	scriptVersionControl("/FusionCharts/FusionCharts.js");
-	scriptVersionControl("/contents/frameControllers/plugin/customerView/Wlj-frame-View.js");	
+//	scriptVersionControl("/contents/pages/common/Com.yucheng.crm.common.FusionChartPanel.js");
+//	scriptVersionControl("/FusionCharts/FusionCharts.js");
 })();
