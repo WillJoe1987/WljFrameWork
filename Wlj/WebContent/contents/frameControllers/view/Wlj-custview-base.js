@@ -48,14 +48,14 @@ Wlj.view.CustView = Ext.extend(Ext.Panel,{
 	 */
 	initAllViewTree : function(){
 		var _this = this;
-		_this.viewLoader = new Com.yucheng.bcrm.ArrayTreeLoader({
+		_this.viewLoader = new Wlj.frame.functions.app.widgets.ArrayTreeLoader({
 			parentAttr : 'PARENTID',
 			idProperties : 'ID',
 			textField : 'NAME',
 			locateAttr : 'ID',
 			rootValue : '0'
 		});
-		_this.viewTree = new Com.yucheng.bcrm.TreePanel({
+		_this.viewTree = new Wlj.frame.functions.app.widgets.TreePanel({
 			title:'全部客户视图',
 			width:220,
 			region:'west',
@@ -136,14 +136,14 @@ Wlj.view.CustView = Ext.extend(Ext.Panel,{
 	 */
 	initMyViewTree : function(){
 		var _this = this;
-		_this.myViewLoader = new Com.yucheng.bcrm.ArrayTreeLoader({
+		_this.myViewLoader = new Wlj.frame.functions.app.widgets.ArrayTreeLoader({
 			parentAttr : 'PARENTID',
 			idProperties : 'ID',
 			textField : 'NAME',
 			locateAttr : 'ID',
 			rootValue : '0'
 		});
-		_this.myViewTree = new Com.yucheng.bcrm.TreePanel({
+		_this.myViewTree = new Wlj.frame.functions.app.widgets.TreePanel({
 			title:'我的客户视图',
 			rootVisible:false,
 			hidden:true,

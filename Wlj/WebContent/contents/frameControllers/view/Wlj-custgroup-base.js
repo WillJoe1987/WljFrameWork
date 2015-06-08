@@ -21,7 +21,7 @@ Wlj.view.CustGroupView = Ext.extend(Ext.Panel,{
         _this.viewType = resIdArr[1];
         _this.busiId = resIdArr[2];
         
-		_this.viewLoader = new Com.yucheng.bcrm.ArrayTreeLoader({
+		_this.viewLoader = new Wlj.frame.functions.app.widgets.ArrayTreeLoader({
 			parentAttr : 'PARENTID',
 			idProperties : 'ID',
 			textField : 'NAME',
@@ -29,7 +29,7 @@ Wlj.view.CustGroupView = Ext.extend(Ext.Panel,{
 			rootValue : '0'
 		});
 		
-		_this.viewTree = new Com.yucheng.bcrm.TreePanel({
+		_this.viewTree = new Wlj.frame.functions.app.widgets.TreePanel({
 			title:_this.VIEW_PRE_NAME[_this.viewType],
 			width:220,
 			region:'west',

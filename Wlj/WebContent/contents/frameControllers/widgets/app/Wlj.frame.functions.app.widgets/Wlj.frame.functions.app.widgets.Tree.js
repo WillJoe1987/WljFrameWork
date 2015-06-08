@@ -1,4 +1,4 @@
-Ext.ns('Com.yucheng.bcrm');
+Ext.ns('Wlj.frame.functions.app.widgets');
 /**
  * Bcrm tree panel
  * 
@@ -6,7 +6,7 @@ Ext.ns('Com.yucheng.bcrm');
  * @since 2013-01-30 添加lazyLoad模式；并设置阀值1000；当数据量超过1000时，强制采用lazyLoad模式；
  * 
  */
-Com.yucheng.bcrm.TreePanel = Ext.extend(Ext.tree.TreePanel,{
+Wlj.frame.functions.app.widgets.TreePanel = Ext.extend(Ext.tree.TreePanel,{
 	clickFn : false,
 	resloader: false,
 	checkBox: false,
@@ -47,10 +47,10 @@ Com.yucheng.bcrm.TreePanel = Ext.extend(Ext.tree.TreePanel,{
 		this.resloader.editNode(obj);
 	},
 	onRender : function(ct,position){
-		Com.yucheng.bcrm.TreePanel.superclass.onRender.call(this,ct,position);
+		Wlj.frame.functions.app.widgets.TreePanel.superclass.onRender.call(this,ct,position);
 	},
 	afterRender : function(){
-		Com.yucheng.bcrm.TreePanel.superclass.afterRender.call(this);
+		Wlj.frame.functions.app.widgets.TreePanel.superclass.afterRender.call(this);
 		if(this.resloader){
 			this.load();
 		}
@@ -67,7 +67,7 @@ Com.yucheng.bcrm.TreePanel = Ext.extend(Ext.tree.TreePanel,{
 			this.root.appendChild(childern);
 	},
 	initComponent : function(){
-		Com.yucheng.bcrm.TreePanel.superclass.initComponent.call(this);
+		Wlj.frame.functions.app.widgets.TreePanel.superclass.initComponent.call(this);
 		this.resloader.supportedTrees.push(this);
 	},
 	beforeLoad : function(){
@@ -106,19 +106,19 @@ Com.yucheng.bcrm.TreePanel = Ext.extend(Ext.tree.TreePanel,{
 		}
 	}
 });
-Ext.reg('bcrmtree',Com.yucheng.bcrm.TreePanel);
+Ext.reg('wljtree',Wlj.frame.functions.app.widgets.TreePanel);
 
 /**
  * Bcrm tree loader.
  */
-Com.yucheng.bcrm.TreeLoader = Ext.extend(Ext.tree.TreeLoader,{});
-Ext.reg('bcrmtreeloader',Com.yucheng.bcrm.TreeLoader);
+Wlj.frame.functions.app.widgets.TreeLoader = Ext.extend(Ext.tree.TreeLoader,{});
+Ext.reg('wljtreeloader',Wlj.frame.functions.app.widgets.TreeLoader);
 
 var __tmpNode = {};
 /**
  * A tree node array loader, Now it can only make the array to be a tree nodes option. But we can make it more powerfull.
  */
-Com.yucheng.bcrm.ArrayTreeLoader = Ext.extend(Ext.tree.TreeLoader,{
+Wlj.frame.functions.app.widgets.ArrayTreeLoader = Ext.extend(Ext.tree.TreeLoader,{
 	url:false,
 	dataCache:false,
 	nodeArray :false,
@@ -132,7 +132,7 @@ Com.yucheng.bcrm.ArrayTreeLoader = Ext.extend(Ext.tree.TreeLoader,{
 	supportedTrees : new Array(),
 	checkField : false,
 	constructor : function(cfg){
-		Com.yucheng.bcrm.ArrayTreeLoader.superclass.constructor.call(this, cfg);
+		Wlj.frame.functions.app.widgets.ArrayTreeLoader.superclass.constructor.call(this, cfg);
 		this.supportedTrees = new Array();
 	},
 	//private 
@@ -468,4 +468,4 @@ Com.yucheng.bcrm.ArrayTreeLoader = Ext.extend(Ext.tree.TreeLoader,{
 		});
 	}
 });
-Ext.reg('bcrmarraytreeloader',Com.yucheng.bcrm.ArrayTreeLoader);
+Ext.reg('wljarraytreeloader',Wlj.frame.functions.app.widgets.ArrayTreeLoader);

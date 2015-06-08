@@ -81,8 +81,7 @@
 					"FUNC_NAME" : "公告管理-NEW",
 					"DEFAULT_URL" : "/contents/pages/testtiles/noticeTile.js",
 					"COMSITS" : "",
-					"PARENT_ID" : "192275",
-					"IMPORTS" : "/contents/frameControllers/widgets/app/Wlj.frame.functions.app.widgets/Wlj.frame.functions.app.widgets.Tree.js,/contents/pages/common/Com.yucheng.bcrm.common.Annacommit.js,/contents/pages/common/Com.yucheng.crm.common.ImpExpNew.js,/contents/pages/common/Com.yucheng.bcrm.common.OrgField.js"
+					"IMPORTS" : "/contents/pages/common/Com.yucheng.bcrm.common.Annacommit.js,/contents/pages/common/Com.yucheng.crm.common.ImpExpNew.js,/contents/pages/common/Com.yucheng.bcrm.common.OrgField.js"
 				},
 				{
 					"MODULE_ID" : "",
@@ -136,8 +135,7 @@
 					"FUNC_NAME" : "产品管理",
 					"DEFAULT_URL" : "",
 					"COMSITS" : "",
-					"PARENT_ID" : "237275",
-					"IMPORTS" : '/contents/frameControllers/widgets/app/Wlj.frame.functions.app.widgets/Wlj.frame.functions.app.widgets.Tree.js'
+					"PARENT_ID" : "237275"
 				},
 				{
 					"MODULE_ID" : "40913",

@@ -21,7 +21,7 @@ Wlj.frame.functions.app.widgets.TreeManager = Ext.extend(Ext.util.Observable, {
 			return false;
 		}
 		var _this = this;
-		var loader = new Com.yucheng.bcrm.ArrayTreeLoader(cfg);
+		var loader = new Wlj.frame.functions.app.widgets.ArrayTreeLoader(cfg);
 		Ext.Ajax.request({
 			url : cfg.url,
 			method:'GET',
@@ -96,7 +96,7 @@ Wlj.frame.functions.app.widgets.TreeManager = Ext.extend(Ext.util.Observable, {
 			if(reTreeCfg.rootCfg){
 				reTreeCfg.root = new Ext.tree.AsyncTreeNode(reTreeCfg.rootCfg);
 			}
-			return new Com.yucheng.bcrm.TreePanel(reTreeCfg);
+			return new Wlj.frame.functions.app.widgets.TreePanel(reTreeCfg);
 		}else{
 			if(!cfg.key){
 				Ext.warn('树形面板配置没有key字段，请为其配置string类型唯一key值！');

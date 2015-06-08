@@ -800,7 +800,7 @@ Wlj.frame.functions.preview.DataInterface = {
 		arrayModel:[],
 		codeValue:false,
 		type: 'array',
-		detailComment:'配置参考：Com.yucheng.bcrm.ArrayTreeLoader;loader对象会在APP初始化的时候进行创建，且加载好数据结构。',
+		detailComment:'配置参考：Wlj.frame.functions.app.widgets.ArrayTreeLoader;loader对象会在APP初始化的时候进行创建，且加载好数据结构。',
 		comment:'页面中可能会使用的树形结构的loader对象配置',
 		coding : function(){
 			var code = "treeLoaders = "+this.value.coding()+";\n";
@@ -858,7 +858,7 @@ Wlj.frame.functions.preview.DataInterface = {
 		arrayModel:[],
 		codeValue:false,
 		type: 'array',
-		detailComment:'配置参考：Com.yucheng.bcrm.TreePanel；tree对象构建调用TreeManager对象的createTree方法；其中，root数据不做配置，由rootCfg代替，为简单json对象；',
+		detailComment:'配置参考：Wlj.frame.functions.app.widgets.TreePanel；tree对象构建调用TreeManager对象的createTree方法；其中，root数据不做配置，由rootCfg代替，为简单json对象；',
 		comment:'页面中可能用到的树形面板对象预配置',
 		coding : function(){
 			var code = "treeCfgs = "+this.value.coding()+";\n";
