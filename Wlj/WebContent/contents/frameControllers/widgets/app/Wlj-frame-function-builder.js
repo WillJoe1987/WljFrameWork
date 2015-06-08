@@ -185,7 +185,6 @@ Ext.extend(Wlj.frame.functions.app.Builder,Ext.util.Observable,{
 	},
 	
 	codeCheck : function(callbackIm){
-		debugger;
 		if(this.builderMode === 'debug'){
 			var cancle = false;
 			Ext.log('检查配置项');
@@ -686,7 +685,7 @@ Ext.extend(Wlj.frame.functions.app.Builder,Ext.util.Observable,{
 	setResId : function(resId,callbackIm){
 		window._app.destroy();
 		window._app = null;
-		JsContext._resId = resId;
+		//JsContext._resId = resId;
 		this.codeLoad(callbackIm);
 	}
 });

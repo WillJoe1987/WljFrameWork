@@ -41,6 +41,4 @@
 	}
 	
 	scriptVersionControl("/contents/frameControllers/Wlj-search-APP-cfg.js");
-//	scriptVersionControl("/contents/pages/common/Com.yucheng.crm.common.FusionChartPanel.js");
-//	scriptVersionControl("/FusionCharts/FusionCharts.js");
 })();

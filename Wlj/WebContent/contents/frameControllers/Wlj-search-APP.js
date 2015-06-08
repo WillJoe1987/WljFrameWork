@@ -3,9 +3,9 @@ Ext.ns('Wlj.search');
 Wlj.search.App = function(){
 	var _this = this;
 	
-	_this.userId = JsContext._userId;
-	_this.orgName = JsContext._unitname;
-	_this.orgId = JsContext._orgId;
+	_this.userId = __userId;
+	_this.orgName = __unitname;
+	_this.orgId = __units;
 	_this.userName = __userCname;
 	_this.roleNames = __roleNames;
 	_this.defaultTileGroupCount = APPUTIL.defaultTileGroupCount;
