@@ -3,15 +3,10 @@
  * 2014/04/29
  * dongyi
  */
-imports([
-        '/contents/pages/common/Com.yucheng.bcrm.common.Annacommit.js',//附件信息
-        '/contents/pages/common/Com.yucheng.crm.common.ImpExpNew.js',//导出
-        '/contents/pages/common/Com.yucheng.bcrm.common.OrgField.js'// 机构放大镜
-        ]);
 var needGrid = true;
-var createView = !JsContext.checkGrant('notice_create');//是否启用新增面板
-var editView = !JsContext.checkGrant('notice_modify');//是否启用修改面板
-var detailView = !JsContext.checkGrant('notice_detail');//是否启用详情面板
+var createView = true;//是否启用新增面板
+var editView = true;//是否启用修改面板
+var detailView = true;//是否启用详情面板
 var formViewers = true;
 var lookupTypes = ['IF_FLAG',//“是否标志” 数据字典项
                    'NOTICE_LEV',//“公告级别标志” 数据字典项
@@ -108,7 +103,6 @@ var fields = [
   		    {name: 'ANN_COUNT',text:'附件个数',resutlWidth:60},
   		    {name: 'TOP_ACTIVE_DATE',text:'置顶时间至',format:'Y-m-d',xtype:'datefield',dataType : 'date',gridField:true},  
   		    {name: 'NOTICE_CONTENT',resutlWidth:350,gridField:false,xtype:'textarea'},
-  		    
   		    {name: 'PUBLISHER',hidden:true},
   		    {name: 'PUBLISH_ORG',hidden:true,gridField:false},
   		    {name: 'IS_TOP', text : '是否置顶',value:'0',resutlFloat:'right',translateType : 'IF_FLAG',gridField:true,allowBlank:false,
@@ -131,7 +125,6 @@ var fields = [
   		   {name: 'CREATOR',hidden:true},
   		   {name: 'RECEIVE_ORG',hidden:true},
   		   {name: 'RECEIVE_ORG_NAME',text:'接收机构',gridField:true,xtype:'wcombotree',innerTree:'ORGTREE', showField:'text',hideField:'UNITID',editable:false},
-//  		   {name: 'RECEIVE_ORG_NAME',text:'接收机构',gridField:true,xtype:'orgchoose',hiddenName:'RECEIVE_ORG',searchType:'SUBTREE'},
   		   {name: 'TEST',hidden:true}  
   		];
 /**************控制新增修改详情面板的宽度************/
@@ -222,233 +215,6 @@ var validates = [
 	dataFields : ['ACTIVE_DATE']
 }];
 
-var tbar = [{
-	text : '删除',
-	hidden:JsContext.checkGrant('notice_delete'),
-	handler : function(){
-	if(getSelectedData() == false){
-		Ext.Msg.alert('提示','请选择一条数据！');
-		return false;
-	}else{
-		var creator = getSelectedData().data.CREATOR;
-		var isPublished = getSelectedData().data.PUBLISHED;
-		var status = getSelectedData().data.STATUS;
-		var allowPub = true;
-		var disPubStr = "";
-        if(creator!=__userId){
-            allowPub=false;
-            disPubStr += "【"+getSelectedData().data.NOTICE_TITLE+"】";
-        }
-        if(!allowPub){
-            Ext.Msg.alert('提示', '记录：'+disPubStr+"不是由您创建，您无权删除。");
-            return ;
-        }
-        if(isPublished != 'pub002'){
-        	Ext.Msg.alert('提示', '记录：'+disPubStr+"已经发布,不允许删除操作!");
-            return false;
-        }
-        if(status !="1"){
-            Ext.MessageBox.alert('删除操作', '公告【'+getSelectedData().data.NOTICE_TITLE+'】在审核中，不允许删除！');
-            return false;
-        }
-        var ID = '';
-		for (var i=0;i<getAllSelects().length;i++){
-			ID += getAllSelects()[i].data.NOTICE_ID;
-			ID += ",";
-		}
-		ID = ID.substring(0, ID.length-1);
-		Ext.MessageBox.confirm('提示','确定删除吗?',function(buttonId){
-			if(buttonId.toLowerCase() == "no"){
-			return false;
-			} 
-		    Ext.Ajax.request({
-                url: basepath+'/workplatnotice.json',                                
-                method : 'POST',
-                params : {
-                    methodNs : 'delete',
-                    isBat : true ,
-                    batString : ID,
-                    noticeId:ID
-                },
-                success : function(){
-                    Ext.Msg.alert('提示', '删除成功');
-                    reloadCurrentData();
-                },
-                failure : function(){
-                    Ext.Msg.alert('提示', '删除失败');
-                    reloadCurrentData();
-                }
-            });
-	});
-}}},{text : '提交发布审核',
-	id:'fbsh',
-	hidden:JsContext.checkGrant('notice_pub'),
-	handler : function(){
-	if(getSelectedData() == false){
-		Ext.Msg.alert('提示','请选择一条数据！');
-		return false;
-	}else{
-		var noticeId=getSelectedData().data.NOTICE_ID;
-		var creator = getSelectedData().data.CREATOR;
-		var published = getSelectedData().data.PUBLISHED;
-		var status = getSelectedData().data.STATUS;
-        var allowPub = true;
-        var disPubStr = "";
-        if(creator!=__userId){
-            allowPub=false;
-            disPubStr += "【"+getSelectedData().data.NOTICE_TITLE+"】";
-        }
-        if(!allowPub){
-            Ext.Msg.alert('提示', '记录：'+disPubStr+"不是由您创建，无法提交审核。");
-            return ;
-        }
-        if(published=="pub001"){
-            Ext.MessageBox.alert('提交审核操作', '公告【'+getSelectedData().data.NOTICE_TITLE+'】已发布，请取消选择！');
-            return false;
-        }
-        if(status!="1"){
-            Ext.MessageBox.alert('提交审核操作', '只能提交未审核的公告！');
-            return false;
-        }
-        var noticeIds = "noticeId";
-        Ext.Msg.wait('正在提交数据，请稍等...','提示');
-        Ext.Ajax.request({
-            url:basepath+'/customerMktTeamInformationAdd!initFlowNotice.json',//发布审核流程
-            method:'GET',
-            params : {
-				instanceid :noticeId ,
-				name:getSelectedData().data.NOTICE_TITLE,
-				published:published
-			},
-			success : function(response) {
-				 var ret = Ext.decode(response.responseText);
-					var instanceid = ret.instanceid;//流程实例ID
-					var currNode = ret.currNode;//当前节点
-					var nextNode = ret.nextNode;//下一步节点
-					selectUserList(instanceid,currNode,nextNode);//选择下一步办理人
-					reloadCurrentData();
-					hideCurrentView();
-			},
-//            params:{
-//                isBat:true,
-//                batString:noticeId,
-//                methodNs:'publish',
-//                noticeId:noticeId
-//            },
-//            success : function(){
-//                Ext.MessageBox.alert('发布操作', '发布成功');
-//                reloadCurrentData();
-//            },
-            failure : function(){
-                Ext.MessageBox.alert('提交审核操作', '提交审核失败');
-                reloadCurrentData();
-            }
-        });
-}
-	}
-},{ text : '发布',
-	id:'fb',
-	hidden:JsContext.checkGrant('notice_pub'),
-	handler : function(){
-		if(getSelectedData() == false){
-			Ext.Msg.alert('提示','请选择一条数据！');
-			return false;
-		}else{
-			var noticeId=getSelectedData().data.NOTICE_ID;
-			var creator = getSelectedData().data.CREATOR;
-			var published = getSelectedData().data.PUBLISHED;
-			var status = getSelectedData().data.STATUS;
-	        var allowPub = true;
-	        var disPubStr = "";
-	        if(creator!=__userId){
-	            allowPub=false;
-	            disPubStr += "【"+getSelectedData().data.NOTICE_TITLE+"】";
-	        }
-	        if(!allowPub){
-	            Ext.Msg.alert('提示', '记录：'+disPubStr+"不是由您创建，无法提交审核。");
-	            return ;
-	        }
-	        if(published=="pub001"){
-	            Ext.MessageBox.alert('提交审核操作', '公告【'+getSelectedData().data.NOTICE_TITLE+'】已发布，请取消选择！');
-	            return false;
-	        }
-	        if(status!="1"){
-	            Ext.MessageBox.alert('提交审核操作', '只能提交未审核的公告！');
-	            return false;
-	        }
-	        var noticeIds = "noticeId";
-	        Ext.Msg.wait('正在提交数据，请稍等...','提示');
-	        Ext.Ajax.request({
-	            url:basepath+'/workplatnotice.json',//发布
-	            method:'POST',
-	            params:{
-	                isBat:true,
-	                batString:noticeId,
-	                methodNs:'publish',
-	                noticeId:noticeId
-	            },
-	            success : function(){
-	                Ext.MessageBox.alert('发布操作', '发布成功');
-	                reloadCurrentData();
-	            },
-	            failure : function(){
-	                Ext.MessageBox.alert('发布操作', '发布失败');
-	                reloadCurrentData();
-	            }
-	        });
-	  }
-   }
-},{
-	text : '已阅',
-	hidden:JsContext.checkGrant('notice_read'),
-	handler : function(){
-	if(getSelectedData() == false){
-		Ext.Msg.alert('提示','请选择一条数据！');
-		return false;
-	}else{
-		var noticeId=getSelectedData().data.NOTICE_ID;
-		 var isRead = getSelectedData().data.IS_READ;
-		 var isPublished = getSelectedData().data.PUBLISHED;
-		 if(isPublished == "pub002"){
-			 Ext.MessageBox.alert('已阅操作', '公告【'+getSelectedData().data.NOTICE_TITLE+'】未发布，请取消选择！');
-             return false;
-		 }
-		 if(isRead=="red001"){
-                Ext.MessageBox.alert('已阅操作', '公告【'+getSelectedData().data.NOTICE_TITLE+'】已阅，请取消选择！');
-                return false;
-            }
-		   Ext.Ajax.request({
-               url : basepath+'/workplatnoticeread.json',
-               method : 'POST',
-               params : {
-                   isBat:true,
-                   batString:noticeId,
-                   methodNs:'create',
-                   noticeId:noticeId
-               },
-               success : function(){
-                   Ext.MessageBox.alert('已阅操作', '设置成功！');
-                   reloadCurrentData();
-               },
-               failure : function(){
-                   Ext.MessageBox.alert('已阅操作', '设置失败！');
-                   reloadCurrentData();
-               }
-           }); 
-}}
-},
-/**************导出*******************/
-new Com.yucheng.crm.common.NewExpButton({
-    formPanel : 'searchCondition',
-    hidden:JsContext.checkGrant('notice_export'),
-    url : basepath+'/noticequery.json'
-}),{
-	text : '新增',
-	hidden:JsContext.checkGrant('notice_create'),
-	handler : function(){
-		showCustomerViewByTitle('新增');
-	}
-}];
 var customerView = [{
 	title : '新增',
 	hideTitle : true,
@@ -693,15 +459,6 @@ var beforeviewshow = function(view){
             });
 	    }
 	}
-//	if(view._defaultTitle=='新增'){//view.baseType=='createView'
-////		debugger;
-////		var c =  getSelectedData().data.IS_TOP;
-////		if('1' == c){
-////			view.contentPanel.getForm().findField('TOP_ACTIVE_DATE').setVisible(true);
-////		}else{
-//			view.contentPanel.getForm().findField('TOP_ACTIVE_DATE').setVisible(false);
-////		}
-//	}
 };	
 //新增加载公告内容
 function loadCreateData() {
