@@ -81,7 +81,7 @@
 					"FUNC_NAME" : "公告管理-NEW",
 					"DEFAULT_URL" : "/contents/pages/testtiles/noticeTile.js",
 					"COMSITS" : "",
-					"IMPORTS" : "/contents/pages/common/Com.yucheng.bcrm.common.Annacommit.js,/contents/pages/common/Com.yucheng.crm.common.ImpExpNew.js,/contents/pages/common/Com.yucheng.bcrm.common.OrgField.js"
+					PARENT_ID : "192275"
 				},
 				{
 					"MODULE_ID" : "",
