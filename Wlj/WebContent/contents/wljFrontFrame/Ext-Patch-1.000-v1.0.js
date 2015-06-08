@@ -292,7 +292,7 @@ Ext.override(Ext.form.ComboBox,{
     }
 });
 /********背景图片，使用本地图片，不去访问万维网资源。*********/
-Ext.BLANK_IMAGE_URL = basepath + '/contents/resource/ext3/resources/images/default/s.gif';
+Ext.BLANK_IMAGE_URL = basepath + '/contents/wljFrontFrame/styles/common/ext3/resources/images/default/s.gif';
 
 /********************浏览器版本判断机制**********************************/
 Ext.apply(Ext, {
