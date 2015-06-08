@@ -772,7 +772,7 @@
 					"LEAF_FLAG" : "1",
 					"ID" : "2362841",
 					"MOD_FUNC_ID" : "2492731",
-					"ACTION" : "/contents/pages/wlj/designer/designer.js",
+					"ACTION" : "/contents/frameControllers/widgets/app/designer/designer.js",
 					"TYPE" : "",
 					"TIP" : "",
 					"NAME" : "设计器",
