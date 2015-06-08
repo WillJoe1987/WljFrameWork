@@ -1,5 +1,5 @@
 imports([
-    '/contents/pages/com.yucheng.bcrm/com.yucheng.bcrm.js'
+    '/contents/frameControllers/widgets/app/Wlj.frame.functions.app.widgets/Wlj.frame.functions.app.widgets.Tree.js'
 ]);
 
 var treeLoaders = [{

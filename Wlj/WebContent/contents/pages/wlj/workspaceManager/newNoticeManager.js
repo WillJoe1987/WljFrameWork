@@ -4,7 +4,7 @@
  * dongyi
  */
 imports([
-        '/contents/pages/com.yucheng.bcrm/com.yucheng.bcrm.js',
+        '/contents/frameControllers/widgets/app/Wlj.frame.functions.app.widgets/Wlj.frame.functions.app.widgets.Tree.js',
         '/contents/pages/common/Com.yucheng.bcrm.common.Annacommit.js',//附件信息
         '/contents/pages/common/Com.yucheng.crm.common.ImpExpNew.js',//导出
         '/contents/pages/common/Com.yucheng.bcrm.common.OrgField.js'// 机构放大镜

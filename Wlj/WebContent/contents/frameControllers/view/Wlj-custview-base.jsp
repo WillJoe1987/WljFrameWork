@@ -8,7 +8,7 @@
 	<meta name="Author" content="YuchengTech" />
 	<link rel="shortcut icon" href="favicon.ico" />
 	<%@ include file="/contents/pages/common/includes.jsp"%>
-	<version:frameScript type="text/javascript" src="/contents/pages/com.yucheng.bcrm/com.yucheng.bcrm.js"/>
+	<version:frameScript type="text/javascript" src="/contents/frameControllers/widgets/app/Wlj.frame.functions.app.widgets/Wlj.frame.functions.app.widgets.Tree.js"/>
 	<version:frameScript type="text/javascript" src="/contents/frameControllers/view/Wlj-custview-base.js"/>
 </head>
 <body>

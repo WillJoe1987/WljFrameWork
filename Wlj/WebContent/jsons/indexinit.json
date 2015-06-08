@@ -82,7 +82,7 @@
 					"DEFAULT_URL" : "/contents/pages/testtiles/noticeTile.js",
 					"COMSITS" : "",
 					"PARENT_ID" : "192275",
-					"IMPORTS" : "/contents/pages/com.yucheng.bcrm/com.yucheng.bcrm.js,/contents/pages/common/Com.yucheng.bcrm.common.Annacommit.js,/contents/pages/common/Com.yucheng.crm.common.ImpExpNew.js,/contents/pages/common/Com.yucheng.bcrm.common.OrgField.js"
+					"IMPORTS" : "/contents/frameControllers/widgets/app/Wlj.frame.functions.app.widgets/Wlj.frame.functions.app.widgets.Tree.js,/contents/pages/common/Com.yucheng.bcrm.common.Annacommit.js,/contents/pages/common/Com.yucheng.crm.common.ImpExpNew.js,/contents/pages/common/Com.yucheng.bcrm.common.OrgField.js"
 				},
 				{
 					"MODULE_ID" : "",
@@ -137,7 +137,7 @@
 					"DEFAULT_URL" : "",
 					"COMSITS" : "",
 					"PARENT_ID" : "237275",
-					"IMPORTS" : '/contents/pages/com.yucheng.bcrm/com.yucheng.bcrm.js'
+					"IMPORTS" : '/contents/frameControllers/widgets/app/Wlj.frame.functions.app.widgets/Wlj.frame.functions.app.widgets.Tree.js'
 				},
 				{
 					"MODULE_ID" : "40913",
