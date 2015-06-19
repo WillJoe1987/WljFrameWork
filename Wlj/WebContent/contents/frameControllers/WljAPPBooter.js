@@ -22,7 +22,6 @@
 		scriptVersionControl("/contents/frameControllers/Wlj-SyncAjax.js");
 		scriptVersionControl("/contents/frameControllers/Wlj-frame-base.js");
 		scriptVersionControl("/contents/frameControllers/Wlj-memorise-base.js");
-		scriptVersionControl("/contents/frameControllers/Wlj-view-base.js");
 		scriptVersionControl("/contents/frameControllers/Wlj-search-APP.js");
 		scriptVersionControl("/contents/frameControllers/widgets/search/header.js");
 		scriptVersionControl("/contents/frameControllers/widgets/search/search.js");

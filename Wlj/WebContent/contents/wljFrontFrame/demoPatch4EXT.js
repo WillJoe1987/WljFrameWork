@@ -129,7 +129,11 @@ Ext.apply(Ext.Ajax,{
 		if(config.params && config.params.condition){
 			conditionedData = this.filterData(urlKey,Ext.decode(config.params.condition));
 		}else{
-			conditionedData = this.loadedCaches[urlKey].json.data;
+			try{
+				conditionedData = this.loadedCaches[urlKey].json.data;
+			}catch(error){
+				conditionedData = '';
+			}
 		}
 		var data;
 		if(limit && end && this.loadedCaches[urlKey].json.data){

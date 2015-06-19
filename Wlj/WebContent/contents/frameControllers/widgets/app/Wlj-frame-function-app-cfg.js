@@ -1,7 +1,7 @@
 Ext.ns('Wlj.frame.functions.app');
 Wlj.frame.functions.app.Util = {
 		
-	needConsoleInPage : true,														//是否调用页面内部日志组件显示日志                     
+	needConsoleInPage : false,														//是否调用页面内部日志组件显示日志                     
 	needConsoleInNavigator : false,													//是否调用浏览器控制台显示日志                  
 	needError : true,                                              
 	needWarn : true,                                                

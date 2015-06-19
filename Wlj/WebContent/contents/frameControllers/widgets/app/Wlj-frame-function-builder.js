@@ -40,6 +40,10 @@ Ext.extend(Wlj.frame.functions.app.Builder,Ext.util.Observable,{
 		window.treeLoaders = false;
 		window.treeCfgs = false;
 		window.tbar = false;
+		
+		window.searchDomainCfg = false;
+		window.resultDomainCfg = false;
+		
 		window.listeners = {
 				beforeinit : true,
 				afterinit : true,
@@ -113,7 +117,7 @@ Ext.extend(Wlj.frame.functions.app.Builder,Ext.util.Observable,{
 	},
 	codeLoad : function(callbackIm){
 		this.buildEvirement();
-		this.resId = __resId;
+		this.resId = JsContext._resId;
 		if(!this.resId){
 			Ext.error(WERROR.NORESIDERROR);
 			return false;
@@ -185,6 +189,7 @@ Ext.extend(Wlj.frame.functions.app.Builder,Ext.util.Observable,{
 	},
 	
 	codeCheck : function(callbackIm){
+		
 		if(this.builderMode === 'debug'){
 			var cancle = false;
 			Ext.log('检查配置项');
@@ -643,7 +648,9 @@ Ext.extend(Wlj.frame.functions.app.Builder,Ext.util.Observable,{
 			tbar : window.tbar,
 			createFormCfgs : window.createFormCfgs,
 			editFormCfgs : window.editFormCfgs,
-			detailFormCfgs : window.detailFormCfgs
+			detailFormCfgs : window.detailFormCfgs,
+			searchDomainCfg : window.searchDomainCfg,
+			resultDomainCfg : window.resultDomainCfg
 		};
 		this.buildApp(callbackIm);
 	},
@@ -685,7 +692,7 @@ Ext.extend(Wlj.frame.functions.app.Builder,Ext.util.Observable,{
 	setResId : function(resId,callbackIm){
 		window._app.destroy();
 		window._app = null;
-		//JsContext._resId = resId;
+		JsContext._resId = resId;
 		this.codeLoad(callbackIm);
 	}
 });

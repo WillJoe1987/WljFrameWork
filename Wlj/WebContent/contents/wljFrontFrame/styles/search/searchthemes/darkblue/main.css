@@ -14,6 +14,7 @@ body,td,th {
 	color: #222;
 	outline: none;
 }
+::-ms-clear{display: none;}
 /*01-全局样式 end*/
 
 /*02- yc-grid sta*/
@@ -3988,3 +3989,25 @@ body.x-body-masked .x-window-plain .x-window-mc {
 .x-window-dlg .ext-mb-error {
     background-image:url(pics/window/icon-error.gif);
 }
+
+/*grid cell border sta*/
+.x-grid-with-col-lines .x-grid3-row td.x-grid3-cell{border-right-color: #d2d2d2;}
+.x-grid-with-col-lines .x-grid3-hd-row td{border-bottom: 1px #d2d2d2 solid;border-left-color:#d2d2d2; border-right-color:#d2d2d2; }
+.x-grid-with-col-lines .x-grid3-row{  border-left: 1px #d2d2d2 solid;border-bottom: 1px #d2d2d2 solid;}
+/*grid cell border end*/
+
+/*dinkPanel sta*/
+.dinkPanel{right : 100px; top: -395px; position:absolute;border: 1px solid #00829c;z-index: 100;box-shadow:0 2px 5px #ddd;}
+.dinkPanel>.x-panel-header:hover{cursor: pointer;background-color: #00677b;}
+.dinkPanel>.x-panel-bwrap>.x-panel-body{padding: 0px;background-color: #eff2f8;}
+.dinkPanel>.x-panel-bwrap>.x-panel-body>div{display: block;position:relative; line-height: 30px;height: 30px;padding: 0 10px;background-color: #dbe5ed;cursor: pointer;border-top: 1px #eef3f7 solid;border-bottom:1px solid #b6c8d7;}
+.dinkPanel>.x-panel-bwrap>.x-panel-body>div:hover{background-color: #59a7b6;color: #fff;border-color:#59a7b6;}
+.dinkPanel>.x-panel-bwrap>.x-panel-body>div>div{position: absolute;right: 10px;top:0;}
+.dinkPanel>.x-panel-bwrap>.x-panel-body>div>div>span{float: left;margin-top:7px; width: 16px;height: 16px;background-color: red;margin-left: 5px;}
+.dinkPanel>.x-panel-bwrap>.x-panel-body>div>div>span.del{background: url(pics/ico/btn/dark/ico_94.png) center center no-repeat;}
+.dinkPanel>.x-panel-bwrap>.x-panel-body>div>div>span.del:hover{background: url(pics/ico/btn/white/ico_94.png) center center no-repeat;}
+.dinkPanel>.x-panel-bwrap>.x-panel-body>div>div>span.nail{background: url(pics/ico/btn/dark/ico_96.png) center center no-repeat;}
+.dinkPanel>.x-panel-bwrap>.x-panel-body>div>div>span.nail:hover{background: url(pics/ico/btn/white/ico_96.png) center center no-repeat;}
+.dinkPanel>.x-panel-bwrap>.x-panel-body>div>div>span.nailed{background: url(pics/ico/btn/dark/ico_95.png) center center no-repeat;}
+.dinkPanel>.x-panel-bwrap>.x-panel-body>div>div>span.nailed:hover{background: url(pics/ico/btn/white/ico_95.png) center center no-repeat;}
+/*dinkPanel end*/

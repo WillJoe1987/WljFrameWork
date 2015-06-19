@@ -5,7 +5,7 @@ imports([
 		'/contents/frameControllers/widgets/app/preview/Wlj-frame-function-preview-dataInterface.js',
 		'/contents/frameControllers/widgets/app/designer/fieldsDesigner.js',
 		'/contents/frameControllers/widgets/app/designer/tbarDesigner.js',
-		'/contents/frameControllers/widgets/app/designer/Ext.ux.grid.GroupPropertyGrid.js',
+		'/contents/resource/ext3/ux/Ext.ux.grid.GroupPropertyGrid.js',
 		'/contents/frameControllers/widgets/app/designer/formcfgDesignerBar.js',
 		'/contents/frameControllers/widgets/app/designer/desiner-lookupdesigner.js',
 		'/contents/frameControllers/widgets/app/designer/customerViewDesigner.js',

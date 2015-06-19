@@ -151,6 +151,54 @@ var createView = false;
 var editView = false;
 var detailView = false;
 
+/**
+ * searchDomainCfg ：
+ * 		类型：object;
+ * 		说明：
+ * 			查询条件域配置，可配置Ext面板对象属性；
+ * 			condtionFields ： 
+ * 				类型：array；
+ * 				说明：按顺序指向fields中配置为searchField为true的字段name属性，或自定义字段；
+ * 				必选：否；
+ * 			fieldFn ： 
+ * 				类型：function；
+ * 				说明：如有condtionFields，则所接参数为数组中定义字段，如无condtionFields配置，则所接参数为fields中searchField为true的字段对象；返回值则为查询条件面板的字段排版；
+ * 				必选：否；
+ * 		必选：否；
+ */
+var searchDomainCfg = false;
+
+/**
+ * resultDomainCfg : 
+ * 		类型：object；
+ * 		说明：
+ * 			columnGroups ：
+ * 				类型：[[]](二维数组）；
+ * 				说明：表头分组配置。类型为二维数组，依照顺序进行多次列分组。
+ * 					 最外层数序长度决定了有多少个层次的分组，每一个元素为一个分组层级。
+ * 					 每个分组层级也是一个数组，每个数组元素指定了本层次的分组方式。层级内每个元素为一个object。
+ * 					 含 includeCount：分组所含列数，按照先后顺序罗列；groupTitle：分组名称；
+ * 					 每个层级以前一个层级列为基础组织；第一个层级以列表字段为基础组织，（含隐藏字段）；
+ * 					 如：下例代码中，表示查询列表增加三层分组，第一层分3组，第二层分2组，第一层分1组。
+ * 							var resultDomainCfg = {
+								columnGroups : [
+		                			[
+		                 				{includeCount : 2, groupTitle : '我的1'} ,
+		                 				{includeCount : 1, groupTitle : '我的2'} ,
+		                 				{includeCount : 3, groupTitle : '剩下的'}
+		                 			],
+		                 			[
+		                  				{includeCount : 2 , groupTitle : '2层1' } ,
+		                  				{includeCount : 1, groupTitle : '2层剩余'}
+		                  			] ,
+		                  			[
+		                   				{includeCount : 2 , groupTitle : '全部'}
+		                   			]
+		                		]
+							};
+ *		必选：否；
+ */
+var resultDomainCfg = false;
 
 /**
  * formViewers[createFormViewer|editFormViewer|detailFormViewer] :
@@ -279,11 +327,11 @@ var customerView = false;
  * treeLoaders|treeCfgs
  *  treeLoaders : 
  *  	类型：array[object]
- *  	说明：页面中可能会使用的树形结构的loader对象配置，配置参考：Wlj.frame.functions.app.widgets.ArrayTreeLoader;loader对象会在APP初始化的时候进行创建，且加载好数据结构。
+ *  	说明：页面中可能会使用的树形结构的loader对象配置，配置参考：Com.yucheng.bcrm.ArrayTreeLoader;loader对象会在APP初始化的时候进行创建，且加载好数据结构。
  * 		必选：否；
  *  treeCfgs ：
  *  	类型：array[object]
- *  	说明：页面中可能用到的树形面板对象预配置，配置参考：Wlj.frame.functions.app.widgets.TreePanel；tree对象构建调用TreeManager对象的createTree方法；
+ *  	说明：页面中可能用到的树形面板对象预配置，配置参考：Com.yucheng.bcrm.TreePanel；tree对象构建调用TreeManager对象的createTree方法；
  *  		  其中，root数据不做配置，由rootCfg代替，为简单json对象；
  *  	必选：否；
  */

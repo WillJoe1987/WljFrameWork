@@ -30,6 +30,42 @@ if (roleCodes != null && roleCodes != "") {
 	}
 }
 
+var resultDomainCfg = {
+		columnGroups : [
+		                [
+		                 {includeCount : 2, groupTitle : '我的1'} ,
+		                 {includeCount : 1, groupTitle : '我的2'} ,
+		                 {includeCount : 'auto', groupTitle : '剩下的'}
+		                 ]
+		                ,
+		                 [
+		                  {includeCount : 2 , groupTitle : '2层1' } ,
+		                  {includeCount : 1, groupTitle : '2层剩余'}
+		                  ]
+		                ,
+		                  [
+		                   {includeCount : 2 , groupTitle : '全部'}
+		                   ]
+		                ,
+		                	[
+		                	 {includeCount : 1 , groupTitle : '全部1'}
+		                	 ]
+		                ,
+	                	[
+	                	 {includeCount : 1 , groupTitle : '全部2'}
+	                	 ]
+		                ,
+	                	[
+	                	 {includeCount : 1 , groupTitle : '全部3'}
+	                	 ]
+		                ,
+	                	[
+	                	 {includeCount : 1 , groupTitle : '全部4'}
+	                	 ]
+		                ]
+	};
+
+
 //机构树加载条件
 var condition = {
 	searchType : 'SUBTREE' // 查询子机构
@@ -42,7 +78,7 @@ var treeLoaders = [ {
 	parentAttr : 'SUPERUNITID',
 	locateAttr : 'UNITID',
 	jsonRoot : 'json.data',
-	rootValue : JsContext._orgId,
+	rootValue : '10000',
 	textField : 'UNITNAME',
 	idProperties : 'UNITID'
 } ,{
@@ -64,12 +100,12 @@ var treeCfgs = [ {
 	autoScroll : true,
 	rootCfg : {
 		expanded : true,
-		id : JsContext._orgId,
-		text : JsContext._unitname,
+		id : '10000',
+		text : '10000',
 		autoScroll : true,
 		children : [],
-		UNITID : JsContext._orgId,
-		UNITNAME : JsContext._unitname
+		UNITID : '10000',
+		UNITNAME : '10000'
 	}
 },{
 	key : 'BLTREE',

@@ -10,6 +10,7 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 	autoScroll : false,
 	rnWidth : 40,
 	needRN : false,
+	columnGroups : false,
 	
 	beresized : function(p,aw,ah,rw,rh){
 		var h = parseInt(ah, 10);
@@ -176,7 +177,7 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 		});
 		var _this = this;
 		this.getLayoutTarget().on('click',function(eve, html, obj){
-			_this.onRowClick(eve, html, obj);
+				_this.onRowClick(eve, html, obj);
 		});
 		this.getLayoutTarget().on('dblclick', function(eve, html, obj){
 			eve.stopEvent();
@@ -254,7 +255,7 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 		});
 		this.dtElement = this.scrollElement.createChild({
 			tag : 'div',
-			style : 'min-height:1px;'
+			style : 'min-height:1px;overflow:auto;'
 		});
 		this.createFieldsTitle();
 	},
@@ -283,7 +284,8 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 			rnWidth : _this.rnWidth,
 			searchGridView : _this,
 			needRN : _this.needRN,
-			easingStrtegy : _this.easingStrtegy
+			easingStrtegy : _this.easingStrtegy,
+			columnGroups : _this.columnGroups ? _this.columnGroups : false
 		});
 		this.titleTile.titleTile.render(this.hdElement); 
 		this.hdElement.applyStyles({
@@ -540,7 +542,9 @@ Ext.reg('searchgridview', Wlj.frame.functions.app.widgets.SearchGrid);
 Wlj.frame.functions.app.widgets.TitleTile = function(cfg){
 	Ext.apply(this,cfg);
 	Wlj.frame.functions.app.widgets.TitleTile.superclass.constructor.call(this);
+	this.resumeColumnGroup();
 	this.createTitle();
+	
 	this.createRecordTileEl();
 };
 Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
@@ -554,6 +558,9 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 	needRN : false,
 	easingStrtegy : false,
 	multiSelectSeparator : ',',
+	grouped : false,
+	groupLevels : 0, 
+	columnGroups : false,
 	
 	getTitleClass : function(field){
 		var dataType = field.dataType;
@@ -563,6 +570,30 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 		}
 		return '';
 	},
+	
+	resumeColumnGroup : function(){
+		this.CTO = [];
+		if(!this.columnGroups || !Ext.isArray(this.columnGroups) || !this.columnGroups.length > 0){
+			this.grouped = false;
+			this.columnGroups = false;
+			return;
+		}
+		var groupTmp = [] ;
+		Ext.each(this.columnGroups, function(group){
+			if(Ext.isArray(group) && group.length > 0)
+				groupTmp.push(group);
+		});
+		if(groupTmp.length == 0){
+			this.grouped = false;
+			this.columnGroups = false;
+			return;
+		}
+		this.grouped = true;
+		this.columnGroups = groupTmp;
+		this.groupLevels = this.columnGroups.length;
+		return;
+	},
+	
 	createTitle : function(){
 		var _this = this;
 		_this.recordWidth = 0;
@@ -606,7 +637,7 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 			ownerWI : -10,
 			removeable : false,
 			dragable : false,
-			baseSize : _this.lineHeight,
+			baseSize : _this.lineHeight * (_this.groupLevels + 1),//duochong
 			baseWidth : _this.recordWidth,
 			baseMargin : 1,
 			recordView : this,
@@ -629,11 +660,21 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 						eve.stopEvent();
 						tileThis.recordView.onTitleContextMenu(eve, html, obj, []);
 					});
-					_this.initColumnDD();
+					if(!_this.grouped)
+						_this.initColumnDD();
+					_this.buildGroupedTitles();
+					for(var i=0;i<_this.groupLevels;i++){
+						_this.CTO[i].dom = tileThis.el.insertHtml('afterBegin', _this.CTO[i].buildEl());
+					}
 				}
 			}
 		});
 		_this.titleTile = tile;
+	},
+	buildGroupedTitles : function(){
+		for(var i=0;i<this.groupLevels;i++){
+			this.CTO.push(new Wlj.frame.functions.app.widgets.ComplexTitle(this, i));
+		}
 	},
 	createDataIndexEl : function(){
 		var _this = this;
@@ -894,6 +935,7 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 	},
 	onColumnResize : function(index, res, width, height, e, name){
 		var recordWidth = parseInt(this.recordWidth) - parseInt(this.titleTile.items.get(index).baseWidth) + parseInt(width);
+		var minaWidth = - parseInt(this.titleTile.items.get(index).baseWidth) + parseInt(width);
 		this.titleTile.items.get(index).baseWidth = width;
 		this.titleTile.items.get(index).initialConfig.baseWidth = width;
 		this.recordWidth = recordWidth;
@@ -909,6 +951,9 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 		});
 		this.searchGridView.onColumnResize(index, res, width, height, e, name, recordWidth);
 		this.createRecordTileEl();
+		if(this.CTO[0]){
+			this.CTO[0].columnResize(index,minaWidth);
+		}
 	},
 	setColumnOrder : function(name, index){
 		var tile = null;
@@ -1061,6 +1106,129 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 		}
 	}
 });
+
+Wlj.frame.functions.app.widgets.ComplexTitle = function(gridTitle, level){
+	this.level = level;
+	this.gridTitle = gridTitle;	
+	this.groups = this.gridTitle.columnGroups[this.level];
+	for(var i=0; i<this.groups.length; i++){
+		if(i==0){
+			if(this.level === 0 )
+				this.groups[i].toColumn = this.groups[i].includeCount;
+			else
+				this.groups[i].toColumn = this.groups[i].includeCount - 1;
+		}else{
+			if(Ext.isNumber(this.groups[i].includeCount)){
+				this.groups[i].toColumn = this.groups[i].includeCount + this.groups[i-1].toColumn;
+			}else{
+				if(this.level === 0 )
+					this.groups[i].toColumn = this.gridTitle.titleTile.items.getCount();
+				else 
+					this.groups[i].toColumn = this.gridTitle.CTO[this.level - 1].groups.length-1;
+			}
+		}
+		if(this.level === 0){
+			if(this.groups[i].toColumn >= this.gridTitle.titleTile.items.getCount()){
+				this.groups[i].toColumn = this.gridTitle.titleTile.items.getCount();
+				this.groups = this.groups.slice(0 , i+1);
+				break;
+			}
+		}else{
+			if(this.groups[i].toColumn >= this.gridTitle.CTO[this.level - 1].groups.length-1){
+				this.groups[i].toColumn = this.gridTitle.CTO[this.level - 1].groups.length-1;
+				this.groups = this.groups.slice(0 , i+1);
+				break;
+			}
+		}
+	}
+	Wlj.frame.functions.app.widgets.ComplexTitle.superclass.constructor.call(this);
+	this.height = this.gridTitle.lineHeight;
+	this.paddingLeft = this.gridTitle.needRN ? (this.gridTitle.rnWidth + 12) : 0;
+	this.buildContainer();
+	this.buildCell();
+	this.processCells();
+};
+Ext.extend(Wlj.frame.functions.app.widgets.ComplexTitle, Ext.util.Observable, {
+	containerTemplate : false,
+	cellTemplate : false,
+	buildContainer : function(){
+		this.containerTemplate = new Ext.XTemplate('<div style="height:'+this.height+'px;padding-left:'+this.paddingLeft+'px;width:100%;">{innerGroups}</div>');
+	},
+	buildCell : function(){
+		this.cellTemplate = new Ext.XTemplate('<div class="ygh-hd" style="text-align:center;height:'+this.height+'px;width:{width}px;float: left;">{groupTitle}</div>');
+	},
+	processCells : function(){
+		var _this = this;
+		if(this.level === 0){
+			var ftIndex = 0;
+			var grpIndex = 0;
+			this.gridTitle.titleTile.items.each(function(ft){
+				if(ftIndex === 0) {
+					ftIndex ++;
+					return;
+				}
+				var gb = _this.groups[grpIndex];
+				if(!gb) return;
+				if(Ext.isNumber(gb.width) && gb.width > 0){
+					gb.width += ft.hidden ? 0 : (ft.baseMargin + ft.baseWidth + 12);
+				}else{
+					gb.width = ft.hidden ? 0 : ft.baseMargin + ft.baseWidth;
+				}
+				ftIndex ++;
+				if(ftIndex > gb.toColumn){
+					grpIndex ++ ;
+				}
+				return;
+			});
+		}else{
+			var ftIndex = 0;
+			var grpIndex = 0;
+			Ext.each(this.gridTitle.CTO[_this.level-1].groups , function(ft){
+				var gb = _this.groups[grpIndex];
+				if(!gb)return;
+				if(Ext.isNumber(gb.width) && gb.width > 0){
+					gb.width += ft.width +12;
+				}else{
+					gb.width = ft.width;
+				}
+				ftIndex ++;
+				if(ftIndex > gb.toColumn){
+					grpIndex ++ ;
+				}
+				return;
+			});
+		}
+	},
+	buildEl : function(){
+		var cells = [];
+		for(var i = 0; i<this.groups.length; i++){
+			var g = this.groups[i];
+			cells.push(this.cellTemplate.apply(g))
+		}
+		return this.containerTemplate.apply({
+			innerGroups : cells.join('')
+		});
+	},
+	columnResize : function(index , minaWidth){
+		var refixedIndex = this.getBelongGroup(index);
+		var refixedNode = this.dom.childNodes[refixedIndex];
+		if(!refixedNode) return;
+		refixedNode.style.width = (parseInt(refixedNode.style.width) + minaWidth) + 'px';
+		var nextLevel = this.gridTitle.CTO[this.level+1];
+		if(!nextLevel) return;
+		nextLevel.columnResize(refixedIndex, minaWidth);
+	},
+	getBelongGroup : function(index){
+		var belongs = 0;
+		while(this.groups[belongs].toColumn < index){
+			belongs ++;
+		}
+		return belongs ;
+	}
+});
+
+
+
 Wlj.frame.functions.app.widgets.CellProxy = Ext.extend(Object, {
 	
 	constructor : function(tile, config){

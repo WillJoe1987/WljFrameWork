@@ -184,9 +184,15 @@ Wlj.frame.functions.app.App.prototype.init = function(){
 		if(Wlj.frame.functions.plugin){
 			for(var key in Wlj.frame.functions.plugin){
 				Ext.log('加载插件【'+key+'】！');
-				this.plugins[key] = new Wlj.frame.functions.plugin[key]({
+				var tp =  new Wlj.frame.functions.plugin[key]({
 					appObject : this
 				});
+				if(!tp.destroyed){
+					this.plugins[key] = tp;
+					Ext.log('插件【'+key+'】已装载');
+				}else {
+					Ext.log('插件【'+key+'】未装载');
+				}
 			}
 		}
 	}
@@ -222,6 +228,9 @@ Wlj.frame.functions.app.App.prototype.clearSite = function(){
 	window.createFormCfgs = false;
 	window.editFormCfgs = false;
 	window.detailFormCfgs = false;
+	
+	window.searchDomainCfg = false;
+	window.resultDomainCfg =false;
 	
 	window.formViewers = false;
 	window.formCfgs = false;
@@ -1014,6 +1023,7 @@ Wlj.frame.functions.app.App.prototype.createResultCfg = function(){
 	createResultCfg.createFormCfgs = this.createFormCfgs;
 	createResultCfg.editFormCfgs = this.editFormCfgs;
 	createResultCfg.detailFormCfgs = this.detailFormCfgs;
+	createResultCfg.resultDomainCfg = this.resultDomainCfg ? this.resultDomainCfg : false;
 	createResultCfg.listeners = {
 		beforeviewhide : function(theView){
 			return _this.fireEvent('beforeviewhide', theView);

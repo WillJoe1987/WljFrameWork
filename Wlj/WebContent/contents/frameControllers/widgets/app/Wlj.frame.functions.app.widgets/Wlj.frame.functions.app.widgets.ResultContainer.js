@@ -63,6 +63,9 @@ Wlj.frame.functions.app.widgets.ResultContainer = Ext.extend(Ext.Panel, {
 	store : false,
 	currentParams : {},
 	formButtons : false,
+	
+	resultDomainCfg : false,
+	
 	viewPanel : {
 		createView : false,
 		editView : false,
@@ -236,7 +239,8 @@ Wlj.frame.functions.app.widgets.ResultContainer = Ext.extend(Ext.Panel, {
 				pageSize : this.pageSize,
 				needRN : this.needRN,
 				rnWidth : this.rnWidth,
-				easingStrtegy : this.easingStrtegy
+				easingStrtegy : this.easingStrtegy,
+				columnGroups : (this.resultDomainCfg && this.resultDomainCfg.columnGroups) ? this.resultDomainCfg.columnGroups : false
 			});
 			this.add(this.searchGridView);
 			this.searchGridView.on('recordselect', function(record, store,tile){

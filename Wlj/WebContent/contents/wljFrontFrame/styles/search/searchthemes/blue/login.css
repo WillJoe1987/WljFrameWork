@@ -89,6 +89,7 @@ a:active {
 #logo{
 	height:100px;
 	background-color: #78ba00;
+	background-image: url("pics/login/pic_01.gif");
 	background-position: center;
 	background-repeat: no-repeat;
 }

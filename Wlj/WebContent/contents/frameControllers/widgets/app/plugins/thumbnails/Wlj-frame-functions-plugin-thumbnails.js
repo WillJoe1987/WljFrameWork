@@ -4,6 +4,9 @@ Ext.ns('Wlj.frame.functions.plugin');
  * 对外提供当前数据存储对象，包括：store以及查询条件。
  */
 Wlj.frame.functions.plugin.Thumbnails = function(config){
+	if(!config.appObject.needGrid){
+		return this.destroyed = true;
+	}
 	this.appObject = config.appObject;
 };
 Ext.extend(Wlj.frame.functions.plugin.Thumbnails, Ext.util.Observable, {
@@ -22,6 +25,7 @@ Ext.extend(Wlj.frame.functions.plugin.Thumbnails, Ext.util.Observable, {
 		};
 	},
 	getThumbCondition : function(){
+		if(!this.appObject.needCondition) return false;
 		return this.appObject.resultDomain.searchGridView.currentParams;
 	},
 	getThumbCurrentStore : function(){
@@ -29,6 +33,9 @@ Ext.extend(Wlj.frame.functions.plugin.Thumbnails, Ext.util.Observable, {
 	},
 	getThumbGridFields : function(){
 		return this.appObject.resultDomain.searchGridView.store.fields;
+	},
+	getViewThumbnailByName : function(name){
+		return this.appObject.getCustomerViewByTitle(name).contentPanel.initialConfig;
 	}
 });
 
@@ -39,6 +46,9 @@ Ext.extend(Wlj.frame.functions.plugin.Thumbnails, Ext.util.Observable, {
  * 详情见：readme-v4.7.20150526-1.txt
  */
 Wlj.frame.functions.plugin.ConditionDink = function(config){
+	if(!config.appObject.needCondition){
+		return this.destroyed = true;
+	}
 	this.appObject = config.appObject;
 	this.initialView();
 };
@@ -65,8 +75,9 @@ Ext.extend(Wlj.frame.functions.plugin.ConditionDink, Ext.util.Observable, {
 			width : 400,
 			movedIn : false,
 			layout :'form',
-			title : 'dink',
-			style : 'left : 800px; top: -395px; position:absolute;border: 1px solid #000;',
+			title : '查询方案',
+			cls:'dinkPanel',
+			iconCls :'ico-w-7',
 			renderTo : Ext.getBody(),
 			afterRender : function(){
 				Ext.Panel.prototype.afterRender.call(this);
@@ -95,7 +106,7 @@ Ext.extend(Wlj.frame.functions.plugin.ConditionDink, Ext.util.Observable, {
 						}
 						_this.doLayout();
 					}
-				})
+				});
 			},
 			showIn : function(){
 				if(this.movedIn === false){
@@ -148,6 +159,7 @@ Ext.extend(Wlj.frame.functions.plugin.ConditionDink, Ext.util.Observable, {
 				theDink.dataId = response.responseText;
 			},
 			failure: function(){
+				/**never run**/
 				alert('failure!');
 			}
 		});
@@ -156,44 +168,30 @@ Ext.extend(Wlj.frame.functions.plugin.ConditionDink, Ext.util.Observable, {
 /**
  * 查询方案对象。
  */
-Wlj.frame.functions.plugin.ConditionDink.DinkItem = Ext.extend(Ext.Panel, {
+Wlj.frame.functions.plugin.ConditionDink.DinkItem = Ext.extend(Ext.BoxComponent, {
+	/*<div><span>普通客户查询</span><div><span class="nail" title="固定到首页"></span><span class="del" title="删除"></span></div></div>*/
+	autoEl : {
+		tag : 'div'
+	},
+	titleTemplate : new Ext.XTemplate('<span>{title}</span><div><span class="nail" title="固定到首页"></span><span class="del" title="删除"></span></div>'),
 	title : 'new dink',
 	dinkContent : false,
 	dinkPlg : false,
 	setDinkContent : function(content){
 		this.dinkContent = content;
 	},
-	initComponent : function(){
-		this.tools = [];
-		var _this = this;
-		this.tools.push({
-			id : 'close',
-			handler : function(){
-				_this.ownerCt.remove(_this);
-			}
-		});
-		Wlj.frame.functions.plugin.ConditionDink.DinkItem.superclass.initComponent.call(this);
-	},
 	onRender : function(ct, position){
 		Wlj.frame.functions.plugin.ConditionDink.DinkItem.superclass.onRender.call(this, ct, position);
-		this.body.setHeight(0);
 		var _this = this;
-		this.header.on('click', function(){
-			for(var key in _this.dinkContent){
-				if(!hasConditionField(key)){
-					addConditionField(key);
-				}
+		this.titleTemplate.append(this.el, {title: this.title});
+		this.el.on('click', function(eve, html, obj){
+			if(html.className==="nail"){
+				_this.dinkTileHandler();
+			}else if(html.className === "del"){
+				_this.removeHandler();
+			}else{
+				_this.useDinkContentHandler();
 			}
-			_this.dinkPlg.appObject.searchDomain.resetCondition(false);
-			_this.dinkPlg.appObject.searchDomain.searchPanel.getForm().setValues(_this.dinkContent);
-		});
-		this.el.on('contextmenu', function(e){
-			e.stopEvent();
-			new Ext.menu.Menu({
-		        items: [{
-		        	text : '钉到首页'
-		        }]
-		    }).showAt(e.getXY());
 		});
 	},
 	onDestroy : function(){
@@ -208,9 +206,28 @@ Wlj.frame.functions.plugin.ConditionDink.DinkItem = Ext.extend(Ext.Panel, {
 			});
 		}
 		Wlj.frame.functions.plugin.ConditionDink.DinkItem.superclass.onDestroy.call(this);
-		
+	},
+	useDinkContentHandler : function(){
+		var _this = this;
+		for(var key in _this.dinkContent){
+			if(!hasConditionField(key)){
+				addConditionField(key);
+			}
+		}
+		_this.dinkPlg.appObject.searchDomain.resetCondition(false);
+		_this.dinkPlg.appObject.searchDomain.searchPanel.getForm().setValues(_this.dinkContent);
+	},
+	removeHandler : function(){
+		var _this = this;
+		_this.ownerCt.remove(_this);
+	},
+	dinkTileHandler : function(){
+		/**
+		 * TODO this logic will be done after the conditioned tile be done.
+		 */
 	}
 });
+
 
 /**
  * 全局查询方案名称标题
@@ -233,4 +250,3 @@ Wlj.frame.functions.plugin.ConditionDink.DINKNAMEWIN = new Ext.Window({
 		}
 	}
 });
-

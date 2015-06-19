@@ -37,7 +37,7 @@ Wlj.frame.functions.app.widgets.ComboTree = Ext.extend(Ext.form.ComboBox, {
 			this.innerTree = TreeManager.createTree(this.innerTree);
 		}else if(typeof this.innerTree == 'object'){
 			if(!this.innerTree instanceof Ext.tree.TreePanel){
-				this.innerTree = new Wlj.frame.functions.app.widgets.TreePanel(this.innerTree);
+				this.innerTree = new Com.yucheng.bcrm.TreePanel(this.innerTree);
 			}
 		}
 		this.innerTree.frame = true;
