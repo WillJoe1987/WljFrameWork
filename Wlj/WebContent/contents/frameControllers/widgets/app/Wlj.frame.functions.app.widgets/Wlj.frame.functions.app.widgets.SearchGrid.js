@@ -1062,6 +1062,9 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 			if(f && f.hidden){
 				_this.recordWidth = parseInt(_this.recordWidth) + (parseInt(f.baseMargin) * 2 + parseInt(f.baseWidth) + 12);
 				f.show();
+				if(_this.CTO[0]){
+					_this.CTO[0].columnResize(di+1, (parseInt(f.baseMargin) * 2 + parseInt(f.baseWidth) + 12));
+				}
 			}
 		});
 		this.titleTile.doLayout();
@@ -1075,6 +1078,9 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 			if(f && !f.hidden){
 				_this.recordWidth = parseInt(_this.recordWidth) - (parseInt(f.baseMargin) * 2 + parseInt(f.baseWidth) + 12);
 				f.hide();
+				if(_this.CTO[0]){
+					_this.CTO[0].columnResize(di+1, -(parseInt(f.baseMargin) * 2 + parseInt(f.baseWidth) + 12));
+				}
 			}
 		});
 		_this.resetWidth();
@@ -1151,11 +1157,12 @@ Wlj.frame.functions.app.widgets.ComplexTitle = function(gridTitle, level){
 Ext.extend(Wlj.frame.functions.app.widgets.ComplexTitle, Ext.util.Observable, {
 	containerTemplate : false,
 	cellTemplate : false,
+	zeroWidth : 13,
 	buildContainer : function(){
 		this.containerTemplate = new Ext.XTemplate('<div style="height:'+this.height+'px;padding-left:'+this.paddingLeft+'px;width:100%;">{innerGroups}</div>');
 	},
 	buildCell : function(){
-		this.cellTemplate = new Ext.XTemplate('<div class="ygh-hd" style="text-align:center;height:'+this.height+'px;width:{width}px;float: left;">{groupTitle}</div>');
+		this.cellTemplate = new Ext.XTemplate('<div class="ygh-hd" style="text-align:center;height:'+this.height+'px;width:{width}px;float: left;display:{display};">{groupTitle}</div>');
 	},
 	processCells : function(){
 		var _this = this;
@@ -1169,10 +1176,16 @@ Ext.extend(Wlj.frame.functions.app.widgets.ComplexTitle, Ext.util.Observable, {
 				}
 				var gb = _this.groups[grpIndex];
 				if(!gb) return;
+				if(!Ext.isArray(gb.defaultColumn)){
+					gb.defaultColumn = [];
+				}
 				if(Ext.isNumber(gb.width) && gb.width > 0){
 					gb.width += ft.hidden ? 0 : (ft.baseMargin + ft.baseWidth + 12);
 				}else{
 					gb.width = ft.hidden ? 0 : ft.baseMargin + ft.baseWidth;
+				}
+				if(ft.hidden !== true ){
+					gb.defaultColumn.push(ftIndex -1);
 				}
 				ftIndex ++;
 				if(ftIndex > gb.toColumn){
@@ -1186,10 +1199,16 @@ Ext.extend(Wlj.frame.functions.app.widgets.ComplexTitle, Ext.util.Observable, {
 			Ext.each(this.gridTitle.CTO[_this.level-1].groups , function(ft){
 				var gb = _this.groups[grpIndex];
 				if(!gb)return;
+				if(!Ext.isArray(gb.defaultColumn)){
+					gb.defaultColumn = [];
+				}
 				if(Ext.isNumber(gb.width) && gb.width > 0){
-					gb.width += ft.width +12;
+					gb.width += ft.display === 'none' ? 0 : ft.width +12;
 				}else{
-					gb.width = ft.width;
+					gb.width = ft.display === 'none' ? 0 : ft.width;
+				}
+				if(ft.display !== 'none' ){
+					gb.defaultColumn.push(ftIndex);
 				}
 				ftIndex ++;
 				if(ftIndex > gb.toColumn){
@@ -1198,6 +1217,14 @@ Ext.extend(Wlj.frame.functions.app.widgets.ComplexTitle, Ext.util.Observable, {
 				return;
 			});
 		}
+		Ext.each(this.groups, function(g){
+			if(g.width<_this.zeroWidth){
+				g.display = 'none';
+				g.width = 0;
+			}else{
+				g.display = 'block';
+			}
+		});
 	},
 	buildEl : function(){
 		var cells = [];
@@ -1213,7 +1240,17 @@ Ext.extend(Wlj.frame.functions.app.widgets.ComplexTitle, Ext.util.Observable, {
 		var refixedIndex = this.getBelongGroup(index);
 		var refixedNode = this.dom.childNodes[refixedIndex];
 		if(!refixedNode) return;
-		refixedNode.style.width = (parseInt(refixedNode.style.width) + minaWidth) + 'px';
+		var finalWidth = parseInt(refixedNode.style.width) + minaWidth;
+		if(finalWidth < 0){
+			finalWidth = 0;
+			refixedNode.style.display = 'none';
+		}else{
+			if(refixedNode.style.display == 'none'){
+				finalWidth -= 12;
+				refixedNode.style.display = '';
+			}
+		}
+		refixedNode.style.width = finalWidth + 'px';
 		var nextLevel = this.gridTitle.CTO[this.level+1];
 		if(!nextLevel) return;
 		nextLevel.columnResize(refixedIndex, minaWidth);
@@ -1224,6 +1261,28 @@ Ext.extend(Wlj.frame.functions.app.widgets.ComplexTitle, Ext.util.Observable, {
 			belongs ++;
 		}
 		return belongs ;
+	},
+	expandGroup : function(index){
+		if(this.level == 0){
+			this.gridTitle.searchGridView.showFields(this.groups[index].defaultColumn);
+		}else{
+			var useLevel = this.gridTitle.CTO[this.level - 1];
+			var len = this.groups[index].defaultColumn.length;
+			for(var i=0; i< len ; i++){
+				useLevel.expandGroup(this.groups[index].defaultColumn[i]);
+			}
+		}
+	},
+	collapseGroup : function(index){
+		if(this.level == 0){
+			this.gridTitle.searchGridView.hideFields(this.groups[index].defaultColumn);
+		}else{
+			var useLevel = this.gridTitle.CTO[this.level - 1];
+			var len = this.groups[index].defaultColumn.length;
+			for(var i=0; i< len ; i++){
+				useLevel.collapseGroup(this.groups[index].defaultColumn[i]);
+			}
+		}
 	}
 });
 
