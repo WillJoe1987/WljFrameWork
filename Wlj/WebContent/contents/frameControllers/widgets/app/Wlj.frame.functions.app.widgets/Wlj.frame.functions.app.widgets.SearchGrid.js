@@ -18,13 +18,19 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 		var bbarH = this.bbar ? this.bbar.getViewSize().height : 0;
 		var bh = h - titleH - 2 - bbarH;
 		var w = parseInt(aw, 10);
+		if(this.lockingViewBuilder){
+			w = w - this.lockingViewBuilder.viewWidth;
+		}
 		if(Ext.isNumber(bh)){
 			this.scrollElement.applyStyles({
 				height : bh + 'px'
 			});
+			if(this.lockingViewBuilder){
+				this.lockingViewBuilder.onResize(bh);
+			}
 		}
 		if(Ext.isNumber(w)){
-			this.hdElement.applyStyles({
+			this.dynaticElement.applyStyles({
 				width : w + 'px'
 			});
 		}
@@ -244,12 +250,25 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 	initElements : function(){
 		var Element = Ext.Element;
 		var body = this.body;
-		this.hdElement = body.createChild({
+		
+		
+		this.lockedElement = body.createChild({
+			tag : 'div',
+			style : 'width:10%;float:left;min-height:1px;'
+		});
+		
+		this.dynaticElement = body.createChild({
+			tag : 'div',
+			style : 'width:89%;float:left;'
+		});
+		
+		this.hdElement = this.dynaticElement.createChild({
 			tag : 'div',
 			cls : 'yc-grid-header',
+			id : 'gridhdElement',
 			style : 'width:100%;overflow:hidden;'
 		});
-		this.scrollElement = body.createChild({
+		this.scrollElement = this.dynaticElement.createChild({
 			tag : 'div',
 			style : 'overflow-y:auto;'
 		});
@@ -288,9 +307,24 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 			easingStrtegy : _this.easingStrtegy,
 			columnGroups : _this.columnGroups ? _this.columnGroups : false
 		});
-		this.titleTile.titleTile.render(this.hdElement); 
+		this.titleTile.titleTile.render(this.hdElement);
+		/**
+		 * for the locking part.
+		 */
+		this.titleHeight = this.titleTile.titleTile.el.getViewSize().height;
+		var hasLocking  = false;
+		var len = this.store.fields.items.length;
+		for(var i=0;i<len;i++){
+			if(this.store.fields.items[i].lockingView === true){
+				hasLocking = true;
+				break;
+			}
+		}
+		if(hasLocking){
+			this.lockingViewBuilder = new Wlj.frame.functions.app.widgets.LockingTitles(this.lockedElement, this);
+		}
 		this.hdElement.applyStyles({
-			height : this.titleTile.titleTile.el.getViewSize().height
+			height : this.titleHeight
 		});
 		this.titleTile.titleTile.el.applyStyles({
 			top : 0,
@@ -303,8 +337,23 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 		});
 		this.scrollElement.on('scroll',function(){
 			_this.synHDScroll();
+			_this.synCKScroll();
 		});
 	},
+	
+	synCKScroll : function(){
+		if(this.lockingViewBuilder){
+			var sc = this.lockingViewBuilder.columnContainers;
+			var top = this.scrollElement.dom.scrollTop;
+			/**
+			 * TODO use css property:margin-top . to be refix.
+			 */
+			for(var i=0;i<sc.length;i++){
+				sc[i].dom.style.marginTop = -top;
+			}
+		}
+	},
+	
 	synHDScroll : function(){
 		var innerHd = this.hdElement.dom ;
 		var scrollLeft = this.scrollElement.dom.scrollLeft;
@@ -366,6 +415,14 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 		_this.booterDataElements(store, records);
 		_this._APP.unmaskRegion('resultDomain');
 		_this._APP.enableConditionButton(WLJUTIL.BUTTON_TYPE.SEARCH);
+		
+		/**
+		 * TODO adjust the problem:data be added twice.
+		 */
+		if(_this.lockingViewBuilder){
+			_this.lockingViewBuilder.clearDataEls();
+			_this.lockingViewBuilder.bootDataEls();
+		}
 	},
 	onExceptionLoad : function(store, records, option){
 		var _this = this.resultContainer;
@@ -387,6 +444,9 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 	onDataClear : function(store){
 		if(store.resultContainer.getLayoutTarget())
 			store.resultContainer.getLayoutTarget().dom.innerHTML = '';
+		if(store.resultContainer.lockingViewBuilder){
+			store.resultContainer.lockingViewBuilder.clearDataEls();
+		}
 	},
 	turnToCurrentPage : function(callbackFn){
 		var _this = this;
@@ -545,7 +605,6 @@ Wlj.frame.functions.app.widgets.TitleTile = function(cfg){
 	Wlj.frame.functions.app.widgets.TitleTile.superclass.constructor.call(this);
 	this.resumeColumnGroup();
 	this.createTitle();
-	
 	this.createRecordTileEl();
 };
 Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
@@ -1290,7 +1349,237 @@ Ext.extend(Wlj.frame.functions.app.widgets.ComplexTitle, Ext.util.Observable, {
 	}
 });
 
-
+Wlj.frame.functions.app.widgets.LockingTitles = function(el, grid){
+	this.el = el;
+	this.gridView = grid;
+	this.store = this.gridView.store;
+	Wlj.frame.functions.app.widgets.LockingTitles.superclass.constructor.call(this);
+	this.titleHeight = this.gridView.titleHeight;
+	this.viewWidth = 0;
+	this.lockingColumns = new Ext.util.MixedCollection();
+	this.columnContainers = [];
+	this.initialColumns();
+	if(this.lockingColumns.getCount() == 0){
+		Ext.error('no locking column！');
+		return false;
+	}
+	this.headerContaienr = new Ext.XTemplate('<div style="width:'+this.viewWidth+'px;height:'+this.titleHeight+'px;"></div>');
+	this.dataContainer = new Ext.XTemplate('<div style="overflow:hidden;"></div>');
+	/**
+	 * TODO need?
+	 */
+	this.dataScrollContaienr = new Ext.XTemplate('<div style="height:auto;"></div>');
+	this.columnTemplate = new Ext.XTemplate('<div style="width:{width}px;height:auto;float:left;"></div>');
+	this.cellTemplate = new Ext.XTemplate('<div class="ygc-cell {fieldClass}" style="width:100%;height:'+this.lineHeight+'px;">{data}</div>');
+	this.initialElements();
+};
+Ext.extend(Wlj.frame.functions.app.widgets.LockingTitles, Ext.util.Observable, {
+	lineHeight : 27,
+	defaultFieldWidth : 150,
+	initialColumns : function(){
+		var fields = this.store.fields;
+		var _this = this;
+		fields.each(function(field){
+			if(field.lockingView && field.text && !field.hidden){
+				_this.lockingColumns.add(field);
+				var widthToAdd = field.width ? field.width : _this.defaultFieldWidth;
+				_this.viewWidth = _this.viewWidth + widthToAdd + 12;
+			}
+		});
+	},
+	initialElements : function(){
+		this.headerContaienr = this.headerContaienr.append(this.el,{},true);
+		this.dataContainer = this.dataContainer.append(this.el,{},true);
+		this.dataScrollContaienr = this.dataScrollContaienr.append(this.dataContainer , {}, true);
+		this.el.applyStyles({
+			width : this.viewWidth + 'px'
+		});
+		this.buildHeader();
+	},
+	onResize : function(h){
+		if(!Ext.isNumber(h)){
+			return;
+		}
+		this.dataContainer.applyStyles({
+			height : h + 'px'
+		});
+	},
+	buildHeader : function(){
+		var _this = this;
+		var fieldsTiels = [];
+		_this.lockingColumns.each(function(field){
+			fieldsTiels.push(_this.createFieldTile(field));
+		});
+		
+		var tile = new Wlj.widgets.search.tile.Tile({
+			ownerW : 10,
+			ownerWI : -10,
+			removeable : false,
+			dragable : false,
+			baseSize : _this.titleHeight,
+			baseWidth : _this.viewWidth,
+			baseMargin : 1,
+			recordView : this,
+			cls : 'ygh-container',
+			float : 'left',
+			style : {
+				overflowX :'hidden'
+			},
+			pos_size : {
+				TX : 0,
+				TY : 0,
+				TW : 1,
+				TH : 1
+			},
+			items : fieldsTiels,
+			listeners : {
+				afterrender : function(tileThis){
+					//_this.initColumnDD();
+				}
+			}
+		});
+		_this.titleTile = tile;
+		_this.titleTile.render(this.headerContaienr);
+	},
+	createFieldTile : function(tf){
+		var _this = this;
+		var tfHTML = '<div title="'+tf.text+'" class="ygh-hd-text">'+tf.text+'</div>';
+		var fTile = new Wlj.widgets.search.tile.Tile({
+			ownerW : 10,
+			removeable : false,
+			dragable : !(tf.enableCondition === false),
+			defaultDDGroup : 'searchDomainDrop',
+			baseSize : _this.titleHeight,
+			baseWidth : tf.resutlWidth ? tf.resutlWidth : _this.defaultFieldWidth,
+			float : 'left',
+			cls : 'ygh-hd '+_this.getTitleClass(tf),
+			baseMargin : 0,
+			html : tfHTML,
+			data : {
+				name : tf.name,
+				value : ''
+			},
+			clearSortIcon : function(){
+				this.el.first().removeClass('ygh-hd-order-desc');
+				this.el.first().removeClass('ygh-hd-order-asc');
+			},
+			addSortIcon : function(info){
+				this.el.first().addClass('ygh-hd-order-'+info);
+			},
+			listeners : {
+				afterrender : function( tileThis ){
+//					tileThis.el.on('click',function(eve){
+//						eve.stopEvent();
+//						if(!tileThis.el.first().hasClass('ygh-hd-order-desc')){
+//							_this._APP.sortByDataIndex(tileThis.data.name,'desc');
+//						}else{
+//							_this._APP.sortByDataIndex(tileThis.data.name,'asc');
+//						}
+//					});
+//					tileThis.el.on('contextmenu',function(eve, html, obj){
+//						eve.stopEvent();
+//						_this.onTitleFieldContextMenu(eve, html, obj, []);
+//					});
+					if(this.dragable){
+						this.dd.startDrag = function(){
+							this.tile.el.applyStyles({
+								display:''
+							});
+							this.proxy.getEl().dom.innerText = this.tile.el.dom.innerText;
+						};
+					}
+				}
+			}
+		});
+		_this.buildColumnContainer(tf);
+		return fTile;
+	},
+	buildColumnContainer : function(tf){
+		var _this = this;
+		this.columnContainers.push(this.columnTemplate.append(this.dataScrollContaienr, {
+			width : tf.resutlWidth ? tf.resutlWidth : _this.defaultFieldWidth
+		},true));
+	},
+	getTitleClass : function(field){
+		var dataType = field.dataType;
+		if(dataType && WLJDATATYPE[dataType]){
+			dataType = WLJDATATYPE[dataType];
+			return dataType.getTitleClass();
+		}
+		return '';
+	},
+	bootDataEls : function(){
+		var _this = this;
+		var store = this.store;
+		store.data.each(function(item, index, length){
+			//var oddc = index % 2 ===0 ? "ygc-row-odd" : "";
+			_this.buildData(item);
+		});
+	},
+	buildData : function(record){
+		var _this = this;
+		_this.lockingColumns.each(function(tf){
+			var fData = _this.formatFieldData(tf,_this.translateFieldData(tf, record.get(tf.name)));
+			var fieldClass = _this.getFieldClass(tf);
+			_this.cellTemplate.append(
+					_this.columnContainers[_this.lockingColumns.indexOf(tf)],
+					{
+						fieldClass : fieldClass,
+						data : fData
+					});
+		});
+	},
+	clearDataEls : function(){
+		Ext.each(this.columnContainers,function(column){
+			column.dom.innerHTML = '';
+		});
+	},
+	translateFieldData : function(field, data){
+		var app = this.gridView._APP;
+		var reData = '&nbsp';
+		if(field.translateType){
+			if (field.multiSelect) {
+				var separator = field.multiSeparator?field.multiSeparator:this.multiSelectSeparator;
+				var de = app.translateLookupByMultiKey(field.translateType, data, separator);
+			} else {
+				var de = app.translateLookupByKey(field.translateType, data);
+			}
+			if(de){
+				reData = de;
+			}
+		}else{
+			reData = data;
+		}
+		
+		var dataType = field.dataType;
+		if(dataType && WLJDATATYPE[dataType]){
+			dataType = WLJDATATYPE[dataType];
+			if(reData !== '&nbsp'){
+				reData = dataType.formatFn(reData);
+				dataType = null;
+			}
+		}
+		return reData;
+	},
+	formatFieldData : function(field, data){
+		var dataFormat = '&nbsp;';
+		if(data){
+			dataFormat = data;
+		}
+		if(Ext.isFunction(field.viewFn)){
+			dataFormat = field.viewFn(dataFormat);
+		}
+		return dataFormat;
+	},
+	getFieldClass : function(field){
+		var dataType = field.dataType;
+		if(dataType && WLJDATATYPE[dataType]){
+			dataType = WLJDATATYPE[dataType];
+			return dataType.getFieldClass();
+		}
+		return '';
+	}
+});
 
 Wlj.frame.functions.app.widgets.CellProxy = Ext.extend(Object, {
 	

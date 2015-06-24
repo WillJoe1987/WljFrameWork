@@ -99,6 +99,10 @@ var comitUrl = false;
  * 					类型：boolean
  * 					说明：列表中cell块上鼠标指针浮动时，是否展示数据内容。默认为false，即展示数据内容。如数据经viewFn显示处理后，增加了html标签，则推荐将此属性置为true；
  * 					必选：否；
+ * 				lockingView :
+ * 					类型：boolean
+ * 					说明：是否在左侧固定列显示；
+ * 					必选：否；
  * 		必选：是;
  */
 var fields = false;
