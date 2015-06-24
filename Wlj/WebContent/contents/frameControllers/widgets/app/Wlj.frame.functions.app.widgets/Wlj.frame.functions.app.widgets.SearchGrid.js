@@ -251,12 +251,13 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 		});
 		this.scrollElement = body.createChild({
 			tag : 'div',
-			style : 'overflow:auto;'
+			style : 'overflow-y:auto;'
 		});
 		this.dtElement = this.scrollElement.createChild({
 			tag : 'div',
-			style : 'min-height:1px;overflow:auto;'
+			style : 'min-height:1px;overflow-x:auto;'
 		});
+		
 		this.createFieldsTitle();
 	},
 	getCellData : function(html){
@@ -599,30 +600,31 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 		_this.recordWidth = 0;
 		var fields = this.store.fields;
 		var fieldsTiels = [];
+		this.indexTile = new Wlj.widgets.search.tile.Tile({
+			ownerW : 10,
+			removeable : false,
+			dragable : false,
+			baseSize : _this.lineHeight,
+			baseWidth : _this.rnWidth,
+			baseMargin : 0,
+			hidden : !this.needRN,
+			cls : 'ygh-hd',
+			float : 'left',
+			html : '序号'
+		});
+		this.indexTile.on('afterrender', function(itile){
+			itile.el.on('click',function(){
+				if(!itile.__ALLS){
+					_this.store.resultContainer.allSelect();
+					itile.__ALLS=true;
+				}else{
+					_this.store.resultContainer.clearSelect();
+					itile.__ALLS=false;
+				}
+			});
+		});
+		fieldsTiels.push(this.indexTile);
 		if(this.needRN){
-			this.indexTile = new Wlj.widgets.search.tile.Tile({
-				ownerW : 10,
-				removeable : false,
-				dragable : false,
-				baseSize : _this.lineHeight,
-				baseWidth : _this.rnWidth,
-				baseMargin : 0,
-				cls : 'ygh-hd',
-				float : 'left',
-				html : '序号'
-			});
-			this.indexTile.on('afterrender', function(itile){
-				itile.el.on('click',function(){
-					if(!itile.__ALLS){
-						_this.store.resultContainer.allSelect();
-						itile.__ALLS=true;
-					}else{
-						_this.store.resultContainer.clearSelect();
-						itile.__ALLS=false;
-					}
-				});
-			});
-			fieldsTiels.push(this.indexTile);
 			_this.recordWidth = parseInt(_this.recordWidth) + parseInt(this.indexTile.baseMargin)*2 + parseInt(_this.rnWidth) + 12;
 		}
 		
@@ -678,7 +680,9 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 	},
 	createDataIndexEl : function(){
 		var _this = this;
-		var indexHTML = '<div class="ygc-cell ygc-cell-no" style="width:'+_this.rnWidth+'px;position: relative; margin: 0px; float: left; height: 27px;">'+
+		var display = 'block';
+		if(!this.needRN) display = 'none';
+		var indexHTML = '<div class="ygc-cell ygc-cell-no" style="display:'+display+';width:'+_this.rnWidth+'px;position: relative; margin: 0px; float: left; height: 27px;">'+
 			'{index+1}' + 
 			'</div>';
 		return indexHTML;
