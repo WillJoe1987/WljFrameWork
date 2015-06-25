@@ -1370,7 +1370,7 @@ Wlj.frame.functions.app.widgets.LockingTitles = function(el, grid){
 	 */
 	this.dataScrollContaienr = new Ext.XTemplate('<div style="height:auto;"></div>');
 	this.columnTemplate = new Ext.XTemplate('<div style="width:{width}px;height:auto;float:left;"></div>');
-	this.cellTemplate = new Ext.XTemplate('<div class="ygc-cell {fieldClass}" style="width:100%;height:'+this.lineHeight+'px;">{data}</div>');
+	this.cellTemplate = new Ext.XTemplate('<div class="ygc-cell ygc-row {fieldClass} {oddc}" style="width:100%;height:'+this.lineHeight+'px;">{data}</div>');
 	this.initialElements();
 };
 Ext.extend(Wlj.frame.functions.app.widgets.LockingTitles, Ext.util.Observable, {
@@ -1496,8 +1496,10 @@ Ext.extend(Wlj.frame.functions.app.widgets.LockingTitles, Ext.util.Observable, {
 	},
 	buildColumnContainer : function(tf){
 		var _this = this;
+		var width =  tf.resutlWidth ? tf.resutlWidth : _this.defaultFieldWidth;
+		width = parseInt(width)+12
 		this.columnContainers.push(this.columnTemplate.append(this.dataScrollContaienr, {
-			width : tf.resutlWidth ? tf.resutlWidth : _this.defaultFieldWidth
+			width : width
 		},true));
 	},
 	getTitleClass : function(field){
@@ -1512,7 +1514,6 @@ Ext.extend(Wlj.frame.functions.app.widgets.LockingTitles, Ext.util.Observable, {
 		var _this = this;
 		var store = this.store;
 		store.data.each(function(item, index, length){
-			//var oddc = index % 2 ===0 ? "ygc-row-odd" : "";
 			_this.buildData(item);
 		});
 	},
@@ -1521,11 +1522,14 @@ Ext.extend(Wlj.frame.functions.app.widgets.LockingTitles, Ext.util.Observable, {
 		_this.lockingColumns.each(function(tf){
 			var fData = _this.formatFieldData(tf,_this.translateFieldData(tf, record.get(tf.name)));
 			var fieldClass = _this.getFieldClass(tf);
+			var index = record.store.indexOf(record);
+			var oddc = index % 2 ===0 ? "ygc-row-odd" : "";
 			_this.cellTemplate.append(
 					_this.columnContainers[_this.lockingColumns.indexOf(tf)],
 					{
 						fieldClass : fieldClass,
-						data : fData
+						data : fData,
+						oddc : oddc
 					});
 		});
 	},
