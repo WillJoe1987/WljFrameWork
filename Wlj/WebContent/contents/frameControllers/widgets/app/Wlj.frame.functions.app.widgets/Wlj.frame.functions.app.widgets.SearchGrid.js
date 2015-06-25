@@ -183,8 +183,17 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 		});
 		var _this = this;
 		this.getLayoutTarget().on('click',function(eve, html, obj){
-				_this.onRowClick(eve, html, obj);
+			_this.onRowClick(eve, html, obj);
 		});
+		
+		this.leftPageElement.on('click', function(){
+			_this.scrollPrevPageColumn();
+		});
+		
+		this.rightPageElement.on('click', function(){
+			_this.scrollNextPageColumn();
+		});
+		
 		this.getLayoutTarget().on('dblclick', function(eve, html, obj){
 			eve.stopEvent();
 			_this.onRowDblclick(eve, html, obj);
@@ -263,6 +272,16 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 		this.dynaticElement = body.createChild({
 			tag : 'div',
 			style : 'width:89%;float:left;'
+		});
+		
+		this.leftPageElement = body.createChild({
+			tag : 'div',
+			cls : 'ygh-toleft'
+		});
+		
+		this.rightPageElement = body.createChild({
+			tag : 'div',
+			cls : 'ygh-toright'
 		});
 		
 		this.hdElement = this.dynaticElement.createChild({
@@ -375,6 +394,13 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 		var _this = store.resultContainer;
 		_this.clearRows();
 		_this.titleTile.bootEls();
+		/**
+		 * TODO adjust the problem:data be added twice.
+		 */
+		if(_this.lockingViewBuilder){
+			_this.lockingViewBuilder.clearDataEls();
+			_this.lockingViewBuilder.bootDataEls();
+		}
 	},
 	hasRows : function(){
 		var ltEl = this.getLayoutTarget();
@@ -418,14 +444,6 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 		_this.booterDataElements(store, records);
 		_this._APP.unmaskRegion('resultDomain');
 		_this._APP.enableConditionButton(WLJUTIL.BUTTON_TYPE.SEARCH);
-		
-		/**
-		 * TODO adjust the problem:data be added twice.
-		 */
-		if(_this.lockingViewBuilder){
-			_this.lockingViewBuilder.clearDataEls();
-			_this.lockingViewBuilder.bootDataEls();
-		}
 	},
 	onExceptionLoad : function(store, records, option){
 		var _this = this.resultContainer;
@@ -484,7 +502,7 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 	getSelected : function(){
 		var _this = this;
 		_this.selected = [];
-		this.el.select('.ygc-row-selected').each(function(se){
+		this.getLayoutTarget().select('.ygc-row-selected').each(function(se){
 			_this.selected.push(_this.store.getAt(parseInt(se.getAttribute('rowIndex'))));
 		});
 		return _this.selected;
@@ -493,14 +511,22 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 		var _this = this;
 		if(Ext.isNumber(index)){
 			this.clearSelect();
-			if(this.el.select('.ygc-row').item(parseInt(index)))
-				this.el.select('.ygc-row').item(parseInt(index)).addClass('ygc-row-selected');
+			if(this.getLayoutTarget().select('.ygc-row').item(parseInt(index))){
+				this.getLayoutTarget().select('.ygc-row').item(parseInt(index)).addClass('ygc-row-selected');
+				if(this.lockingViewBuilder){
+					this.lockingViewBuilder.addClickStyle(index);
+				}
+			}
 		}else if(Ext.isArray(index)){
 			if(index.length>0){
 				this.clearSelect();
 				Ext.each(index, function(i){
-					if(_this.el.select('.ygc-row').item(parseInt(i)))
-						_this.el.select('.ygc-row').item(parseInt(i)).addClass('ygc-row-selected');
+					if(_this.getLayoutTarget().select('.ygc-row').item(parseInt(i))){
+						_this.getLayoutTarget().select('.ygc-row').item(parseInt(i)).addClass('ygc-row-selected');
+						if(_this.lockingViewBuilder){
+							_this.lockingViewBuilder.addClickStyle(i);
+						}
+					}
 				});
 			}
 		}
@@ -519,7 +545,7 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 		});
 	},
 	allSelect : function(){
-		this.getLayoutTarget().select('.ygc-row').addClass('ygc-row-selected');
+		this.el.select('.ygc-row').addClass('ygc-row-selected');
 	},
 	sort : function(dataIndex, info){
 		this.titleTile.updateSortIcon(dataIndex, info);
@@ -600,7 +626,11 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 	},
 	setFieldTitle : function(cfg){
 		this.titleTile.setFieldTitle(cfg);
-	}
+	},
+	scrollNextPageColumn : function(){
+		this.scrollElement.scrollTo('left',300,true);
+	},
+	scrollPrevPageColumn : function(){}
 });
 Ext.reg('searchgridview', Wlj.frame.functions.app.widgets.SearchGrid);
 Wlj.frame.functions.app.widgets.TitleTile = function(cfg){
@@ -728,7 +758,7 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 						_this.initColumnDD();
 					_this.buildGroupedTitles();
 					for(var i=0;i<_this.groupLevels;i++){
-						_this.CTO[i].dom = tileThis.el.insertHtml('afterBegin', _this.CTO[i].buildEl());
+						_this.CTO[i].setEl(tileThis.el.insertHtml('afterBegin', _this.CTO[i].buildEl(),true));
 					}
 				}
 			}
@@ -1224,11 +1254,25 @@ Ext.extend(Wlj.frame.functions.app.widgets.ComplexTitle, Ext.util.Observable, {
 	containerTemplate : false,
 	cellTemplate : false,
 	zeroWidth : 13,
+	setEl : function(element){
+		if(!element || !element.dom) return;
+		this.el = element;
+		this.dom = this.el.dom;
+		var _this = this;
+		this.el.on('click', function(eve, html, obj){
+			var target = Ext.fly(html);
+			if(!target.hasClass('gp-close') && !target.hasClass('gp-open')){ //not the expand or collapse DOM node.
+				return;
+			}
+			var groupIndex = parseInt(target.parent('.ygh-gp-hd').dom.getAttribute('groupIndex'));
+			_this.collapseGroup(groupIndex);
+		});
+	},
 	buildContainer : function(){
 		this.containerTemplate = new Ext.XTemplate('<div style="height:'+this.height+'px;padding-left:'+this.paddingLeft+'px;width:100%;">{innerGroups}</div>');
 	},
 	buildCell : function(){
-		this.cellTemplate = new Ext.XTemplate('<div class="ygh-hd  ygh-gp-hd" style="height:'+this.height+'px;width:{width}px;display:{display};"><div class="gp-close"></div>{groupTitle}</div>');
+		this.cellTemplate = new Ext.XTemplate('<div groupIndex={groupIndex} class="ygh-hd  ygh-gp-hd" style="height:'+this.height+'px;width:{width}px;display:{display};"><div class="gp-open"></div>{groupTitle}</div>');
 	},
 	processCells : function(){
 		var _this = this;
@@ -1296,6 +1340,7 @@ Ext.extend(Wlj.frame.functions.app.widgets.ComplexTitle, Ext.util.Observable, {
 		var cells = [];
 		for(var i = 0; i<this.groups.length; i++){
 			var g = this.groups[i];
+			g.groupIndex = i;
 			cells.push(this.cellTemplate.apply(g))
 		}
 		return this.containerTemplate.apply({
@@ -1372,8 +1417,8 @@ Wlj.frame.functions.app.widgets.LockingTitles = function(el, grid){
 	 * TODO need?
 	 */
 	this.dataScrollContaienr = new Ext.XTemplate('<div style="height:auto;"></div>');
-	this.columnTemplate = new Ext.XTemplate('<div style="width:{width}px;height:auto;float:left;"></div>');
-	this.cellTemplate = new Ext.XTemplate('<div class="ygc-cell ygc-row {fieldClass} {oddc}" style="width:100%;height:'+this.lineHeight+'px;">{data}</div>');
+	this.columnTemplate = new Ext.XTemplate('<div style="width:{width}px;height:auto;float:left;" dataIndex={dataIndex}></div>');
+	this.cellTemplate = new Ext.XTemplate('<div class="ygc-cell ygc-row {fieldClass} {oddc}" style="width:100%;height:'+this.lineHeight+'px;" rowIndex={rowIndex}>{data}</div>');
 	this.initialElements();
 };
 Ext.extend(Wlj.frame.functions.app.widgets.LockingTitles, Ext.util.Observable, {
@@ -1394,6 +1439,15 @@ Ext.extend(Wlj.frame.functions.app.widgets.LockingTitles, Ext.util.Observable, {
 		this.headerContaienr = this.headerContaienr.append(this.el,{},true);
 		this.dataContainer = this.dataContainer.append(this.el,{},true);
 		this.dataScrollContaienr = this.dataScrollContaienr.append(this.dataContainer , {}, true);
+		var _this = this;
+		this.dataContainer.on('mousedown', function(eve, html, obj){
+			eve.stopEvent();
+			_this.createDragGhost(eve, html, obj);
+		});
+		this.dataContainer.on('click', function(eve, html, obj){
+			_this.gridView.clearSelect();
+			_this.gridView.selectByIndex(parseInt(html.getAttribute('rowIndex')));
+		});
 		this.el.applyStyles({
 			width : this.viewWidth + 'px'
 		});
@@ -1474,14 +1528,18 @@ Ext.extend(Wlj.frame.functions.app.widgets.LockingTitles, Ext.util.Observable, {
 			},
 			listeners : {
 				afterrender : function( tileThis ){
-//					tileThis.el.on('click',function(eve){
-//						eve.stopEvent();
-//						if(!tileThis.el.first().hasClass('ygh-hd-order-desc')){
-//							_this._APP.sortByDataIndex(tileThis.data.name,'desc');
-//						}else{
-//							_this._APP.sortByDataIndex(tileThis.data.name,'asc');
-//						}
-//					});
+					tileThis.el.on('click',function(eve){
+						eve.stopEvent();
+						if(!tileThis.el.first().hasClass('ygh-hd-order-desc')){
+							tileThis.clearSortIcon();
+							tileThis.addSortIcon('desc');
+							_this.gridView._APP.sortByDataIndex(tileThis.data.name,'desc');
+						}else{
+							tileThis.clearSortIcon();
+							tileThis.addSortIcon('asc');
+							_this.gridView._APP.sortByDataIndex(tileThis.data.name,'asc');
+						}
+					});
 //					tileThis.el.on('contextmenu',function(eve, html, obj){
 //						eve.stopEvent();
 //						_this.onTitleFieldContextMenu(eve, html, obj, []);
@@ -1505,8 +1563,32 @@ Ext.extend(Wlj.frame.functions.app.widgets.LockingTitles, Ext.util.Observable, {
 		var width =  tf.resutlWidth ? tf.resutlWidth : _this.defaultFieldWidth;
 		width = parseInt(width)+12
 		this.columnContainers.push(this.columnTemplate.append(this.dataScrollContaienr, {
-			width : width
+			width : width,
+			dataIndex : tf.name
 		},true));
+	},
+	getCellData : function(html){
+		if(!Ext.fly(html).hasClass("ygc-cell")){
+			html = Ext.fly(html).parent(".ygc-cell").dom;
+		}
+		if(!html) return false;
+		var recordIndex = parseInt(html.getAttribute('rowIndex'));
+		var columnIndex = html.parentNode.getAttribute('dataIndex');
+		var data = {};
+		data.name = columnIndex;
+		data.value = this.store.getAt(recordIndex).get(columnIndex);
+		return data;
+	},
+	createDragGhost : function(eve, html, obj){
+		var data = this.getCellData(html);
+		if(this.store.fields.get(data.name).enableCondition === false){
+			return false;
+		}
+		var ds = new Wlj.frame.functions.app.widgets.CellDD(Ext.fly(html), {
+			dragData : {tile:{data:data}},
+			ddGroup : 'searchDomainDrop'
+		});
+		ds.handleMouseDown(eve, ds);
 	},
 	getTitleClass : function(field){
 		var dataType = field.dataType;
@@ -1535,7 +1617,8 @@ Ext.extend(Wlj.frame.functions.app.widgets.LockingTitles, Ext.util.Observable, {
 					{
 						fieldClass : fieldClass,
 						data : fData,
-						oddc : oddc
+						oddc : oddc,
+						rowIndex : index
 					});
 		});
 	},
