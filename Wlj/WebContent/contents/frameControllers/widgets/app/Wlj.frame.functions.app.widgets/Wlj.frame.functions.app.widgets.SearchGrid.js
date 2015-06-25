@@ -1228,7 +1228,7 @@ Ext.extend(Wlj.frame.functions.app.widgets.ComplexTitle, Ext.util.Observable, {
 		this.containerTemplate = new Ext.XTemplate('<div style="height:'+this.height+'px;padding-left:'+this.paddingLeft+'px;width:100%;">{innerGroups}</div>');
 	},
 	buildCell : function(){
-		this.cellTemplate = new Ext.XTemplate('<div class="ygh-hd" style="text-align:center;height:'+this.height+'px;width:{width}px;float: left;display:{display};">{groupTitle}</div>');
+		this.cellTemplate = new Ext.XTemplate('<div class="ygh-hd  ygh-gp-hd" style="height:'+this.height+'px;width:{width}px;display:{display};"><div class="gp-close"></div>{groupTitle}</div>');
 	},
 	processCells : function(){
 		var _this = this;
