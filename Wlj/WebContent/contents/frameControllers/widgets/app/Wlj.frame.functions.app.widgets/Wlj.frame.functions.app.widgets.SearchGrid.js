@@ -211,20 +211,23 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 		if(Ext.fly(html).hasClass('ygc-cell-no')){
 			if(!row.hasClass('ygc-row-selected')){
 				row.addClass('ygc-row-selected');
-				_this.fireEvent('recordselect',this.store.getAt(rowIndex), this.store, html);
+				_this.fireEvent('recordselect', this.store.getAt(rowIndex), this.store, html);
 			}else{
 				row.removeClass('ygc-row-selected');
 			}
-			return;
 		}else{
 			if(!row.hasClass('ygc-row-selected')){
 				_this.clearSelect();
 				row.addClass('ygc-row-selected');
-				_this.fireEvent('recordselect',this.store.getAt(rowIndex), this.store, html);
+				_this.fireEvent('recordselect', this.store.getAt(rowIndex), this.store, html);
 			}else{
 				_this.clearSelect();
 				row.removeClass('ygc-row-selected');
 			}
+		}
+		
+		if(this.lockingViewBuilder){
+			this.lockingViewBuilder.addClickStyle(rowIndex);
 		}
 	},
 	onRowDblclick : function(eve, html, obj){
@@ -753,7 +756,7 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 				fieldHTML =
 					'<tpl for="'+tf.name+'">'+
 					'<div title="{title}" class="ygc-cell '+_this.getFieldClass(tf)+'" style="position: relative; margin: 0px; width: '+
-					(tf.resutlWidth?tf.resutlWidth:_this.defaultFieldWidth)+'px; float: left; height: 27px; '+(tf.hidden?'display:none;':'')+'">'+
+					(tf.resutlWidth?tf.resutlWidth:_this.defaultFieldWidth)+'px; float: left; height: 27px; '+((tf.hidden || tf.lockingView)?'display:none;':'')+'">'+
 					'{display}'+
 					'</div>'+
 					'</tpl>';
@@ -983,13 +986,13 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 								this.proxy.getEl().dom.innerText = this.tile.el.dom.innerText;
 							};
 						}
-						if(tf.hidden){
+						if(tf.hidden || tf.lockingView){
 							this.hide();
 						}
 					}
 				}
 			});
-			if(!tf.hidden){
+			if(!tf.hidden && !tf.lockingView){
 				_this.recordWidth = parseInt(_this.recordWidth) + parseInt(fTile.baseMargin)*2 + parseInt(fTile.baseWidth) + 12;
 			}
 			return fTile;
@@ -1247,7 +1250,7 @@ Ext.extend(Wlj.frame.functions.app.widgets.ComplexTitle, Ext.util.Observable, {
 				}else{
 					gb.width = ft.hidden ? 0 : ft.baseMargin + ft.baseWidth;
 				}
-				if(ft.hidden !== true ){
+				if(ft.hidden !== true && ft.lockingView !== true){
 					gb.defaultColumn.push(ftIndex -1);
 				}
 				ftIndex ++;
@@ -1418,7 +1421,7 @@ Ext.extend(Wlj.frame.functions.app.widgets.LockingTitles, Ext.util.Observable, {
 			dragable : false,
 			baseSize : _this.titleHeight,
 			baseWidth : _this.viewWidth,
-			baseMargin : 1,
+			baseMargin : 0,
 			recordView : this,
 			cls : 'ygh-container',
 			float : 'left',
@@ -1454,6 +1457,9 @@ Ext.extend(Wlj.frame.functions.app.widgets.LockingTitles, Ext.util.Observable, {
 			float : 'left',
 			cls : 'ygh-hd '+_this.getTitleClass(tf),
 			baseMargin : 0,
+			style : {
+				lineHeight : _this.titleHeight+'px'
+			},
 			html : tfHTML,
 			data : {
 				name : tf.name,
@@ -1523,7 +1529,7 @@ Ext.extend(Wlj.frame.functions.app.widgets.LockingTitles, Ext.util.Observable, {
 			var fData = _this.formatFieldData(tf,_this.translateFieldData(tf, record.get(tf.name)));
 			var fieldClass = _this.getFieldClass(tf);
 			var index = record.store.indexOf(record);
-			var oddc = index % 2 ===0 ? "ygc-row-odd" : "";
+			var oddc = index % 2 ===0 ? "ygc-row-odd " : "";
 			_this.cellTemplate.append(
 					_this.columnContainers[_this.lockingColumns.indexOf(tf)],
 					{
@@ -1582,6 +1588,18 @@ Ext.extend(Wlj.frame.functions.app.widgets.LockingTitles, Ext.util.Observable, {
 			return dataType.getFieldClass();
 		}
 		return '';
+	},
+	setLineStyle : function(lineNumber, className){
+		var len = this.columnContainers.length;
+		for(var i=0; i<len; i++){
+			if(this.columnContainers[i].dom.childNodes[lineNumber]){
+				this.columnContainers[i].dom.childNodes[lineNumber].className += className;
+			}
+		}
+	},
+	addClickStyle : function(lineNumber){
+		var selectClass = ' ygc-row-selected ';
+		this.setLineStyle(lineNumber, selectClass);
 	}
 });
 
