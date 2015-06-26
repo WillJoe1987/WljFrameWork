@@ -58,7 +58,7 @@ Ext.extend(Wlj.frame.functions.plugin.ConditionDink, Ext.util.Observable, {
 		var searchPanel = this.appObject.searchDomain.searchPanel;
 		var _this = this;
 		searchPanel.addButton({
-			text : 'Dinking'
+			text : '保存查询条件'
 		}, function(){
 			Wlj.frame.functions.plugin.ConditionDink.DINKNAMEWIN.show();
 		}, this);
