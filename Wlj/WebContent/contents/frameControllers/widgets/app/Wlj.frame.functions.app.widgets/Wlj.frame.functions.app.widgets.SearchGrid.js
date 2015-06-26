@@ -275,12 +275,12 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 		
 		this.lockedElement = body.createChild({
 			tag : 'div',
-			style : 'width:10%;float:left;min-height:1px;'
+			style : 'float:left;min-height:1px;'
 		});
 		
 		this.dynaticElement = body.createChild({
 			tag : 'div',
-			style : 'width:89%;float:left;'
+			style : 'float:left;'
 		});
 		
 		this.leftPageElement = body.createChild({
@@ -356,7 +356,7 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 			this.lockingViewBuilder = new Wlj.frame.functions.app.widgets.LockingTitles(this.lockedElement, this);
 		}
 		this.hdElement.applyStyles({
-			height : this.titleHeight
+			height : this.titleHeight + 'px'
 		});
 		this.titleTile.titleTile.el.applyStyles({
 			top : 0,
@@ -365,7 +365,7 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 			marginLeft : 0
 		});
 		this.dtElement.applyStyles({
-			width : this.titleTile.titleTile.el.getViewSize().width
+			width : this.titleTile.titleTile.el.getViewSize().width + 'px'
 		});
 		
 	},
@@ -378,7 +378,7 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 			 * TODO use css property:margin-top . to be refix.
 			 */
 			for(var i=0;i<sc.length;i++){
-				sc[i].dom.style.marginTop = -top;
+				sc[i].dom.style.marginTop = -top + 'px';
 			}
 		}
 	},
@@ -1298,7 +1298,7 @@ Ext.extend(Wlj.frame.functions.app.widgets.ComplexTitle, Ext.util.Observable, {
 		this.containerTemplate = new Ext.XTemplate('<div style="height:'+this.height+'px;padding-left:'+this.paddingLeft+'px;width:100%;">{innerGroups}</div>');
 	},
 	buildCell : function(){
-		this.cellTemplate = new Ext.XTemplate('<div groupIndex={groupIndex} class="ygh-hd  ygh-gp-hd" style="height:'+this.height+'px;width:{width}px;display:{display};"><div class="gp-open"></div>{groupTitle}</div>');
+		this.cellTemplate = new Ext.XTemplate('<div groupIndex={groupIndex} class="ygh-hd  ygh-gp-hd" style="height:'+this.height+'px;width:{width}px;display:{display};"><div class="gp-close"></div>{groupTitle}</div></div>');
 	},
 	processCells : function(){
 		var _this = this;
@@ -1641,7 +1641,11 @@ Ext.extend(Wlj.frame.functions.app.widgets.LockingTitles, Ext.util.Observable, {
 		},true));
 	},
 	getCellData : function(html){
-		var row = Ext.fly(html).parent(".ygc-row");
+		var row = Ext.fly(html);
+		if(!row) return false;
+		if(!row.hasClass('ygc-row')){
+			row = row.parent(".ygc-row");
+		}
 		if(!row) return false;
 		if(!Ext.fly(html).hasClass("ygc-cell")){
 			html = Ext.fly(html).parent(".ygc-cell").dom;
