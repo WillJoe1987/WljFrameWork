@@ -12,6 +12,8 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 	needRN : false,
 	columnGroups : false,
 	
+	pagSrollingLevel : 'top', // top,buttom,title,{groupLevel}
+	
 	beresized : function(p,aw,ah,rw,rh){
 		var h = parseInt(ah, 10);
 		var titleH = this.titleTile.titleTile.el.getViewSize().height;
@@ -209,6 +211,10 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 			eve.stopEvent();
 			_this.onContextMenu(eve, html, obj, []);
 		});
+		this.scrollElement.on('scroll',function(){
+			_this.synHDScroll();
+			_this.synCKScroll();
+		});
 	},
 	onRowClick : function(eve, html, obj){
 		var _this = this;
@@ -220,6 +226,9 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 		if(Ext.fly(html).hasClass('ygc-cell-no')){
 			if(!row.hasClass('ygc-row-selected')){
 				row.addClass('ygc-row-selected');
+				if(this.lockingViewBuilder){
+					this.lockingViewBuilder.addClickStyle(rowIndex);
+				}
 				_this.fireEvent('recordselect', this.store.getAt(rowIndex), this.store, html);
 			}else{
 				row.removeClass('ygc-row-selected');
@@ -228,16 +237,16 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 			if(!row.hasClass('ygc-row-selected')){
 				_this.clearSelect();
 				row.addClass('ygc-row-selected');
+				if(this.lockingViewBuilder){
+					this.lockingViewBuilder.addClickStyle(rowIndex);
+				}
 				_this.fireEvent('recordselect', this.store.getAt(rowIndex), this.store, html);
 			}else{
 				_this.clearSelect();
-				row.removeClass('ygc-row-selected');
+				//row.removeClass('ygc-row-selected');
 			}
 		}
 		
-		if(this.lockingViewBuilder){
-			this.lockingViewBuilder.addClickStyle(rowIndex);
-		}
 	},
 	onRowDblclick : function(eve, html, obj){
 		var _this = this;
@@ -250,6 +259,7 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 	},
 	createDragGhost : function(eve, html, obj){
 		var data = this.getCellData(html);
+		if(data === false) return false;
 		if(this.store.fields.get(data.name).enableCondition === false){
 			return false;
 		}
@@ -262,7 +272,6 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 	initElements : function(){
 		var Element = Ext.Element;
 		var body = this.body;
-		
 		
 		this.lockedElement = body.createChild({
 			tag : 'div',
@@ -303,6 +312,7 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 	},
 	getCellData : function(html){
 		var row = Ext.fly(html).parent('.ygc-row');
+		if(!row) return false;
 		var rowIndex = parseInt(row.dom.getAttribute('rowIndex'));
 		if(!Ext.fly(html).hasClass("ygc-cell")){
 			html = Ext.fly(html).parent(".ygc-cell").dom;
@@ -357,10 +367,7 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 		this.dtElement.applyStyles({
 			width : this.titleTile.titleTile.el.getViewSize().width
 		});
-		this.scrollElement.on('scroll',function(){
-			_this.synHDScroll();
-			_this.synCKScroll();
-		});
+		
 	},
 	
 	synCKScroll : function(){
@@ -627,10 +634,29 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 	setFieldTitle : function(cfg){
 		this.titleTile.setFieldTitle(cfg);
 	},
-	scrollNextPageColumn : function(){
-		this.scrollElement.scrollTo('left',300,true);
+	getPaginScrollObject : function(){
+		if(this.pagSrollingLevel == 'top'){
+			return this.titleTile.CTO[this.titleTile.CTO.length - 1];
+		}else if(this.pagSrollingLevel == 'buttom'){
+			return this.titleTile.CTO[0];
+		}else if(this.pagSrollingLevel == 'tile'){
+			return false;
+		} else if(Ext.isNumber(this.pagSrollingLevel)){
+			return this.titleTile.CTO[this.pagSrollingLevel];
+		}else return false;
 	},
-	scrollPrevPageColumn : function(){}
+	scrollNextPageColumn : function(){
+		var scrollObject = this.getPaginScrollObject();
+		if(!scrollObject) return false;
+		var position = scrollObject.getNextGroupPosition();
+		this.scrollElement.scrollTo('left',position,true);
+	},
+	scrollPrevPageColumn : function(){
+		var scrollObject = this.getPaginScrollObject();
+		if(!scrollObject) return false;
+		var position = scrollObject.getPrevGroupPosition();
+		this.scrollElement.scrollTo('left',position,true);
+	}
 });
 Ext.reg('searchgridview', Wlj.frame.functions.app.widgets.SearchGrid);
 Wlj.frame.functions.app.widgets.TitleTile = function(cfg){
@@ -1394,6 +1420,53 @@ Ext.extend(Wlj.frame.functions.app.widgets.ComplexTitle, Ext.util.Observable, {
 				useLevel.collapseGroup(this.groups[index].defaultColumn[i]);
 			}
 		}
+	},
+	
+	
+	/**
+	 * TODO it will do nothing when the width of the group elememt is longger than the whole grid width.
+	 */
+	getNextGroupPosition : function(){
+		var hdWidth = this.gridTitle.searchGridView.hdElement.getWidth();
+		var hdScrollLeft = this.gridTitle.searchGridView.hdElement.dom.scrollLeft;
+		var nodeIndex = 0;
+		while(nodeIndex < this.dom.childNodes.length){
+			var groupEl = Ext.fly(this.dom.childNodes[nodeIndex]);
+			var nodeLeft = groupEl.dom.offsetLeft;
+			var nodeRight = nodeLeft + groupEl.getWidth();
+			if(((nodeRight - hdScrollLeft) > hdWidth) && ((nodeLeft - hdScrollLeft) < hdWidth)){
+				return nodeLeft;
+			}else if((nodeRight - hdScrollLeft) == hdWidth){
+				if(nodeIndex == this.dom.childNodes.length-1){
+					return nodeLeft;
+				}else{
+					return nodeRight
+				}
+			}
+			nodeIndex ++ ;
+		}
+		return hdWidth;
+	},
+	getPrevGroupPosition : function(){
+		var hdWidth = this.gridTitle.searchGridView.hdElement.getWidth();
+		var hdScrollLeft = this.gridTitle.searchGridView.hdElement.dom.scrollLeft;
+		var nodeIndex = this.dom.childNodes.length - 1;
+		while(nodeIndex >= 0){
+			var groupEl = Ext.fly(this.dom.childNodes[nodeIndex]);
+			var nodeLeft = groupEl.dom.offsetLeft;
+			var nodeRight = nodeLeft + groupEl.getWidth();
+			if(((nodeRight - hdScrollLeft) > 0 ) && ((nodeLeft - hdScrollLeft) < 0)){
+				return nodeRight - hdWidth;
+			}else if((nodeRight - hdScrollLeft) == 0 ){
+				if(nodeIndex == 0){
+					return 0;
+				}else{
+					return nodeRight - hdWidth;
+				}
+			}
+			nodeIndex -- ;
+		}
+		return 0;
 	}
 });
 
@@ -1430,7 +1503,7 @@ Ext.extend(Wlj.frame.functions.app.widgets.LockingTitles, Ext.util.Observable, {
 		fields.each(function(field){
 			if(field.lockingView && field.text && !field.hidden){
 				_this.lockingColumns.add(field);
-				var widthToAdd = field.width ? field.width : _this.defaultFieldWidth;
+				var widthToAdd = field.resutlWidth ? field.resutlWidth : _this.defaultFieldWidth;
 				_this.viewWidth = _this.viewWidth + widthToAdd + 12;
 			}
 		});
@@ -1568,6 +1641,8 @@ Ext.extend(Wlj.frame.functions.app.widgets.LockingTitles, Ext.util.Observable, {
 		},true));
 	},
 	getCellData : function(html){
+		var row = Ext.fly(html).parent(".ygc-row");
+		if(!row) return false;
 		if(!Ext.fly(html).hasClass("ygc-cell")){
 			html = Ext.fly(html).parent(".ygc-cell").dom;
 		}
@@ -1581,6 +1656,7 @@ Ext.extend(Wlj.frame.functions.app.widgets.LockingTitles, Ext.util.Observable, {
 	},
 	createDragGhost : function(eve, html, obj){
 		var data = this.getCellData(html);
+		if(data === false) return false;
 		if(this.store.fields.get(data.name).enableCondition === false){
 			return false;
 		}
