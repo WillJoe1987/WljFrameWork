@@ -275,12 +275,12 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 		
 		this.lockedElement = body.createChild({
 			tag : 'div',
-			style : 'float:left;min-height:1px;'
+			style : 'width:10%;float:left;min-height:1px;'
 		});
 		
 		this.dynaticElement = body.createChild({
 			tag : 'div',
-			style : 'float:left;'
+			style : 'width:89%;float:left;'
 		});
 		
 		this.leftPageElement = body.createChild({
@@ -1298,7 +1298,7 @@ Ext.extend(Wlj.frame.functions.app.widgets.ComplexTitle, Ext.util.Observable, {
 		this.containerTemplate = new Ext.XTemplate('<div style="height:'+this.height+'px;padding-left:'+this.paddingLeft+'px;width:100%;">{innerGroups}</div>');
 	},
 	buildCell : function(){
-		this.cellTemplate = new Ext.XTemplate('<div groupIndex={groupIndex} class="ygh-hd  ygh-gp-hd" style="height:'+this.height+'px;width:{width}px;display:{display};"><div class="gp-close"></div>{groupTitle}</div></div>');
+		this.cellTemplate = new Ext.XTemplate('<div groupIndex={groupIndex} class="ygh-hd  ygh-gp-hd" style="height:'+this.height+'px;width:{width}px;display:{display};"><div class="gp-close"></div>{groupTitle}</div>');
 	},
 	processCells : function(){
 		var _this = this;
