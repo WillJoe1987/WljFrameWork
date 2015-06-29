@@ -1293,6 +1293,43 @@ Ext.extend(Wlj.frame.functions.app.widgets.ComplexTitle, Ext.util.Observable, {
 			var groupIndex = parseInt(target.parent('.ygh-gp-hd').dom.getAttribute('groupIndex'));
 			_this.collapseGroup(groupIndex);
 		});
+		this.el.on('contextmenu', function(eve, html, object){
+			eve.stopEvent();
+			_this.contextMenuHandler(eve);
+		});
+	},
+	contextMenuHandler : function(e){
+		var menuItems = [];
+		var _this = this;
+		var checkChangeHandler = function(item, checked){
+			var idx = item.ownerCt.items.indexOf(item);
+			if(!checked){
+				for(var ci=0,len=item.ownerCt.items.getCount();ci<len;ci++){
+					if(item.ownerCt.items.itemAt(ci).checked){
+						_this.collapseGroup(idx);
+						break;
+					}else continue;
+				}
+				
+			}else{
+				_this.expandGroup(idx);
+			}
+		};
+		for(var i=0,len = this.groups.length;i<len;i++){
+			menuItems.push({
+				text : this.groups[i].groupTitle,
+				xtype : 'menucheckitem',
+				hideOnClick : false,
+				checked : !(this.dom.childNodes[i].style.display === 'none'),
+				hidden : !(this.groups[i].defaultColumn.length > 0),
+				listeners : {
+					checkchange : checkChangeHandler
+				}
+			});
+		}
+		new Ext.menu.Menu({
+			items: menuItems
+		}).showAt(e.getXY());
 	},
 	buildContainer : function(){
 		this.containerTemplate = new Ext.XTemplate('<div style="height:'+this.height+'px;padding-left:'+this.paddingLeft+'px;width:100%;">{innerGroups}</div>');
