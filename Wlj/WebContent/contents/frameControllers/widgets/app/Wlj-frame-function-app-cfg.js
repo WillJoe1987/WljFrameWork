@@ -8,7 +8,9 @@ Wlj.frame.functions.app.Util = {
 	needInfo : true,                                                
 	needDebug : true,                                              
 	
-	pluginTrigger : true,															//应用插件开关
+	pluginTrigger : false,															//应用插件开关
+	
+	hoverXY : false,																//是否开启行列鼠标悬浮效果
 	
 	defaultDateFormat : 'Y-m-d',													//默认日期类型转JSON格式	
 		

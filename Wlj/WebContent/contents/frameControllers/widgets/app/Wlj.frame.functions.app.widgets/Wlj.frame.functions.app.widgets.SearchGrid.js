@@ -11,6 +11,7 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 	rnWidth : 40,
 	needRN : false,
 	columnGroups : false,
+	hoverXY : false,
 	
 	pagSrollingLevel : 'top', // top,buttom,title,{groupLevel}
 	
@@ -187,15 +188,16 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 		this.getLayoutTarget().on('click',function(eve, html, obj){
 			_this.onRowClick(eve, html, obj);
 		});
-		
-		this.leftPageElement.on('click', function(){
-			_this.scrollPrevPageColumn();
-		});
-		
-		this.rightPageElement.on('click', function(){
-			_this.scrollNextPageColumn();
-		});
-		
+		if(this.leftPageElement){
+			this.leftPageElement.on('click', function(){
+				_this.scrollPrevPageColumn();
+			});
+		}
+		if(this.rightPageElement){
+			this.rightPageElement.on('click', function(){
+				_this.scrollNextPageColumn();
+			});
+		}
 		this.getLayoutTarget().on('dblclick', function(eve, html, obj){
 			eve.stopEvent();
 			_this.onRowDblclick(eve, html, obj);
@@ -215,6 +217,22 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 			_this.synHDScroll();
 			_this.synCKScroll();
 		});
+		/*是否开启行列数据*/
+		if(this.hoverXY){
+			this.scrollElement.on('mouseover', function(eve ,html, obj){
+				eve.stopEvent();
+				if(!Ext.fly(html).hasClass('ygc-cell')){
+					return false;
+				}
+				var row = Ext.fly(html).parent('.ygc-row');
+				if(!row) return false;
+				var rowIndex = parseInt(row.dom.getAttribute('rowIndex'));
+				var colIndex = Array.prototype.indexOf.call(row.dom.childNodes, html);
+				var dataIndex = _this.store.fields.itemAt(colIndex-1).name;
+				_this.clearHover();
+				_this.hoverFields(dataIndex, rowIndex);
+			});
+		}
 	},
 	onRowClick : function(eve, html, obj){
 		var _this = this;
@@ -282,17 +300,16 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 			tag : 'div',
 			style : 'width:89%;float:left;'
 		});
-		
-		this.leftPageElement = body.createChild({
-			tag : 'div',
-			cls : 'ygh-toleft'
-		});
-		
-		this.rightPageElement = body.createChild({
-			tag : 'div',
-			cls : 'ygh-toright'
-		});
-		
+		if(this.columnGroups){
+			this.leftPageElement = body.createChild({
+				tag : 'div',
+				cls : 'ygh-toleft'
+			});
+			this.rightPageElement = body.createChild({
+				tag : 'div',
+				cls : 'ygh-toright'
+			});
+		}
 		this.hdElement = this.dynaticElement.createChild({
 			tag : 'div',
 			cls : 'yc-grid-header',
@@ -594,6 +611,28 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 			rows[i].style.width = this.titleTile.recordWidth+'px';
 		}
 		this.dtElement.dom.style.width = this.titleTile.recordWidth+'px';
+	},
+	hoverFields : function(fields,lineNumber){
+		var indexes = this.getFieldsIndex(fields);
+		var rows = this.getRows();
+		for(var i=0;i<rows.length;i++){
+			if(i==lineNumber){
+				var clen = rows[i].childNodes.length;
+				for(var j=0; j<clen - 1; j++){
+					if(j == indexes[0]){
+						Ext.fly(rows[i].childNodes[j+1]).addClass('ygc-cell-over');
+					}else{
+						Ext.fly(rows[i].childNodes[j+1]).addClass('ygc-cell-other-over');
+					}
+				}
+			}else{
+				Ext.fly(rows[i].childNodes[indexes[0]+1]).addClass('ygc-cell-other-over');
+			}
+		}
+	},
+	clearHover : function(){
+		this.el.select('.ygc-cell-over').removeClass('ygc-cell-over');
+		this.el.select('.ygc-cell-other-over').removeClass('ygc-cell-other-over');
 	},
 	getFieldsIndex : function(fields){
 		var fnames = [];

@@ -15,6 +15,8 @@ Wlj.frame.functions.app.widgets.ResultContainer = Ext.extend(Ext.Panel, {
 	gridLockedHole : false,
 	gridLockedOnce : false,
 	
+	hoverXY : false,
+	
 	suspendViews : false,
 	suspendViewsWidth : 0,
 	alwaysLockCurrentView : false,
@@ -236,6 +238,7 @@ Wlj.frame.functions.app.widgets.ResultContainer = Ext.extend(Ext.Panel, {
 				store : this.store,
 				searchDomain : this,
 				_APP : this._APP,
+				hoverXY : this.hoverXY,
 				pageSize : this.pageSize,
 				needRN : this.needRN,
 				rnWidth : this.rnWidth,

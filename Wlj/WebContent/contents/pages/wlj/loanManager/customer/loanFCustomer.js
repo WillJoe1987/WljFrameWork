@@ -3,6 +3,9 @@ imports([
 	'/contents/pages/wlj/loanManager/loanWidgetsOnce.js',
 	'/contents/pages/wlj/loanManager/loan.util.js'
 ]);
+
+Wlj.frame.functions.app.Util.needRN = false;
+
 Wlj.frame.functions.app.widgets.ResultContainer.prototype.editViewText = '客户视图';
 
 /**
@@ -27,20 +30,61 @@ lookupTypes = ['IF_XD','FXQ020','LOAN_CUST_TYPE',{
 
 
 var fields = [
-              {name:'CUST_ID',text:'客户编号',hidden:true},
-              {name:'CUST_NAME',text:'客户名称',searchField:true,allowBlank:false},
+              {name:'CUST_ID',text:'客户编号',resutlWidth : 75,hidden:false,lockingView:true},
+              {name:'CUST_NAME',text:'客户名称',resutlWidth : 75,searchField:true,allowBlank:false,lockingView:true},
               {name:'IDENT_TYPE',text:'证件类型',hidden:true},
+              
               {name:'IDENT_NO',text:'证件号码',searchField:true,allowBlank:false},
               {name:'CUST_TYPE',text:'客户类型',translateType:'LOAN_CUST_TYPE',hidden:true},
               {name:'ORG_ID',text:'地区',translateType:'ORG',searchField:true,allowBlank:false},
               {name:'ORG_NAME',text:'地区名称',hidden:true},
+              
               {name:'MANAGER',text:'客户经理',translateType:'USER',searchField:true,allowBlank:false},
               {name:'MANAGER_NAME',text:'客户经理姓名',hidden:true},
               {name:'IF_XD',text:'是否续贷客户',translateType:'IF_XD',searchField:true},
               {name:'INDUSTRY', text : '行业', gridField : false,translateType:'FXQ020'},
               {name:'CREATOR', text : '创建人',translateType:'USER'},
-              {name:'CREATE_DATE',text:'创建日期',dataType:'date'}
+              {name:'CREATE_DATE',text:'创建日期',dataType:'date'},
+              {name:'ADD1',text:'ADD1'},
+              {name:'ADD2',text:'ADD2'},
+              {name:'ADD3',text:'ADD3'},
+              {name:'ADD4',text:'ADD4'},
+              {name:'ADD5',text:'ADD5'},
+              {name:'ADD6',text:'ADD6'}
               ];
+/*var resultDomainCfg = {
+		columnGroups : [
+		                [
+		                 {includeCount : 3, groupTitle : '我的1'} ,
+		                 {includeCount : 4, groupTitle : '我的2'} ,
+		                 {includeCount : 4, groupTitle : '我的3'} ,
+		                 {includeCount : 4, groupTitle : '我的4'} ,
+		                 {includeCount : 1234, groupTitle : '我的5'}
+		                 ]
+		                ,
+		                 [
+		                  {includeCount : 2 , groupTitle : '2层1' } ,
+		                  {includeCount : 2 , groupTitle : '2层2' } ,
+		                  {includeCount : 1 , groupTitle : '2层3' } 
+		                  ]
+		                ]
+	};
+*/
+var tbar = [{
+	text : 'hide&show',
+	handler : function(){
+		debugger;
+		//hideGridFields([1,7]);
+		_app.resultDomain.searchGridView.hoverFields('MANAGER',3);
+	}
+},{
+	text : 'hide&show',
+	handler : function(){
+		//showGridFields([1,7]);
+		_app.resultDomain.searchGridView.clearHover();
+		//_app.resultDomain.searchGridView.titleTile.CTO[1].expandGroup(1);
+	}
+}];
 
 
 var createView = true;

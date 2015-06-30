@@ -1024,6 +1024,7 @@ Wlj.frame.functions.app.App.prototype.createResultCfg = function(){
 	createResultCfg.editFormCfgs = this.editFormCfgs;
 	createResultCfg.detailFormCfgs = this.detailFormCfgs;
 	createResultCfg.resultDomainCfg = this.resultDomainCfg ? this.resultDomainCfg : false;
+	createResultCfg.hoverXY = WLJUTIL.hoverXY;
 	createResultCfg.listeners = {
 		beforeviewhide : function(theView){
 			return _this.fireEvent('beforeviewhide', theView);
