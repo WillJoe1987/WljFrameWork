@@ -183,6 +183,9 @@ body,td,th {
     cursor: default;
     position:relative;
 }
+.ygc-cell-over{background-color: #009582;color: #fff;}
+.ygc-cell-other-over{background-color: #bce7e2;color: #222;}
+
 .ygc-cell-left{
 	text-align: left;
 }
