@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Demo</title>
+	<link type="text/css" href="../main.css" rel="stylesheet" />
+	<script type="text/javascript" src="../../../../../js/jquery-1.7.2.min.js"></script>
+    <style type="text/css">
+    html,body{
+    	height: 100%;
+    	overflow: hidden;
+    }
+    body, td, th {
+	    font-size: 12px;
+	    color: #222;
+	    outline: none;
+	}
+	
+	* {
+	    font-family: 微软雅黑, 宋体;
+	}
+	
+	body {
+	    background-color: #fff;
+	    margin: 0;
+	    padding: 0;
+	}
+	
+	div, ul, li, form, p {
+	    margin: 0;
+	    padding: 0;
+	    list-style: none;
+	    border: none;
+	}
+    </style>
+    <script type="text/javascript">
+    //--此处仅演示预览效果，实际框架中勿使用-----------sta----
+    $(function(){
+    	setIH();
+    	$(window).resize(function(){
+        	setIH();
+    	});
+    });
+    function setIH(){
+    	$(".yc-tsiContainer").height($(".yc-tsiContainer").parents(".yc-tileSettings").height()-parseInt($(".yc-tsiContainer").parent().css("padding-top"),10));
+    };
+    //--此处仅演示预览效果，实际框架中勿使用-----------end----
+    </script>
+</head>
+<body>
+    <!--01 磁贴/组件 图标、颜色设置    sta  style="display: none;"-->
+    <!--说明：
+    	1、可能需要根据实际情况修改yc-tileSettings的z-index值，当前默认为9000，yc-tsColor的z-index值为9001。
+    	2、需要根据浏览器窗口可视区域高度实时（即窗口尺寸改变时）设置yc-tsiContainer的height，以便能自适应图标显示区域的滚动条。
+	-->
+	<div class="yc-tileSettings">
+		<div class="yc-tsColor">
+			<div class="yc-tsTitle">颜色选择</div>
+			<a class="tile_c1" href="javascript:void(0);"><div></div></a>
+			<a class="tile_c2 tc-selected" href="javascript:void(0);"><div></div></a>
+			<a class="tile_c3" href="javascript:void(0);"><div></div></a>
+			<a class="tile_c4" href="javascript:void(0);"><div></div></a>
+			<a class="tile_c5" href="javascript:void(0);"><div></div></a>
+			<a class="tile_c6" href="javascript:void(0);"><div></div></a>
+			<a class="tile_c7" href="javascript:void(0);"><div></div></a>
+			<a class="tile_c8" href="javascript:void(0);"><div></div></a>
+			<a class="tile_c9" href="javascript:void(0);"><div></div></a>
+			<a class="tile_c10" href="javascript:void(0);"><div></div></a>
+			<a class="tile_c11" href="javascript:void(0);"><div></div></a>
+			<a class="tile_c12" href="javascript:void(0);"><div></div></a>
+		</div>
+		<div class="yc-tsIcon">
+			<div class="yc-tsTitle">图标选择</div>
+			<div class="yc-tsiContainer">
+				<a class="ico-t-1" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-2" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-3" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-4" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-5" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-6" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-7 tc-selected" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-8" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-9" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-10" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-11" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-12" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-13" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-14" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-15" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-16" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-17" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-18" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-19" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-20" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-21" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-22" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-23" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-24" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-25" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-26" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-27" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-28" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-29" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-30" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-31" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-32" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-33" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-34" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-35" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-36" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-37" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-38" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-39" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-40" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-41" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-42" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-43" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-44" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-45" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-46" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-47" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-48" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-49" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-50" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-51" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-52" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-53" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-54" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-55" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-56" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-57" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-58" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-59" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-60" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-61" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-62" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-63" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-64" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-65" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-66" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-67" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-68" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-69" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-70" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-71" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-72" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-73" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-74" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-75" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-76" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-77" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-78" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-79" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-80" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-81" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-82" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-83" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-84" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-85" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-86" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-87" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-88" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-89" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-90" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-91" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-92" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-93" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-94" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-95" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-96" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-97" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-98" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-99" href="javascript:void(0);"><div></div></a>
+				<a class="ico-t-100" href="javascript:void(0);"><div></div></a>
+			</div>	
+		</div>
+	</div>
+    <!--01 磁贴/组件 图标、颜色设置    end-->
+</body>
+</html>

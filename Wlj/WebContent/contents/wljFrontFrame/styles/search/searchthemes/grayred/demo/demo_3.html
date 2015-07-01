@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Demo</title>
+	<link type="text/css" href="../main.css" rel="stylesheet" />
+	<script type="text/javascript" src="../../../../../js/jquery-1.7.2.min.js"></script>
+    <style type="text/css">
+    body, td, th {
+	    font-size: 12px;
+	    color: #222;
+	    outline: none;
+	}
+	
+	* {
+	    font-family: 微软雅黑, 宋体;
+	}	
+	body {
+	    background-color: #fff;
+	    margin: 0;
+	    padding: 0;
+	}
+	html,body{
+	    overflow: hidden;
+	}
+	
+	div, ul, li, form, p {
+	    margin: 0;
+	    padding: 0;
+	    list-style: none;
+	    border: none;
+	}
+    </style>
+    <script type="text/javascript">
+    //--此处仅演示预览效果，实际框架中勿使用-----------sta----
+    $(function(){
+    	setCH();
+    	$(window).resize(function(){
+        	setCH();
+    	});
+    });
+    function setCH(){
+    	$(".yc-cvContainer").height($(window).height()-$(".yc-cvHeader").height());
+    };
+    //--此处仅演示预览效果，实际框架中勿使用-----------end----
+    </script>
+</head>
+<body>
+    <!--01 磁贴版客户视图首页 sta-->
+    <!--说明：
+    	1、每个磁贴须定义tile_cn样式（与首页磁贴共用，tile_c1至tile_c10），可参考icoPreview.html。
+    	2、每个磁贴须定义图标，可参考icoPreview.html。
+    	3、yc-cvContainer为具体功能页面加载区域。
+	-->
+	<div class="yc-cvHeader">
+		<div class="yc-cvhContainer">
+			<div class="yc-cvhUser">
+				<span class="yc-cvhuName">张三(zhangsan)</span>
+				<span class="yc-cvhuSNM">男，汉族，已婚</span>
+			</div>
+			<div class="yc-cvhUserInfo">
+				<div class="yc-cvhuiList"><label>客户编号：</label><span title="0023034043">0023034043</span></div>
+				<div class="yc-cvhuiList"><label>证件类型：</label><span title="身份证">身份证</span></div>
+				<div class="yc-cvhuiList"><label>证件号码：</label><span title="510123198702289987">510123198702289987</span></div>
+				<div class="yc-cvhuiList"><label>基础评级：</label><span title="显著客户">显著客户</span></div>
+				<div class="yc-cvhuiList"><label>贡献度评级：</label><span title="四星客户">四星客户</span></div>
+				<div class="yc-cvhuiList"><label>两地客户标示：</label><span title="商旅客户">商旅客户</span></div>
+			</div>
+		</div>
+		<!--客户视图 导航菜单 sta
+			说明：鼠标划入或点击时 设置<div class="yc-cvIco yc-cvIco-over">显示导航菜单
+		-->
+		<div class="yc-cvIco">
+			<div class="yc-cvMenuContainer" style="width:528px;height:384px;/*overflow-x:hidden;overflow-y:hidden;*/">
+				<div class="yc-cvMenus" style="/*width:528px;height:768px;*/ ">
+					<div class="yc-cvMenuBox yc-cvHasChild">
+						<div class="yc-cvmChild tile_c1" title="XXX">账户信息</div>
+						<div class="yc-cvmChild tile_c3 yc-cvtBr" title="XXX">信用信息</div>
+						<div class="yc-cvmChild tile_c6" title="XXX">财务信息</div>
+						<div class="yc-cvmChild tile_c5 yc-cvtBr" title="XXX">积分信息</div>
+					</div>
+					<div class="yc-cvMenuBox tile_c1" title="XXX">基本信息</div>
+					<div class="yc-cvMenuBox tile_c5" title="XXX">最新事件</div>
+					<div class="yc-cvMenuBox yc-cvHasChild">
+						<div class="yc-cvmChild tile_c10" title="XXX">产品信息</div>
+						<div class="yc-cvmChild tile_c1 yc-cvtBr" title="XXX">它行信息</div>
+						<div class="yc-cvmChild tile_c3" title="XXX">客户经理信息</div>
+						<div class="yc-cvmChild tile_c5 yc-cvtBr" title="XXX">黑名单信息</div>
+					</div>
+					<div class="yc-cvMenuBox tile_c10" title="XXX">存款情况</div>
+					<div class="yc-cvMenuBox tile_c3" title="XXX">贷款情况</div>
+					<div class="yc-cvMenuBox tile_c1" title="XXX">本期评级</div>
+					<div class="yc-cvMenuBox tile_c3" title="XXX">客户归属</div>
+					<div class="yc-cvMenuBox tile_c5" title="XXX">家庭信息</div>
+					<div class="yc-cvMenuBox tile_c6" title="XXX">财务信息</div>
+					<div class="yc-cvMenuBox tile_c10" title="XXX">行为信息</div>
+					<div class="yc-cvMenuBox tile_c1" title="XXX">基础评级趋势</div>
+				</div>
+			</div>
+		</div>
+		<!--客户视图 导航菜单 end-->
+	</div>	
+	<!--内容区域  sta-->
+	<div class="yc-cvContainer">
+		<div class="yc-cvTileContainer">
+			<div class="yc-cvtcBox">
+				<div class="yc-cvTile tile_c1"><img alt="" src="../pics/ico/tile/ico_29.png"/><br/><span>基本信息</span></div>
+				<div class="yc-cvTile tile_c3 yc-cvtBr"><img alt="" src="../pics/ico/tile/ico_62.png"/><br/><span>信用信息</span></div>
+				<div class="yc-cvTile tile_c6"><img alt="" src="../pics/ico/tile/ico_45.png"/><br/><span>账务信息</span></div>
+				<div class="yc-cvTile tile_c5 yc-cvtBr"><img alt="" src="../pics/ico/tile/ico_6.png"/><br/><span>积分信息</span></div>
+			</div>
+			<div class="yc-cvtcBox tile_c1">
+				<div class="yc-cvtcTitle">
+					<img alt="" src="../pics/ico/tile/ico_15.png"/>
+					基本信息
+				</div>
+				<div class="yc-cvtcContent">
+					<div class="yc-cvtcList1" title="XXX">性别：男</div>
+					<div class="yc-cvtcList1" title="XXX">户籍地址：上海</div>
+					<div class="yc-cvtcList1" title="XXX">民族：汉族</div>
+					<div class="yc-cvtcList1" title="XXX">政治面貌：党员</div>
+					<div class="yc-cvtcList1" title="XXX">固定电话：010-2342343</div>
+					<div class="yc-cvtcList1" title="XXX">移动电话：13800138764</div>
+					<div class="yc-cvtcList" title="XXX">户籍地址：北京市武侯区万寿桥路68号</div>
+					<div class="yc-cvtcList" title="XXX">现居住地：四川省成都市武侯区双楠少陵路245号 </div>
+				</div>
+			</div>
+			<div class="yc-cvtcBox tile_c5">
+				<div class="yc-cvtcTitle">
+					<img alt="" src="../pics/ico/tile/ico_3.png"/>
+					最新事件
+				</div>
+				<div class="yc-cvtcContent">
+					<div class="yc-cvtcList" title="XXX">2014-07-21，（5天后）客户生日。</div>
+					<div class="yc-cvtcList" title="XXX">2014-07-27，贷款账户6222456456****需还款。</div>
+					<div class="yc-cvtcList" title="XXX">2014-08-01，有1份理财产品到期。</div>
+					<div class="yc-cvtcList" title="XXX">2014-05-25，账户6222456456****产生1笔大额交易。</div>
+				</div>
+			</div>
+			<div class="yc-cvtcBox">
+				<div class="yc-cvTile tile_c10"><img alt="" src="../pics/ico/tile/ico_13.png"/><br/><span>产品信息</span></div>
+				<div class="yc-cvTile tile_c1 yc-cvtBr"><img alt="" src="../pics/ico/tile/ico_32.png"/><br/><span>他行信息</span></div>
+				<div class="yc-cvTile tile_c3"><img alt="" src="../pics/ico/tile/ico_55.png"/><br/><span>客户经理信息</span></div>
+				<div class="yc-cvTile tile_c5 yc-cvtBr"><img alt="" src="../pics/ico/tile/ico_46.png"/><br/><span>黑名单信息</span></div>
+			</div>
+			<div class="yc-cvtcBox tile_c10">
+				<div class="yc-cvtcTitle">
+					<img alt="" src="../pics/ico/tile/ico_61.png"/>
+					存款情况
+				</div>
+				<div class="yc-cvtcContent">
+					<div class="yc-cvtcList" title="XXX">统计日期：2014-12-31</div>
+					<div class="yc-cvtcList" title="XXX">贷款总额： 27,300.30元</div>
+					<div class="yc-cvtcList1" title="XXX">上期余额： 25,470.30元</div>
+					<div class="yc-cvtcList1" title="XXX">上期日均：25,678.00元</div>
+					<div class="yc-cvtcList1" title="XXX">上年余额： 27,300.30元</div>
+					<div class="yc-cvtcList1" title="XXX">上年日均：25,678.00元</div>
+				</div>
+			</div>		
+			<div class="yc-cvtcBox tile_c3">
+				<div class="yc-cvtcTitle">
+					<img alt="" src="../pics/ico/tile/ico_61.png"/>
+					贷款情况
+				</div>
+				<div class="yc-cvtcContent">
+					<div class="yc-cvtcList" title="XXX">统计日期：2014-12-31</div>
+					<div class="yc-cvtcList" title="XXX">贷款总额： 27,300.30元</div>
+					<div class="yc-cvtcList1" title="XXX">上期余额： 25,470.30元</div>
+					<div class="yc-cvtcList1" title="XXX">上期日均：25,678.00元</div>
+					<div class="yc-cvtcList1" title="XXX">上年余额： 27,300.30元</div>
+					<div class="yc-cvtcList1" title="XXX">上年日均：25,678.00元</div>
+				</div>
+			</div>
+			<div class="yc-cvtcBox tile_c1">
+				<div class="yc-cvtcTitle">
+					<img alt="" src="../pics/ico/tile/ico_18.png"/>
+					本期评级
+				</div>
+				<div class="yc-cvtcContent">
+					<div class="yc-cvtcList" title="XXX">本期AUM总额：456,738.00元</div>
+					<div class="yc-cvtcList" title="XXX">存款AUM总额：234,245.05元</div>
+					<div class="yc-cvtcList" title="XXX">理财AUM总额：456,738.00元</div>
+					<div class="yc-cvtcList" title="XXX">总贡献度总额：4234,245.05元</div>
+				</div>
+			</div>
+			<div class="yc-cvtcBox tile_c3">
+				<div class="yc-cvtcTitle">
+					<img alt="" src="../pics/ico/tile/ico_47.png"/>
+					客户归属
+				</div>
+				<div class="yc-cvtcContent">
+					<div class="yc-cvtcList" title="XXX">主办机构： 深圳华侨支行</div>
+					<div class="yc-cvtcList" title="XXX">主办客户经理： 李四</div>
+					<div class="yc-cvtcList" title="XXX">主办团队： 华侨高端客户组</div>
+					<div class="yc-cvtcList" title="XXX">协办客户经理：  王五</div>
+				</div>
+			</div>
+			<div class="yc-cvtcBox tile_c5">
+				<div class="yc-cvtcTitle">
+					<img alt="" src="../pics/ico/tile/ico_7.png"/>
+					家庭信息
+				</div>
+				<div class="yc-cvtcContent">
+					<div class="yc-cvtcList1" title="XXX">某某信息： XXXXXX</div>
+					<div class="yc-cvtcList1" title="XXX">某某信息： XXXXXX</div>
+					<div class="yc-cvtcList1" title="XXX">某某信息： XXXXXX</div>
+					<div class="yc-cvtcList1" title="XXX">某某信息： XXXXXX</div>
+					<div class="yc-cvtcList" title="XXX">某某信息： XXXXXX</div>
+					<div class="yc-cvtcList" title="XXX">某某信息： XXXXXX</div>
+				</div>
+			</div>
+			<div class="yc-cvtcBox tile_c6">
+				<div class="yc-cvtcTitle">
+					<img alt="" src="../pics/ico/tile/ico_33.png"/>
+					财务信息
+				</div>
+				<div class="yc-cvtcContent">
+					<div class="yc-cvtcList" title="XXX">某某信息： XXXXXX</div>
+					<div class="yc-cvtcList" title="XXX">某某信息： XXXXXX</div>
+					<div class="yc-cvtcList1" title="XXX">某某信息： XXXXXX</div>
+					<div class="yc-cvtcList1" title="XXX">某某信息： XXXXXX</div>
+					<div class="yc-cvtcList1" title="XXX">某某信息： XXXXXX</div>
+					<div class="yc-cvtcList1" title="XXX">某某信息： XXXXXX</div>
+				</div>
+			</div>
+			<div class="yc-cvtcBox tile_c10">
+				<div class="yc-cvtcTitle">
+					<img alt="" src="../pics/ico/tile/ico_71.png"/>
+					行为信息
+				</div>
+				<div class="yc-cvtcContent">
+					<div class="yc-cvtcList" title="XXX">某某信息： XXXXXX</div>
+					<div class="yc-cvtcList" title="XXX">某某信息： XXXXXX</div>
+					<div class="yc-cvtcList1" title="XXX">某某信息： XXXXXX</div>
+					<div class="yc-cvtcList1" title="XXX">某某信息： XXXXXX</div>
+					<div class="yc-cvtcList1" title="XXX">某某信息： XXXXXX</div>
+					<div class="yc-cvtcList1" title="XXX">某某信息： XXXXXX</div>
+				</div>
+			</div>
+			<div class="yc-cvtcBox tile_c1">
+				<div class="yc-cvtcTitle">
+					<img alt="" src="../pics/ico/tile/ico_12.png"/>
+					基础评级趋势
+				</div>
+				<div class="yc-cvtcContent">
+					这里展示图形
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--内容区域  end-->
+    
+    <!--01 磁贴版客户视图首页 end-->
+</body>
+</html>
