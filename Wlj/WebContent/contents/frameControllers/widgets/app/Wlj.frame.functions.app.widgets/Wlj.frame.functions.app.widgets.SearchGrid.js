@@ -360,21 +360,8 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 			columnGroups : _this.columnGroups ? _this.columnGroups : false
 		});
 		this.titleTile.titleTile.render(this.hdElement);
-		/**
-		 * for the locking part.
-		 */
 		this.titleHeight = this.titleTile.titleTile.el.getViewSize().height;
-		var hasLocking  = false;
-		var len = this.store.fields.items.length;
-		for(var i=0;i<len;i++){
-			if(this.store.fields.items[i].lockingView === true){
-				hasLocking = true;
-				break;
-			}
-		}
-		if(hasLocking){
-			this.lockingViewBuilder = new Wlj.frame.functions.app.widgets.LockingTitles(this.lockedElement, this);
-		}
+		this.lockingViewBuilder = new Wlj.frame.functions.app.widgets.LockingTitles(this.lockedElement, this);
 		this.hdElement.applyStyles({
 			height : this.titleHeight + 'px'
 		});
@@ -387,22 +374,16 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 		this.dtElement.applyStyles({
 			width : this.titleTile.titleTile.el.getViewSize().width + 'px'
 		});
-		
 	},
-	
 	synCKScroll : function(){
 		if(this.lockingViewBuilder){
 			var sc = this.lockingViewBuilder.columnContainers;
 			var top = this.scrollElement.dom.scrollTop;
-			/**
-			 * TODO use css property:margin-top . to be refix.
-			 */
 			for(var i=0;i<sc.length;i++){
 				sc[i].dom.style.marginTop = -top + 'px';
 			}
 		}
 	},
-	
 	synHDScroll : function(){
 		var innerHd = this.hdElement.dom ;
 		var scrollLeft = this.scrollElement.dom.scrollLeft;
@@ -714,10 +695,8 @@ Wlj.frame.functions.app.widgets.TitleTile = function(cfg){
 	this.createRecordTileEl();
 };
 Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
-	
 	alwaysField : true,
 	float : 'left',
-	
 	lineHeight : 27,
 	defaultFieldWidth : 150,
 	rnWidth : 40,
@@ -727,7 +706,6 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 	grouped : false,
 	groupLevels : 0, 
 	columnGroups : false,
-	
 	getTitleClass : function(field){
 		var dataType = field.dataType;
 		if(dataType && WLJDATATYPE[dataType]){
@@ -736,7 +714,6 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 		}
 		return '';
 	},
-	
 	resumeColumnGroup : function(){
 		this.CTO = [];
 		if(!this.columnGroups || !Ext.isArray(this.columnGroups) || !this.columnGroups.length > 0){
@@ -759,7 +736,6 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 		this.groupLevels = this.columnGroups.length;
 		return;
 	},
-	
 	createTitle : function(){
 		var _this = this;
 		_this.recordWidth = 0;
@@ -1073,7 +1049,7 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 						}
 						tileThis.el.on('contextmenu',function(eve, html, obj){
 							eve.stopEvent();
-							_this.onTitleFieldContextMenu(eve, html, obj, []);
+							_this.onTitleFieldContextMenu(eve, html, obj, [], tf);
 						});
 						this.RESIZEABLE = new Ext.Resizable(this.el, {
 							handles : 'e',
@@ -1262,8 +1238,12 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 	onTitleContextMenu : function(eve, html, obj, added){
 		this.searchGridView.onContextMenu(eve, html, obj, added);
 	},
-	onTitleFieldContextMenu : function(eve, html, obj, added){
-		this.onTitleContextMenu(eve, html, obj, added);
+	onTitleFieldContextMenu : function(eve, html, obj, added, tf){
+		added.push({
+			text : '锁定该列',
+			handler : this.lockingColumn.createDelegate(this, [tf])
+		});
+		this.onTitleContextMenu(eve, html, obj, added, tf);
 	},
 	destroy : function(){
 		this.titleTile.removeThis();
@@ -1283,6 +1263,9 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 		if(cField){
 			cField.setLabelText(cfg.text);
 		}
+	},
+	lockingColumn : function(tf){
+		this.searchGridView.lockingViewBuilder.lockColumn(tf);
 	}
 });
 
@@ -1342,7 +1325,9 @@ Ext.extend(Wlj.frame.functions.app.widgets.ComplexTitle, Ext.util.Observable, {
 				return;
 			}
 			var groupIndex = parseInt(target.parent('.ygh-gp-hd').dom.getAttribute('groupIndex'));
-			_this.collapseGroup(groupIndex);
+			if(_this.checkCollapsable(groupIndex)){
+				_this.collapseGroup(groupIndex);
+			}
 		});
 		this.el.on('contextmenu', function(eve, html, object){
 			eve.stopEvent();
@@ -1353,17 +1338,13 @@ Ext.extend(Wlj.frame.functions.app.widgets.ComplexTitle, Ext.util.Observable, {
 		var menuItems = [];
 		var _this = this;
 		var checkChangeHandler = function(item, checked){
-			var idx = item.ownerCt.items.indexOf(item);
+			var groupIndex = item.ownerCt.items.indexOf(item);
 			if(!checked){
-				for(var ci=0,len=item.ownerCt.items.getCount();ci<len;ci++){
-					if(item.ownerCt.items.itemAt(ci).checked){
-						_this.collapseGroup(idx);
-						break;
-					}else continue;
+				if(_this.checkCollapsable(groupIndex)){
+					_this.collapseGroup(groupIndex);
 				}
-				
 			}else{
-				_this.expandGroup(idx);
+				_this.expandGroup(groupIndex);
 			}
 		};
 		for(var i=0,len = this.groups.length;i<len;i++){
@@ -1481,8 +1462,10 @@ Ext.extend(Wlj.frame.functions.app.widgets.ComplexTitle, Ext.util.Observable, {
 		nextLevel.columnResize(refixedIndex, minaWidth);
 	},
 	getBelongGroup : function(index){
+		var tindex = this.level == 0 ? index+1 : index;
+		if(this.groups[this.groups.length - 1].toColumn < tindex) return false;
 		var belongs = 0;
-		while(this.groups[belongs].toColumn < index){
+		while(belongs < this.groups.length && this.groups[belongs].toColumn < tindex){
 			belongs ++;
 		}
 		return belongs ;
@@ -1509,7 +1492,14 @@ Ext.extend(Wlj.frame.functions.app.widgets.ComplexTitle, Ext.util.Observable, {
 			}
 		}
 	},
-	
+	checkCollapsable : function(index){
+		for(var i=0, len=this.dom.childNodes.length;i<len;i++){
+			if(i==index) continue;
+			if(this.dom.childNodes[i].style.display !== 'none') return true;
+			else continue;
+		}
+		return false;
+	},
 	
 	/**
 	 * TODO it will do nothing when the width of the group elememt is longger than the whole grid width.
@@ -1555,6 +1545,68 @@ Ext.extend(Wlj.frame.functions.app.widgets.ComplexTitle, Ext.util.Observable, {
 			nodeIndex -- ;
 		}
 		return 0;
+	},
+	addDefaultColumn : function(index){
+		var groupIndex = 0;
+		if(this.level == 0){
+			if(Ext.isString(index)){
+				for(var i=1, len=this.gridTitle.titleTile.items.getCount(); i<len; i++){
+					var tile = this.gridTitle.titleTile.items.itemAt(i);
+					if(tile.data && tile.data.name && tile.data.name == index){
+						groupIndex = i - 1;
+						break;
+					}
+				}
+			}else if(Ext.isNumber(index)){
+				groupIndex = index -1;
+			}else return false;
+		}else{
+			if(Ext.isNumber(index)){
+				groupIndex = index;
+			}else return false;
+		}
+		var belongIndex = this.getBelongGroup(groupIndex);
+		if(belongIndex === false) return false;
+		if(!Ext.isArray(this.groups[belongIndex].defaultColumn)){
+			this.groups[belongIndex].defaultColumn = [];
+		}
+		if(this.groups[belongIndex].defaultColumn.indexOf(groupIndex)< 0){
+			this.groups[belongIndex].defaultColumn.push(groupIndex);
+		}
+		if(this.gridTitle.CTO[this.level + 1]){
+			this.gridTitle.CTO[this.level + 1].addDefaultColumn(belongIndex);
+		}
+	},
+	removeDefaultColumn : function(index){
+		var groupIndex = 0;
+		if(this.level == 0){
+			if(Ext.isString(index)){
+				for(var i=1, len=this.gridTitle.titleTile.items.getCount(); i<len; i++){
+					var tile = this.gridTitle.titleTile.items.itemAt(i);
+					if(tile.data && tile.data.name && tile.data.name == index){
+						groupIndex = i - 1;
+						break;
+					}
+				}
+			}else if(Ext.isNumber(index)){
+				groupIndex = index - 1;
+			}else return false;
+		}else{
+			if(Ext.isNumber(index)){
+				groupIndex = index;
+			}else return false;
+		}
+		var belongIndex = this.getBelongGroup(groupIndex);
+		if(belongIndex === false) return false;
+		if(!Ext.isArray(this.groups[belongIndex].defaultColumn)){
+			this.groups[belongIndex].defaultColumn = [];
+		}
+		if(this.groups[belongIndex].defaultColumn.indexOf(groupIndex) >= 0){
+			this.groups[belongIndex].defaultColumn.remove(groupIndex);
+		}
+		if((this.groups[belongIndex].defaultColumn.length === 0) && this.gridTitle.CTO[this.level + 1]){
+			this.gridTitle.CTO[this.level + 1].removeDefaultColumn(belongIndex);
+		}
 	}
 });
 
@@ -1568,17 +1620,13 @@ Wlj.frame.functions.app.widgets.LockingTitles = function(el, grid){
 	this.lockingColumns = new Ext.util.MixedCollection();
 	this.columnContainers = [];
 	this.initialColumns();
-	if(this.lockingColumns.getCount() == 0){
-		Ext.error('no locking column！');
-		return false;
-	}
 	this.headerContaienr = new Ext.XTemplate('<div style="width:'+this.viewWidth+'px;height:'+this.titleHeight+'px;"></div>');
 	this.dataContainer = new Ext.XTemplate('<div style="overflow:hidden;"></div>');
 	/**
 	 * TODO need?
 	 */
 	this.dataScrollContaienr = new Ext.XTemplate('<div style="height:auto;"></div>');
-	this.columnTemplate = new Ext.XTemplate('<div class="locked-column" style="width:{width}px;height:auto;float:left;" dataIndex={dataIndex}></div>');
+	this.columnTemplate = new Ext.XTemplate('<div class="locked-column" style="height:auto;float:left;" dataIndex={dataIndex}></div>');
 	this.cellTemplate = new Ext.XTemplate('<div class="ygc-row {oddc}" style="height:'+this.lineHeight+'px;" ><div class="ygc-cell {fieldClass}" style="width:{width}px;height:'+this.lineHeight+'px;" rowIndex={rowIndex}>{data}</div></div>');
 	this.initialElements();
 };
@@ -1718,10 +1766,20 @@ Ext.extend(Wlj.frame.functions.app.widgets.LockingTitles, Ext.util.Observable, {
 							_this.gridView.hoverFields(-tileThis.ownerCt.items.indexOf(tileThis),0);
 						});
 					}
-//					tileThis.el.on('contextmenu',function(eve, html, obj){
-//						eve.stopEvent();
-//						_this.onTitleFieldContextMenu(eve, html, obj, []);
-//					});
+					tileThis.el.on('contextmenu',function(eve, html, obj){
+						eve.stopEvent();
+						_this.onTitleFieldContextMenu(eve, html, obj, [], tileThis.ownerCt.items.indexOf(tileThis));
+					});
+					this.RESIZEABLE = new Ext.Resizable(this.el, {
+						handles : 'e',
+						height : this.el.getHeight(),
+						width : this.el.getWidth()
+					});
+					this.RESIZEABLE.on('resize',function(res, width, height, e){
+						e.stopEvent();
+						var index = _this.titleTile.items.indexOf(tileThis);
+						_this.onColumnResize(index, res, width, height, e, tileThis.data.name);
+					});
 					if(this.dragable){
 						this.dd.startDrag = function(){
 							this.tile.el.applyStyles({
@@ -1737,11 +1795,7 @@ Ext.extend(Wlj.frame.functions.app.widgets.LockingTitles, Ext.util.Observable, {
 		return fTile;
 	},
 	buildColumnContainer : function(tf){
-		var _this = this;
-		var width =  tf.resutlWidth ? tf.resutlWidth : _this.defaultFieldWidth;
-		width = parseInt(width)+12;
 		this.columnContainers.push(this.columnTemplate.append(this.dataScrollContaienr, {
-			width : width,
 			dataIndex : tf.name
 		},true));
 	},
@@ -1889,6 +1943,106 @@ Ext.extend(Wlj.frame.functions.app.widgets.LockingTitles, Ext.util.Observable, {
 					Ext.fly(cells.elements[rowIndex]).addClass('ygc-cell-other-over');
 				}
 			}
+		}
+	},
+	onColumnResize : function(index, res, width, height, e, dataIndex){
+		var columnContainer = this.columnContainers[index];
+		var itemObj = this.lockingColumns.itemAt(index);
+		var minaWidth = - parseInt(this.titleTile.items.get(index).baseWidth) + parseInt(width);
+		var recordWidth = parseInt(this.titleTile.baseWidth) + minaWidth;
+		this.titleTile.items.get(index).baseWidth = width;
+		this.titleTile.items.get(index).initialConfig.baseWidth = width;
+		this.titleTile.baseWidth = recordWidth;
+		itemObj.resutlWidth = width;
+		this.viewWidth = recordWidth;
+		this.titleTile.get(index).el.applyStyles({
+			width : width + 'px'
+		});
+		this.titleTile.el.applyStyles({
+			width : recordWidth + 'px'
+		});
+		Ext.fly(this.titleTile.layoutEl).applyStyles({
+			width : recordWidth + 'px'
+		});
+		columnContainer.select('.ygc-cell').applyStyles({
+			width : width + 'px'
+		});
+		this.el.applyStyles({
+			width : recordWidth + 'px'
+		});
+		var aw = this.gridView.el.getWidth();
+		this.gridView.beresized(false, aw, false, false, false);
+	},
+	onTitleFieldContextMenu : function(eve, html, obj, added , index){
+		added.push({
+			text : '解锁该列',
+			handler : this.unlockColumn.createDelegate(this, [index])
+		});
+		this.gridView.onContextMenu(eve, html, obj, added);
+	},
+	unlockColumn : function(index){
+		//remvoe config
+		var remed = this.lockingColumns.removeAt(index);
+		var dataIndex = remed.name;
+		var columnWidth = remed.resutlWidth ? remed.resutlWidth : this.defaultFieldWidth;
+		//remove container
+		var container = this.columnContainers[index];
+		this.columnContainers.remove(container);
+		container.remove();
+		//remove header
+		this.titleTile.remove(this.titleTile.items.itemAt(index),true);
+		this.viewWidth -= (columnWidth + 12);
+		this.titleTile.baseWidth = this.viewWidth;
+		this.titleTile.el.applyStyles({
+			width : this.viewWidth + 'px'
+		});
+		Ext.fly(this.titleTile.getLayoutTarget()).applyStyles({
+			width : this.viewWidth + 'px'
+		});
+		this.headerContaienr.applyStyles({
+			width : this.viewWidth + 'px'
+		});
+		this.el.applyStyles({
+			width : this.viewWidth + 'px'
+		});
+		var aw = this.gridView.el.getWidth();
+		this.gridView.beresized(false, aw, false, false, false);
+		this.store.fields.get(dataIndex).lockingView = false;
+		this.gridView.showFields(dataIndex);
+		if(this.gridView.titleTile.CTO && this.gridView.titleTile.CTO[0]){
+			this.gridView.titleTile.CTO[0].addDefaultColumn(dataIndex);
+		}
+	},
+	lockColumn : function(tf){
+		var _this = this;
+		this.store.fields.get(tf.name).lockingView = true;
+		var field = this.store.fields.get(tf.name);
+		this.lockingColumns.add(field);
+		var widthToAdd = field.resutlWidth ? field.resutlWidth : _this.defaultFieldWidth;
+		_this.viewWidth = _this.viewWidth + widthToAdd + 12;
+		_this.titleTile.add(_this.createFieldTile(field));
+		_this.titleTile.doLayout();
+		this.titleTile.baseWidth = this.viewWidth;
+		this.titleTile.el.applyStyles({
+			width : this.viewWidth + 'px'
+		});
+		Ext.fly(this.titleTile.getLayoutTarget()).applyStyles({
+			width : this.viewWidth + 'px'
+		});
+		this.headerContaienr.applyStyles({
+			width : this.viewWidth + 'px'
+		});
+		this.el.applyStyles({
+			width : this.viewWidth + 'px'
+		});
+		var aw = this.gridView.el.getWidth();
+		this.gridView.beresized(false, aw, false, false, false);
+		this.clearDataEls();
+		this.bootDataEls();
+		this.store.fields.get(tf.name).lockingView = true;
+		this.gridView.hideFields(tf.name);
+		if(this.gridView.titleTile.CTO && this.gridView.titleTile.CTO[0]){
+			this.gridView.titleTile.CTO[0].removeDefaultColumn(tf.name);
 		}
 	}
 });
