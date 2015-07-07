@@ -595,10 +595,11 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 		this.booterDataElements(this.store);
 	},
 	showFields : function(fields){
-		var indexes = this.getFieldsIndex(fields);
-		for(var i=0;i<indexes.length;i++){
-			this.store.fields.get(indexes[i]).hidden = false;
-			this.searchDomain.dataFields[indexes[i]].hidden = false;
+		var indexes = this.getFielsShownIndex(fields);
+		var dataIndexes = this.getFieldsIndex(fields);
+		for(var i=0;i<dataIndexes.length;i++){
+			this.store.fields.get(dataIndexes[i]).hidden = false;
+			this.searchDomain.dataFields[dataIndexes[i]].hidden = false;
 		}
 		this.titleTile.showFields(indexes);
 		var rows = this.getRows();
@@ -613,10 +614,11 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 		this.dtElement.dom.style.width = this.titleTile.recordWidth+'px';
 	},
 	hideFields : function(fields){
-		var indexes = this.getFieldsIndex(fields);
-		for(var i=0;i<indexes.length;i++){
-			this.store.fields.get(indexes[i]).hidden = true;
-			this.searchDomain.dataFields[indexes[i]].hidden = true;
+		var indexes = this.getFielsShownIndex(fields);
+		var dataIndexes = this.getFieldsIndex(fields);
+		for(var i=0;i<dataIndexes.length;i++){
+			this.store.fields.get(dataIndexes[i]).hidden = true;
+			this.searchDomain.dataFields[dataIndexes[i]].hidden = true;
 		}
 		this.titleTile.hideFields(indexes);
 		var rows = this.getRows();
@@ -636,7 +638,7 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 		for(var i=0;i<rows.length;i++){
 			if(i==lineNumber){
 				var clen = rows[i].childNodes.length;
-				for(var j=0; j<clen - 1; j++){
+				for(var j=0; j<clen ; j++){
 					if(j == colIndex){
 						Ext.fly(rows[i].childNodes[j]).addClass('ygc-cell-over');
 					}else{
@@ -667,6 +669,22 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 		}
 		for(var i=0; i<fnames.length; i++){
 			var index = this.store.fields.indexOf(this.store.fields.get(fnames[i]));
+			if(index >= 0){
+				findexes.push(index);
+			}
+		}
+		return findexes;
+	},
+	getFielsShownIndex : function(fields){
+		var fnames = [];
+		var findexes = [];
+		if(Ext.isArray(fields)){
+			fnames = fields;
+		}else{
+			fnames = [fields];
+		}
+		for(var i=0; i<fnames.length; i++){
+			var index = this.titleTile.indexedField.indexOf(fnames[i]);
 			if(index >= 0){
 				findexes.push(index);
 			}
@@ -740,6 +758,7 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 	grouped : false,
 	groupLevels : 0, 
 	columnGroups : false,
+	indexedField : [],
 	getTitleClass : function(field){
 		var dataType = field.dataType;
 		if(dataType && WLJDATATYPE[dataType]){
@@ -806,6 +825,7 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 		fields.each(function(field){
 			var tf = _this.createFieldTile(field);
 			if(tf){
+				_this.indexedField.push(field.name);
 				fieldsTiels.push(tf);
 			}
 		});
@@ -865,7 +885,7 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 	createFieldEl : function(tf){
 		var _this=  this;
 		var fieldHTML = '';
-		if(tf.text && tf.gridField !== false){
+		if(tf.text && (tf.gridField !== false)){
 				fieldHTML =
 					'<tpl for="'+tf.name+'">'+
 					'<div title="{title}" class="ygc-cell '+_this.getFieldClass(tf)+'" style="position: relative; margin: 0px; width: '+
@@ -886,7 +906,8 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 		ElBuffer.push(createString);
 		ElBuffer.push(this.createDataIndexEl());
 		ElBuffer.push('<tpl for="data">');
-		fields.each(function(tf){
+		Ext.each(_this.indexedField , function(dataName){
+			var tf = fields.get(dataName);
 			ElBuffer.push(_this.createFieldEl(tf));
 		});
 		ElBuffer.push('</tpl>');
@@ -962,12 +983,14 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 	buildData : function(record){
 		var _this = this;
 		var dataObj = {};
-		record.fields.each(function(tf){
-			var fData = _this.formatFieldData(tf,_this.translateFieldData(tf, record.get(tf.name)));
-			dataObj[tf.name] = {
+		record.store.fields.each(function(tf){
+			if(tf.gridField !== false){
+				var fData = _this.formatFieldData(tf,_this.translateFieldData(tf, record.get(tf.name)));
+				dataObj[tf.name] = {
 					display : fData,
 					title : tf.noTitle===true?tf.text:record.get(tf.name)
-			};
+				};
+			}
 		});
 		return dataObj;
 	},
@@ -1155,10 +1178,10 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 			var tNode = rows[i].removeChild(rows[i].childNodes[oldIndex]);
 			rows[i].childNodes[index-1].insertAdjacentElement('afterEnd', tNode);
 		}
-		var df = this.searchGridView.searchDomain.dataFields;
+		var df = this.indexedField;
 		var mf = false;
 		for(var i=0;i<df.length;i++){
-			if(df[i].name === name){
+			if(df[i] === name){
 				mf = df[i];
 				break;
 			}
@@ -1166,12 +1189,13 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 		if(mf){
 			df.remove(mf);
 			df.splice(index-1,0,mf);
-			this.searchGridView.searchDomain.storeMetaChange();
 		}
 		this.createRecordTileEl();
 	},
 	onMetaAdd : function(field){
 		var addedTile = this.createFieldTile(field);
+		if(!addedTile) return false;
+		this.indexedField.push(field.name);
 		var addedTile = this.titleTile.add(addedTile);
 		this.resetWidth();
 		this.titleTile.doLayout();
@@ -1186,10 +1210,11 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 			addedTemp.append(rows[i]);
 			rows[i].style.width = this.recordWidth+'px';
 		}
-		
 	},
 	onMetaAddByIndex : function(addField, theIndex){
 		var addedTile = this.createFieldTile(addField);
+		if(!addedTile) return false;
+		this.indexedField.splice(theIndex,0,addedTile.data.name);
 		var addedTile = this.titleTile.insert(theIndex+1, addedTile);
 		this.resetWidth();
 		this.titleTile.doLayout();
@@ -1199,10 +1224,12 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 		var theTiles = this.titleTile.findBy(function(i){if(i.data && field===i.data.name)return true;return false;});
 		if(theTiles.length>0){
 			var theTile = theTiles[0];
+			this.indexedField.remove(theTile.data.name);
+			
 			if(!theTile.hidden){
 				this.recordWidth = parseInt(this.recordWidth) - (parseInt(theTile.baseMargin) * 2 + parseInt(theTile.baseWidth) + 12);
 			}
-			this.titleTile.remove(theTile);
+			this.titleTile.remove(theTile);			
 			this.resetWidth();
 			this.titleTile.doLayout();
 			this.createRecordTileEl();
@@ -1219,6 +1246,9 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 		});
 		Ext.fly(this.titleTile.getLayoutTarget()).applyStyles({
 			width : this.recordWidth+'px'
+		});
+		this.searchGridView.getLayoutTarget().applyStyles({
+			width : this.recordWidth + 'px'
 		});
 	},
 	clearSortIcons : function(){
@@ -1241,7 +1271,7 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 	showFields : function(dataIndexes){
 		var _this = this;
 		Ext.each(dataIndexes, function(di){
-			var f = _this.titleTile.items.get(di+1);
+			var f = _this.titleTile.items.itemAt(di+1);
 			if(f && f.hidden){
 				_this.recordWidth = parseInt(_this.recordWidth) + (parseInt(f.baseMargin) * 2 + parseInt(f.baseWidth) + 12);
 				f.show();
@@ -1257,7 +1287,7 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 	hideFields : function(dataIndexes){
 		var _this = this;
 		Ext.each(dataIndexes, function(di){
-			var f = _this.titleTile.items.get(di+1);
+			var f = _this.titleTile.items.itemAt(di+1);
 			if(f && !f.hidden){
 				_this.recordWidth = parseInt(_this.recordWidth) - (parseInt(f.baseMargin) * 2 + parseInt(f.baseWidth) + 12);
 				f.hide();
@@ -1424,7 +1454,7 @@ Ext.extend(Wlj.frame.functions.app.widgets.ComplexTitle, Ext.util.Observable, {
 					gb.width = ft.hidden ? 0 : ft.baseMargin + ft.baseWidth;
 				}
 				if(ft.hidden !== true && ft.lockingView !== true){
-					gb.defaultColumn.push(ftIndex -1);
+					gb.defaultColumn.push(ft.data.name);
 				}
 				ftIndex ++;
 				if(ftIndex > gb.toColumn){
@@ -1496,7 +1526,7 @@ Ext.extend(Wlj.frame.functions.app.widgets.ComplexTitle, Ext.util.Observable, {
 		nextLevel.columnResize(refixedIndex, minaWidth);
 	},
 	getBelongGroup : function(index){
-		var tindex = this.level == 0 ? index+1 : index;
+		var tindex = index;
 		if(this.groups[this.groups.length - 1].toColumn < tindex) return false;
 		var belongs = 0;
 		while(belongs < this.groups.length && this.groups[belongs].toColumn < tindex){
@@ -1584,13 +1614,8 @@ Ext.extend(Wlj.frame.functions.app.widgets.ComplexTitle, Ext.util.Observable, {
 		var groupIndex = 0;
 		if(this.level == 0){
 			if(Ext.isString(index)){
-				for(var i=1, len=this.gridTitle.titleTile.items.getCount(); i<len; i++){
-					var tile = this.gridTitle.titleTile.items.itemAt(i);
-					if(tile.data && tile.data.name && tile.data.name == index){
-						groupIndex = i - 1;
-						break;
-					}
-				}
+				var showIndex = this.gridTitle.indexedField.indexOf(index);
+				this.groups[this.getBelongGroup(showIndex)].defaultColumn.push(index);
 			}else if(Ext.isNumber(index)){
 				groupIndex = index -1;
 			}else return false;
@@ -1615,13 +1640,8 @@ Ext.extend(Wlj.frame.functions.app.widgets.ComplexTitle, Ext.util.Observable, {
 		var groupIndex = 0;
 		if(this.level == 0){
 			if(Ext.isString(index)){
-				for(var i=1, len=this.gridTitle.titleTile.items.getCount(); i<len; i++){
-					var tile = this.gridTitle.titleTile.items.itemAt(i);
-					if(tile.data && tile.data.name && tile.data.name == index){
-						groupIndex = i - 1;
-						break;
-					}
-				}
+				var showIndex = this.gridTitle.indexedField.indexOf(index);
+				this.groups[this.getBelongGroup(showIndex)].defaultColumn.remove(index);
 			}else if(Ext.isNumber(index)){
 				groupIndex = index - 1;
 			}else return false;
@@ -2057,6 +2077,12 @@ Ext.extend(Wlj.frame.functions.app.widgets.LockingTitles, Ext.util.Observable, {
 		var aw = this.gridView.el.getWidth();
 		this.gridView.beresized(false, aw, false, false, false);
 		this.store.fields.get(dataIndex).lockingView = false;
+		for( var i=0, len = this.gridView.searchDomain.dataFields.length;i < len;i++){
+			if(this.gridView.searchDomain.dataFields[i].name === dataIndex){
+				this.gridView.searchDomain.dataFields[i].lockingView = false;
+				break;
+			}
+		}
 		this.gridView.showFields(dataIndex);
 		if(this.gridView.titleTile.CTO && this.gridView.titleTile.CTO[0]){
 			this.gridView.titleTile.CTO[0].addDefaultColumn(dataIndex);
@@ -2095,6 +2121,12 @@ Ext.extend(Wlj.frame.functions.app.widgets.LockingTitles, Ext.util.Observable, {
 		this.clearDataEls();
 		this.bootDataEls();
 		this.store.fields.get(tf.name).lockingView = true;
+		for( var i=0, len = this.gridView.searchDomain.dataFields.length;i < len;i++){
+			if(this.gridView.searchDomain.dataFields[i].name === tf.name){
+				this.gridView.searchDomain.dataFields[i].lockingView = true;
+				break;
+			}
+		}
 		this.gridView.hideFields(tf.name);
 		if(this.gridView.titleTile.CTO && this.gridView.titleTile.CTO[0]){
 			this.gridView.titleTile.CTO[0].removeDefaultColumn(tf.name);

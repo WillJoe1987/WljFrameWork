@@ -834,12 +834,16 @@ Wlj.frame.functions.app.widgets.ResultContainer = Ext.extend(Ext.Panel, {
 	onMetaRemove : function(field){
 		for(var i=0;i<this.dataFields.length;i++){
 			if(this.dataFields[i].name === field){
+				if(this.dataFields[i].lockingView == true){
+					Ext.warn('警告','锁定字段不能被移除');
+					return false;
+				}
 				this.dataFields.remove(this.dataFields[i]);
 				break;
 			}
 		}
-		this.onMetaChange();
 		this.searchGridView.onMetaRemove(field);
+		this.onMetaChange();
 	},
 	storeMetaChange : function(){
 		var readerMeta = {
@@ -851,14 +855,13 @@ Wlj.frame.functions.app.widgets.ResultContainer = Ext.extend(Ext.Panel, {
 	},
 	onMetaChange : function(){
 		this.storeMetaChange();
-		this.searchGridView.titleTile.createRecordTileEl();
 		var rs = [];
 		if(this.store.getCount()>0){
 			rs = this.store.reader.readRecords(this.store.reader.jsonData);
 		}
 		this.store.removeAll();
 		if(rs.success && rs.totalRecords>0){
-			this.store.loadRecords( rs, this.store.lastOptions, true);
+			this.store.loadRecords( rs, this.store.lastOptions , true);
 		}
 	},
 	/*******************public API***************/
