@@ -378,5 +378,15 @@ API = {
 	 * @param name
 	 * @return
 	 */
-	buildStoreField : true
+	buildStoreField : true,
+	/**
+	 * 将指定列锁定至列表左侧，不再随横向滚动条滚动；
+	 * @param fieldName 指定列name属性，其中，隐藏列、无text属性列，gridField为false的列无效，
+	 */
+	lockField : true,
+	/**
+	 * 解锁定列；
+	 * @param fieldName 指定列name属性，如该列未锁定，则无效
+	 */
+	unlockField : true
 };

@@ -1,7 +1,6 @@
 Ext.ns('Wlj.frame.functions.app.widgets');
 
 Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
-	
 	pageSize : 10,
 	pagable : true,
 	easingStrtegy : false,
@@ -12,10 +11,8 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 	needRN : false,
 	columnGroups : false,
 	hoverXY : false,
-	
 	pagSrollingLevel : 'top', // top,buttom,title,{groupLevel}
-	
-	beresized : function(p,aw,ah,rw,rh){
+	beresized : function (p, aw, ah, rw, rh) {
 		var h = parseInt(ah, 10);
 		var titleH = this.titleTile.titleTile.el.getViewSize().height;
 		var bbarH = this.bbar ? this.bbar.getViewSize().height : 0;
@@ -182,7 +179,11 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 		this.addEvents({
 			recorddelete : true,
 			recordselect : true,
-			rowdblclick : true
+			rowdblclick : true,
+			beforefieldlock : true,
+			beforefieldunlock : true,
+			fieldlock : true,
+			fieldunlock : true
 		});
 		var _this = this;
 		this.getLayoutTarget().on('click',function(eve, html, obj){
@@ -362,6 +363,39 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 		this.titleTile.titleTile.render(this.hdElement);
 		this.titleHeight = this.titleTile.titleTile.el.getViewSize().height;
 		this.lockingViewBuilder = new Wlj.frame.functions.app.widgets.LockingTitles(this.lockedElement, this);
+		
+		this.lockingViewBuilder.on({
+			beforefieldlock : {
+				fn : function(tf){
+					return _this.fireEvent('beforefieldlock', tf);
+				},
+				scope : _this,
+				delay : 0
+			},
+			beforefieldunlock : {
+				fn : function(tf){
+					return _this.fireEvent('beforefieldunlock', tf);
+				},
+				scope : _this,
+				delay : 0
+			},
+			fieldlock : {
+				fn : function(tf){
+					_this.fireEvent('fieldlock', tf);
+				},
+				scope : _this,
+				delay : 0
+			},
+			fieldunlock : {
+				fn : function(tf){
+					_this.fireEvent('fieldunlock', tf);
+				},
+				scope : _this,
+				delay : 0
+			}
+		});
+		
+		
 		this.hdElement.applyStyles({
 			height : this.titleHeight + 'px'
 		});
@@ -1617,7 +1651,9 @@ Wlj.frame.functions.app.widgets.LockingTitles = function(el, grid){
 	Wlj.frame.functions.app.widgets.LockingTitles.superclass.constructor.call(this);
 	this.titleHeight = this.gridView.titleHeight;
 	this.viewWidth = 0;
-	this.lockingColumns = new Ext.util.MixedCollection();
+	this.lockingColumns = new Ext.util.MixedCollection(false,function(field){
+        return field.name;
+    });
 	this.columnContainers = [];
 	this.initialColumns();
 	this.headerContaienr = new Ext.XTemplate('<div style="width:'+this.viewWidth+'px;height:'+this.titleHeight+'px;"></div>');
@@ -1633,6 +1669,14 @@ Wlj.frame.functions.app.widgets.LockingTitles = function(el, grid){
 Ext.extend(Wlj.frame.functions.app.widgets.LockingTitles, Ext.util.Observable, {
 	lineHeight : 27,
 	defaultFieldWidth : 150,
+	initEvents : function(){
+		this.addEvents({
+			beforefieldlock : true,
+			beforefieldunlock : true,
+			fieldlock : true,
+			fieldunlock : true
+		});
+	},
 	initialColumns : function(){
 		var fields = this.store.fields;
 		var _this = this;
@@ -1981,6 +2025,11 @@ Ext.extend(Wlj.frame.functions.app.widgets.LockingTitles, Ext.util.Observable, {
 		this.gridView.onContextMenu(eve, html, obj, added);
 	},
 	unlockColumn : function(index){
+		var unlockable = true;
+		unlockable = this.fireEvent('beforefieldunlock', this.lockingColumns.itemAt(index));
+		if(unlockable === false){
+			return false;
+		}
 		//remvoe config
 		var remed = this.lockingColumns.removeAt(index);
 		var dataIndex = remed.name;
@@ -2012,9 +2061,15 @@ Ext.extend(Wlj.frame.functions.app.widgets.LockingTitles, Ext.util.Observable, {
 		if(this.gridView.titleTile.CTO && this.gridView.titleTile.CTO[0]){
 			this.gridView.titleTile.CTO[0].addDefaultColumn(dataIndex);
 		}
+		this.fireEvent('fieldunlock', remed);
 	},
 	lockColumn : function(tf){
 		var _this = this;
+		var lockable = true;
+		lockable = _this.fireEvent('beforefieldlock', tf);
+		if(lockable === false){
+			return false;
+		}
 		this.store.fields.get(tf.name).lockingView = true;
 		var field = this.store.fields.get(tf.name);
 		this.lockingColumns.add(field);
@@ -2044,6 +2099,7 @@ Ext.extend(Wlj.frame.functions.app.widgets.LockingTitles, Ext.util.Observable, {
 		if(this.gridView.titleTile.CTO && this.gridView.titleTile.CTO[0]){
 			this.gridView.titleTile.CTO[0].removeDefaultColumn(tf.name);
 		}
+		_this.fireEvent('fieldlock', tf);
 	}
 });
 

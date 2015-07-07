@@ -697,5 +697,29 @@ var listeners = {
 	
 	/**属性面板事件**/
 	beforetreecreate : true,
-	treecreate : true
+	treecreate : true,
+	
+	/**
+	 * 列锁定之前触发；
+	 * params ： fieldCfg ：字段配置属性；
+	 * return ：false :阻止列锁定，默认为true；
+	 */
+	beforefieldlock : true,
+	/**
+	 * 列解除锁定之前触发；
+	 * params ： fieldCfg ：字段配置属性；
+	 * return ：false :阻止列解除锁定，默认为true；
+	 */
+	beforefieldunlock : true,
+	/**
+	 * 列锁定之后触发；
+	 * params ： fieldCfg ：字段配置属性；
+	 */
+	fieldlock : true,
+	/**
+	 * 列解除锁定之后触发；
+	 * params ： fieldCfg ：字段配置属性；
+	 */
+	fieldunlock : true
+	
 };

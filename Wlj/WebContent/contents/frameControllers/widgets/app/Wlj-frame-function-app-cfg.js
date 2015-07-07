@@ -8,9 +8,10 @@ Wlj.frame.functions.app.Util = {
 	needInfo : true,                                                
 	needDebug : true,                                              
 	
-	pluginTrigger : false,															//应用插件开关
+	pluginTrigger : true,															//应用插件开关
 	
 	hoverXY : true,																//是否开启行列鼠标悬浮效果
+	pagSrollingLevel : 0,														// 当出现多层分组表头时，左右滑动图标的滚动基准表头层级，默认值包括：'top'：顶层, buttom：底层,title：字段表头（暂未实现）,{groupLevel}：表头层级（数值），从下向上计数，从0开始。如超出层级，则无任何动作。
 	
 	defaultDateFormat : 'Y-m-d',													//默认日期类型转JSON格式	
 		

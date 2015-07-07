@@ -11,6 +11,7 @@ Wlj.frame.functions.app.App = function(cfg){
 	this.needRN = WLJUTIL.needRN;
 	this.rnWidth = WLJUTIL.rnWidth;
 	this.contextMenuAble = WLJUTIL.contextMenuAble;
+	this.pagSrollingLevel = WLJUTIL.pagSrollingLevel;
 	
 	if(WLJUTIL.easingStrategy.indexOf(WLJUTIL.dataLineEasing)>=0){
 		this.easingStrtegy = {};
@@ -303,6 +304,10 @@ Wlj.frame.functions.app.App.prototype.clearSite = function(){
 	window.lookupreload  =  false;
 	window.beforetreecreate  =  false;
 	window.treecreate  =  false;
+	window.beforefieldlock  =  false;
+	window.beforefieldunlock  =  false;
+	window.fieldlock  =  false;
+	window.fieldunlock  =  false;
 };
 /**
  * 销毁方法
@@ -681,7 +686,13 @@ Wlj.frame.functions.app.App.prototype.initEvents = function(){
 		
 		/**属性面板事件**/
 		beforetreecreate : false,
-		treecreate : false
+		treecreate : false,
+		
+		/**列锁定相关事件**/
+		beforefieldlock : true,
+		beforefieldunlock : true,
+		fieldlock : true,
+		fieldunlock : true
 	});
 };
 /**
@@ -1024,6 +1035,7 @@ Wlj.frame.functions.app.App.prototype.createResultCfg = function(){
 	createResultCfg.editFormCfgs = this.editFormCfgs;
 	createResultCfg.detailFormCfgs = this.detailFormCfgs;
 	createResultCfg.resultDomainCfg = this.resultDomainCfg ? this.resultDomainCfg : false;
+	createResultCfg.pagSrollingLevel = this.pagSrollingLevel;
 	createResultCfg.hoverXY = WLJUTIL.hoverXY;
 	createResultCfg.listeners = {
 		beforeviewhide : function(theView){
@@ -1067,6 +1079,18 @@ Wlj.frame.functions.app.App.prototype.createResultCfg = function(){
 		},
 		rowdblclick : function(tile, record){
 			_this.fireEvent('rowdblclick', tile, record);
+		},
+		beforefieldlock : function(tf){
+			return _this.fireEvent('beforefieldlock', tf);
+		},
+		beforefieldunlock : function(tf){
+			return _this.fireEvent('beforefieldunlock', tf);
+		},
+		fieldlock : function(tf){
+			_this.fireEvent('fieldlock', tf);
+		},
+		fieldunlock : function(tf){
+			_this.fireEvent('fieldunlock', tf);
 		}
 	};
 	
@@ -2364,4 +2388,25 @@ Wlj.frame.functions.app.App.prototype.buildStoreField = function(name){
 		Ext.applyIf(f, WLJDATATYPE[f.dataType].getStoreSpecialCfg());
 	}
 	return f;
+};
+/**
+ * 将指定列锁定至列表左侧，不再随横向滚动条滚动；
+ * @param fieldName 指定列name属性，其中，隐藏列、无text属性列，gridField为false的列无效，
+ */
+Wlj.frame.functions.app.App.prototype.lockField = function(fieldName){
+	var store = this.resultDomain.searchGridView.store;
+	var tf = store.fields.get(fieldName);
+	if(!tf) return false;
+	if(tf.lockingView || tf.hidden || !tf.text || tf.gridField === false) return false;
+	this.resultDomain.searchGridView.lockingViewBuilder.lockColumn(tf);
+};
+/**
+ * 解锁定列；
+ * @param fieldName 指定列name属性，如该列未锁定，则无效
+ */
+Wlj.frame.functions.app.App.prototype.unlockField = function(fieldName){
+	var tf = this.resultDomain.searchGridView.lockingViewBuilder.lockingColumns.get(fieldName);
+	if(!tf) return false;
+	var index = this.resultDomain.searchGridView.lockingViewBuilder.lockingColumns.indexOf(tf);
+	this.resultDomain.searchGridView.lockingViewBuilder.unlockColumn(index);
 };

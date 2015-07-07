@@ -67,6 +67,7 @@ Wlj.frame.functions.app.widgets.ResultContainer = Ext.extend(Ext.Panel, {
 	formButtons : false,
 	
 	resultDomainCfg : false,
+	pagSrollingLevel : 'top',
 	
 	viewPanel : {
 		createView : false,
@@ -243,7 +244,8 @@ Wlj.frame.functions.app.widgets.ResultContainer = Ext.extend(Ext.Panel, {
 				needRN : this.needRN,
 				rnWidth : this.rnWidth,
 				easingStrtegy : this.easingStrtegy,
-				columnGroups : (this.resultDomainCfg && this.resultDomainCfg.columnGroups) ? this.resultDomainCfg.columnGroups : false
+				columnGroups : (this.resultDomainCfg && this.resultDomainCfg.columnGroups) ? this.resultDomainCfg.columnGroups : false,
+				pagSrollingLevel : this.pagSrollingLevel
 			});
 			this.add(this.searchGridView);
 			this.searchGridView.on('recordselect', function(record, store,tile){
@@ -265,6 +267,36 @@ Wlj.frame.functions.app.widgets.ResultContainer = Ext.extend(Ext.Panel, {
 			});
 			this.searchGridView.on('rowdblclick', function(tile, record){
 				_this.fireEvent('rowdblclick', tile, record);
+			});
+			this.searchGridView.on({
+				beforefieldlock : {
+					fn : function(tf){
+						return _this.fireEvent('beforefieldlock', tf);
+					},
+					scope : _this,
+					delay : 0
+				},
+				beforefieldunlock : {
+					fn : function(tf){
+						return _this.fireEvent('beforefieldunlock', tf);
+					},
+					scope : _this,
+					delay : 0
+				},
+				fieldlock : {
+					fn : function(tf){
+						_this.fireEvent('fieldlock', tf);
+					},
+					scope : _this,
+					delay : 0
+				},
+				fieldunlock : {
+					fn : function(tf){
+						_this.fireEvent('fieldunlock', tf);
+					},
+					scope : _this,
+					delay : 0
+				}
 			});
 		}
 		this.initViews();
@@ -308,7 +340,11 @@ Wlj.frame.functions.app.widgets.ResultContainer = Ext.extend(Ext.Panel, {
 			aftereditviewrender : true,
 			beforedetailviewrender : true,
 			afterdetailviewrender : true,
-			rowdblclick : true
+			rowdblclick : true,
+			beforefieldlock : true,
+			beforefieldunlock : true,
+			fieldlock : true,
+			fieldunlock : true
 		});
 		this.on('resize',this.beresized);
 	},

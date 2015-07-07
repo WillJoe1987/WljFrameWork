@@ -112,7 +112,11 @@ Ext.extend(Wlj.frame.functions.app.Builder,Ext.util.Observable,{
 				beforelookupreload : true,
 				lookupreload : true,
 				beforetreecreate : true,
-				treecreate : true
+				treecreate : true,
+				beforefieldlock : true,
+				beforefieldunlock : true,
+				fieldlock : true,
+				fieldunlock : true
 			};
 	},
 	codeLoad : function(callbackIm){
