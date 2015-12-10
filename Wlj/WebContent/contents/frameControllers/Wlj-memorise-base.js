@@ -338,3 +338,20 @@ Ext.extend(Wlj.memorise.Service, Ext.util.Observable, {
 
 Wlj.memorise.ServiceController = new Wlj.memorise.Service();
 Wlj.ServiceMgr = Wlj.memorise.ServiceController;
+
+
+//Wlj.memorise.Tips = function(){
+//	this.headerMessage = new Wlj.widgets.search.tip.HeaderTip();
+//};
+//Wlj.memorise.Tips.prototype.addMessage = function(messageObject){
+//	this.headerMessage.addMessage(messageObject);
+//};
+//Wlj.memorise.Tips.prototype.removeMessage = function(messageObject){
+//	this.headerMessage.removeMessage(messageObject);
+//};
+//Wlj.memorise.Tips.prototype.clearMessage = function(){
+//	this.headerMessage.clearMessage();
+//};
+//
+//Wlj.memorise.TipController = new Wlj.memorise.Tips();
+//Wlj.TipMgr = Wlj.memorise.TipController;

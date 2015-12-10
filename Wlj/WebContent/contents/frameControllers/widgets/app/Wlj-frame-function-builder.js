@@ -134,6 +134,7 @@ Ext.extend(Wlj.frame.functions.app.Builder,Ext.util.Observable,{
 		this.codeLoading(callbackIm);
 	},
 	getCodeFilePage : function(){
+		Wlj.tools.imports(['/contents/frameControllers/defaultPatches.js']);
 		if(parent.Wlj){
 			if(parent.Wlj.ServiceMgr.services.get('service_'+this.resId)){
 				this.codeFile = parent.Wlj.ServiceMgr.services.get('service_'+this.resId).menuData.ACTION;
@@ -624,7 +625,6 @@ Ext.extend(Wlj.frame.functions.app.Builder,Ext.util.Observable,{
 				}
 			}
 		}
-		
 		this.APPCFG = {
 			resId : this.resId,
 			needCondition : window.needCondition,

@@ -165,7 +165,7 @@ Wlj.widgets.search.header.UserInfo = Ext.extend(Ext.BoxComponent, {
 			'<p><a class="loginout" href="'+basepath+'/j_spring_security_logout"></a></p>',
 			'</div>'),
 	infoTpl : new Ext.XTemplate('<div class="user_info">'
-			,'<p class="user_info_p">你好，<i class="name">{userName}</i>，欢迎登录贷后管理系统！</p>'
+			,'<p class="user_info_p">你好，<i class="name">{userName}</i>，欢迎登录！</p>'
 			,'<p class="user_info_p blue"><span class="tit">岗位：</span><span>{userRole}</span></p>'
 			,'<p class="user_info_p blue"><span class="tit">机构：</span><span>{userOrg}</span></p>'
 			,'</div>'),

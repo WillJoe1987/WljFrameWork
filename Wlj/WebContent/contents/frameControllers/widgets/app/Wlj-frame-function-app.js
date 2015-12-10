@@ -6,6 +6,8 @@ Wlj.frame.functions.app.App = function(cfg){
 	Ext.log('开始构建APP');
 	this.buildSpecilPatch();
 	this.pageSize = WLJUTIL.defaultPagesize;
+	this.enableDataDD = WLJUTIL.enableDataDD;
+	
 	this.tbar = [];
 	
 	this.needRN = WLJUTIL.needRN;
@@ -129,41 +131,41 @@ Wlj.frame.functions.app.App.prototype.VIEWCOMMITTRANS =  Wlj.frame.functions.app
  */
 Wlj.frame.functions.app.App.prototype.edgeViewBaseCfg = {
 		left : {
-			layout : 'accordion',
-			xtype : 'panel',
+			xtype : 'leftedgeview',
 			width : 200,
 			height : 'auto',
 			frame : true,
 			region : 'west',
-			collapsible : true
+			collapsible : true,
+			split : true
 		},
 		right : {
-			layout : 'accordion',
-			xtype : 'panel',
+			xtype : 'rightedgeview',
 			width : 200,
 			height : 'auto',
 			frame : true,
 			region : 'east',
-			collapsible : true
+			collapsible : true,
+			split : true
 		},
 		top : {
-			layout : 'form',
-			xtype : 'form',
+			xtype : 'topedgeview',
 			height : 100,
 			frame : true,
 			width : 'auto',
 			region : 'north',
 			defaultType : 'textfield',
-			collapsible : true
+			collapsible : true,
+			split : true
 		},
 		buttom : {
-			xtype : 'tabpanel',
+			xtype : 'bottomedgeview',
 			height : 100,
 			frame : true,
 			width : 'auto',
 			region : 'south',
 			collapsible : true,
-			activeTab : 0
+			split : true
 		}
 };
 /**
@@ -1009,7 +1011,7 @@ Wlj.frame.functions.app.App.prototype.createResultCfg = function(){
 	createResultCfg.rnWidth = this.rnWidth;
 	
 	createResultCfg.multiSelectSeparator = WLJUTIL.multiSelectSeparator;
-	
+	createResultCfg.enableDataDD = this.enableDataDD;
 	createResultCfg.pageSize = this.pageSize;
 	createResultCfg.url = this.url;
 	createResultCfg.tbar = this.tbar;
@@ -1213,6 +1215,7 @@ Wlj.frame.functions.app.App.prototype.createEdgeView = function(viewPosition,cfg
 	}
 	var baseCfg = this.edgeViewBaseCfg[viewPosition];
 	Ext.applyIf(cfg, baseCfg);
+	cfg.appObject = this;
 	result = cfg;
 	var _this = this;
 	if(result.listeners){
@@ -1726,7 +1729,7 @@ Wlj.frame.functions.app.App.prototype.translateDataKey = function(data,transtype
 		}
 	}
 	for(var key in data){
-		if(!data[key]){
+		if (data[key] === "" || data[key] === undefined || data[key] === null){//if(!data[key]){
 			continue;
 		}else {
 			finnalData[stringTrans(key)] = data[key];

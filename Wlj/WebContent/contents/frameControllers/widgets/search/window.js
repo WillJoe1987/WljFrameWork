@@ -83,7 +83,6 @@ Wlj.widgets.search.window.TaskItem = Ext.extend(Ext.BoxComponent,{
 	action : 'aaaa',
 	minisized : false,
 	serviceObject :false,
-	defaultWljPage : '/contents/frameControllers/wlj-function.jsp',
 	autoEl : {
 		tag : 'div',
 		cls : 'task_normal'
@@ -166,7 +165,7 @@ Wlj.widgets.search.window.TaskItem = Ext.extend(Ext.BoxComponent,{
 			return this.action;
 		}
 		else if(this.action.indexOf('.jsp') < 0 ){
-			url = basepath + this.defaultWljPage;
+			url = basepath + '/contents/frameControllers/wlj-function.html';
 		}else{
 			url = this.action.split('.jsp')[0]+'.jsp';
 		}
@@ -255,8 +254,7 @@ Wlj.widgets.search.window.TaskItem = Ext.extend(Ext.BoxComponent,{
 			return this.frame.dom.contentWindow._app.plugins.Thumbnails.getBuilt();
 		}
 		return false;
-	},
-	
+	}
 });
 Ext.reg('taskitem', Wlj.widgets.search.window.TaskItem);
 
@@ -319,11 +317,22 @@ Wlj.widgets.search.window.WindowBar = Ext.extend(Ext.Toolbar, {
 				r.text = r.NAME;
 				r.menu = [];
 				r._windowObject = _this.windowObject;
-				r.xtype = 'wljinnermenuitem';
+				r.xtype = APPUTIL.menuInWindowExpand ? 'wljinnermenubutton' : 'wljinnermenuitem';
 			});
 			window.windowRoot = roots;
+			if(APPUTIL.menuInWindowExpand && APPUTIL.menuInWindowSeporator){
+				var mLen = window.windowRoot.length;
+				for(var i=0;i<mLen;i++){
+					var mI = window.windowRoot.shift();
+					window.windowRoot.push(mI);
+					if(i < mLen - 1)
+						window.windowRoot.push("-");
+				}
+			}
 		}
-		this.add({
+		
+		
+		this.add( APPUTIL.menuInWindowExpand ? window.windowRoot : {
 			text : '系统菜单',
 			cls:'simple-btn1',
 			overCls:'simple-btn1-hover',
@@ -411,6 +420,25 @@ Wlj.widgets.search.window.InnerMenu = Ext.extend(Ext.menu.Item ,{
 });
 Ext.reg('wljinnermenuitem', Wlj.widgets.search.window.InnerMenu);
 
+Wlj.widgets.search.window.MenuButton = Ext.extend(Ext.Button, {
+	windowObject : false,
+	cls:'simple-btn1',
+	overCls:'simple-btn1-hover',
+	initComponent : function(){
+		var roots= this.appObject.createSubMenuCfg(this.ID);
+		var _this = this;
+		Ext.each(roots,function(r){
+			r.id = r.id+'_innermenu_'+_this.id;
+			r.text = r.NAME;
+			r.menu = [];
+			r._windowObject = _this._windowObject;
+			r.xtype = 'wljinnermenuitem';
+		});
+		this.menu = this.isLeaf ? false : roots;
+		Wlj.widgets.search.window.MenuButton.superclass.initComponent.call(this);
+	}
+});
+Ext.reg('wljinnermenubutton', Wlj.widgets.search.window.MenuButton);
 /**
  * 略缩图窗口对象，该对象的展示与否取决于应用对象内部是否加载略缩图插件
  * TODO 尚待完善：UI优化,略缩窗口的隐藏时机。
@@ -420,8 +448,12 @@ Wlj.widgets.search.window.TaskThumberContainer = Ext.extend(Ext.Window, {
 	height : 300,
 	width : 400,
 	hidden : true,
-	titleTmp : '功能：【{0}】共{1}条记录，当前第{2}至{3}条',
+	titleTmp : '功能：【{0}】第{2}至{3};共{1}',
 	setTask : function(task){
+		if(task === this.currentTask){
+			return;
+		}
+		this.currentTask = task;
 		var thumberCfg = task.getGridThumber();
 		if(!thumberCfg) return false;
 		this.buildContent(thumberCfg);
@@ -438,21 +470,27 @@ Wlj.widgets.search.window.TaskThumberContainer = Ext.extend(Ext.Window, {
 	buildContent : function(thumberCfg){
 		var columns = [];
 		thumberCfg.fields.each(function(f){
-			var col = {};
-			col.header = f.text;
-			col.dataIndex = f.name;
-			col.width = f.width ? f.width : 80;
-			col.translateType = f.translateType;
-			if(f.translateType){
-				col.renderer = function(value){
-					return thumberCfg.twindow.translateLookupByKey(this.translateType, value);
+			if(f.hidden !== true &&
+					f.text){
+				var col = {};
+				col.header = f.text;
+				col.dataIndex = f.name;
+				col.width = f.width ? f.width : 80;
+				col.translateType = f.translateType;
+				if(f.translateType){
+					col.renderer = function(value){
+						return thumberCfg.twindow.translateLookupByKey(this.translateType, value);
+					}
 				}
+				columns.push(col);
 			}
-			columns.push(col);
 		});
 		var tgrid = new Ext.grid.GridPanel({
 			store : thumberCfg.store,
 			columns : columns,
+			viewConfig : {
+				forceFit : columns.length <= 4
+			},
 			layout : 'fit'
 		});
 		this.removeAll();

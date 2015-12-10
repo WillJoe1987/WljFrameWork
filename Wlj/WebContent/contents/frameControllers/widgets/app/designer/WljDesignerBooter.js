@@ -90,6 +90,7 @@
 	    scriptVersionControl("/contents/frameControllers/widgets/app/Wlj.frame.functions.app.widgets/Wlj.frame.functions.app.widgets.SearchGrid.js");
 	    scriptVersionControl("/contents/frameControllers/widgets/app/Wlj.frame.functions.app.widgets/Wlj.frame.functions.app.widgets.TreeManager.js");
 	    scriptVersionControl("/contents/frameControllers/widgets/app/Wlj.frame.functions.app.widgets/Wlj.frame.functions.app.widgets.View.js");
+	    scriptVersionControl("/contents/frameControllers/widgets/app/Wlj.frame.functions.app.widgets/Wlj.frame.functions.app.widgets.EdgeView.js");
 	    scriptVersionControl("/contents/frameControllers/widgets/app/Wlj-frame-function-app.js");
 	    scriptVersionControl("/contents/frameControllers/widgets/app/Wlj-frame-function-builder.js");
 	}else if(runMod=='debug'){

@@ -8,6 +8,7 @@ Wlj.frame.functions.app.widgets.ResultContainer = Ext.extend(Ext.Panel, {
 	needGrid : true,
 	needTbar : true,
 	autoLoadGrid : true,
+	enableDataDD : true,
 	
 	singleSelect : false,
 	multiSelectSeparator : false,
@@ -241,6 +242,7 @@ Wlj.frame.functions.app.widgets.ResultContainer = Ext.extend(Ext.Panel, {
 				_APP : this._APP,
 				hoverXY : this.hoverXY,
 				pageSize : this.pageSize,
+				enableDataDD : this.enableDataDD,
 				needRN : this.needRN,
 				rnWidth : this.rnWidth,
 				easingStrtegy : this.easingStrtegy,
@@ -304,7 +306,7 @@ Wlj.frame.functions.app.widgets.ResultContainer = Ext.extend(Ext.Panel, {
 			if(this.autoLoadGrid){
 				var pars = this._APP.searchDomain.searchPanel.getForm().getFieldValues();
 				for(var key in pars){
-					if(!pars[key]){
+					if (pars[key] === "" || pars[key] === undefined || pars[key] === null){
 						delete pars[key];
 					}
 				}
@@ -344,7 +346,8 @@ Wlj.frame.functions.app.widgets.ResultContainer = Ext.extend(Ext.Panel, {
 			beforefieldlock : true,
 			beforefieldunlock : true,
 			fieldlock : true,
-			fieldunlock : true
+			fieldunlock : true,
+			selectchagne : true
 		});
 		this.on('resize',this.beresized);
 	},
@@ -861,7 +864,7 @@ Wlj.frame.functions.app.widgets.ResultContainer = Ext.extend(Ext.Panel, {
 		}
 		this.store.removeAll();
 		if(rs.success && rs.totalRecords>0){
-			this.store.loadRecords( rs, this.store.lastOptions , true);
+			this.store.loadRecords( rs, this.store.lastOptions, true);
 		}
 	},
 	/*******************public API***************/
@@ -961,7 +964,7 @@ Wlj.frame.functions.app.widgets.ResultContainer = Ext.extend(Ext.Panel, {
 					var menuCfg = {};
 					menuCfg.text = button.text;
 					menuCfg.tbutton = button;
-					menuCfg.handler = button.handler;
+					menuCfg.handler = button.handler.createDelegate(button);
 					tbarMenus.push(menuCfg);
 				}
 			});

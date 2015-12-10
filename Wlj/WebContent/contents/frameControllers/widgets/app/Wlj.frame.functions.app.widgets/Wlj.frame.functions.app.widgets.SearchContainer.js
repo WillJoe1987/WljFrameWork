@@ -367,7 +367,7 @@ Wlj.frame.functions.app.widgets.SearchContainer = Ext.extend(Ext.Panel,{
 		}
 		pars = _this.searchPanel.getForm().getFieldValues();
 		for(var key in pars){
-			if(!pars[key]){
+			if (pars[key] === "" || pars[key] === undefined || pars[key] === null){
 				delete pars[key];
 			}
 		}

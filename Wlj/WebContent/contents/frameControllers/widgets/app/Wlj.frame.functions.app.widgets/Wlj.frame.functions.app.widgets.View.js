@@ -296,9 +296,9 @@ Wlj.frame.functions.app.widgets.CView = Ext.extend(Wlj.frame.functions.app.widge
 					 */
 				}else{
 					f.fieldLabel  = f.text ? f.text : f.name;
-					f.xtype = f.xtype? f.xtype : 'textfield';
+					f.xtype = f.xtype ? f.xtype : 'textfield';
 					f.hidden = typeof f.hidden === 'boolean' ? f.hidden : f.text ? false : true;
-					f.anchor = '90%';
+					f.anchor = f.anchor ? f.anchor : '90%';
 					if(f.allowBlank === false){
 						f.fieldLabel = WLJTOOL.addBlankFlag(f.fieldLabel);
 					}
@@ -677,11 +677,9 @@ Wlj.frame.functions.app.widgets.FormView = Ext.extend(Wlj.frame.functions.app.wi
 				}
 				if(f){
 					f.fieldLabel  = f.text ? f.text : f.name;
-					f.xtype = f.xtype? f.xtype : 'textfield';
+					f.xtype = f.xtype ? f.xtype : 'textfield';
 					f.hidden = f.text ? false : true;
-					if(!f.anchor){
-						f.anchor = '90%';
-					}
+					f.anchor = f.anchor ? f.anchor : '90%';
 					if(f.allowBlank === false){
 						f.fieldLabel = WLJTOOL.addBlankFlag(f.fieldLabel);
 					}

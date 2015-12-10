@@ -9,3 +9,23 @@
 var rowdblclick = function(tile, record){
 	showDetailView();
 };
+
+function createTitle(){
+	if(!parent.Wlj) return false;
+	var rid = __resId;
+	var menuInfo = parent._app.findMenuDataByProperty("ID",rid)? parent._app.findMenuDataByProperty("ID",rid)[0]: false;
+	if(!menuInfo) return false;
+	var menuPath = [];
+	menuPath.push(menuInfo.NAME);
+	var parentId = menuInfo.PARENT_ID;
+	while(parent._app.findMenuDataByProperty("ID",parentId)){
+		var parentInfo = parent._app.findMenuDataByProperty("ID",parentId)[0];
+		menuPath.splice(0,0,parentInfo.NAME);
+		parentId = parentInfo.PARENT_ID;
+	}
+	return menuPath.join("->");
+}
+
+window.searchDomainCfg = {
+		title : createTitle()
+};

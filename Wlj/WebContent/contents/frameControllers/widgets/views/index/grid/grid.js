@@ -1,13 +1,15 @@
 Ext.ns('Wlj.widgets.views.index.grid');
+
 Wlj.widgets.views.index.grid.TileGrid = Ext.extend(Ext.DataView, {
 	dataSize : 7,
+	floatTitle : true,
 	title : 'TileGrid',
 	root : 'json.data',
 	columns : false,
 	url : false,
 	emptyText : 'sfd',
 	exceptionText : '数据服务异常',
-	itemSelector : 'div.w2h2',
+	itemSelector : 'li',
 	emptyInnerText : '暂无数据',
 	initComponent : function(){
 		var columns = this.columns;
@@ -138,7 +140,7 @@ Wlj.widgets.views.index.grid.TileGrid = Ext.extend(Ext.DataView, {
 			templateString += '</span>';
 			var title = showColumns.shift();
 			if(title && title.columnName){
-				templateString += '<a title="{'+title.columnName+'}" href="javascript:void(0);" class="tit">';
+				templateString += '<a title="'+ (this.floatTitle ? '{' +title.columnName +'}': '')+'" href="javascript:void(0);" class="tit">';
 				templateString += '{'+title.columnName+'}';
 				templateString += '</a>';
 			}
@@ -152,21 +154,20 @@ Wlj.widgets.views.index.grid.TileGrid = Ext.extend(Ext.DataView, {
 		templateString += '</div>';
 		this.tpl = new Ext.XTemplate(templateString);
 	},
-	listeners : {
-		afterrender : function(){
-			if(this.url && this.columns){
-				Wlj.TileMgr.addDataCfg({
-					controlPanel : this,
-					store : this.store
-				});
-			} else {
-				this.tpl.append(this.el);
-			}
-			var _this = this;
-			this.el.on('click',function(){
-				_this.ownerCt.clickFire();
+	afterRender : function(){
+		Wlj.widgets.views.index.grid.TileGrid.superclass.afterRender.call(this);
+		if(this.url && this.columns){
+			Wlj.TileMgr.addDataCfg({
+				controlPanel : this,
+				store : this.store
 			});
+		} else {
+			this.tpl.append(this.el);
 		}
+		var _this = this;
+		this.el.on('click',function(){
+			_this.ownerCt.clickFire();
+		});
 	}
 });
 
@@ -189,8 +190,9 @@ Wlj.widgets.views.index.grid.TileGrid = Ext.extend(Ext.DataView, {
  * @extends Ext.DataView
  */
 Wlj.widgets.views.index.grid.MaxTileGrid = Ext.extend(Ext.DataView, {
-	needheader :false,
-	dataSize : 7,
+	needheader : false,
+	floatTitle : true,
+	dataSize : 10,
 	title : 'MaxTileGrid',
 	root : 'json.data',
 	columns : false,
@@ -330,7 +332,7 @@ Wlj.widgets.views.index.grid.MaxTileGrid = Ext.extend(Ext.DataView, {
 						templateString += '<span class="type_red"></span>';
 					}
 					if(col && col.header){
-						templateString += '<a title="'+col.header+'" class="tit" style="width:'+col.width+'px;display:inline;">'+col.header+'</a>';
+						templateString += '<a title="'+(this.floatTitle ? col.header : '')+'" class="tit" style="width:'+col.width+'px;display:inline;">'+col.header+'</a>';
 					}
 				}
 				templateString += '</p>';
@@ -348,7 +350,7 @@ Wlj.widgets.views.index.grid.MaxTileGrid = Ext.extend(Ext.DataView, {
 					templateString += '<span class="type_red"></span>';
 				}
 				if(col && col.columnName){
-					templateString += '<a title="{'+col.columnName+'}" href="javascript:void(0);" class="tit" style="width:'+col.width+'px;display:inline;text-align:'+col.align+';">{'+col.columnName+'}</a>';
+					templateString += '<a title="'+(this.floatTitle ? '{'+col.columnName+'}': '')+'" href="javascript:void(0);" class="tit" style="width:'+col.width+'px;display:inline;text-align:'+col.align+';">{'+col.columnName+'}</a>';
 				}
 			}
 			templateString += '</p>';
@@ -387,5 +389,170 @@ Wlj.widgets.views.index.grid.MaxTileGrid = Ext.extend(Ext.DataView, {
 			}
 			return true;
 		}
+	}
+});
+
+/**
+ * 首页2X2浮动表格
+ * @class Wlj.widgets.views.index.grid.FloatTipTileGrid
+ * @extends Wlj.widgets.views.index.grid.TileGrid
+ */
+Wlj.widgets.views.index.grid.FloatTipTileGrid = Ext.extend(Wlj.widgets.views.index.grid.TileGrid,{
+	ndtipheader : false,  //浮动提示是否显示label
+	floatTitle : false,
+	userTipTemplate : false,
+	tipTemplate : false,
+	tipEl : false,
+	cTipIndex : -1,
+	initComponent : function(){
+		var _this = this;
+		Wlj.widgets.views.index.grid.FloatTipTileGrid.superclass.initComponent.call(this);
+		this.buildTipsTemplate();
+	},
+	destroy : function(){
+		if(this.tipEl){
+			this.tipEl.remove();
+			this.tipEl = false;
+		}
+		Wlj.widgets.views.index.grid.FloatTipTileGrid.superclass.destroy.call(this);
+	},
+	refresh : function(){
+		var _this = this;
+		Wlj.widgets.views.index.grid.FloatTipTileGrid.superclass.refresh.call(_this);
+		this.el.select('div.in_sys_line',true, true).on('mouseenter', function(e, html){
+			e.stopEvent();
+			var vIndex = Array.prototype.indexOf.call(Ext.fly(html).parent('.in_sys_ul ul').dom.childNodes,Ext.fly(html).parent('li').dom);
+			if(vIndex !== _this.cTipIndex){
+				_this.cTipIndex = vIndex;
+				_this.showTips(e);
+			}
+		});
+		this.el.select('div.in_sys_line',true, true).on('mouseleave', function(e, html){
+			e.stopEvent();
+			_this.hideTips(e);
+			_this.cTipIndex = -1;
+		});
+	},
+	buildTipsTemplate : function(){
+		var _this = this;
+		var columns = this.columns;
+		var templateString = '<div class="yc-tips" style="z-index:15000;">';
+		if(!_this.userTipTemplate){
+			Ext.each(columns, function(col){
+				if(col.tipshow !== false){
+					templateString += '<div><span>'+(_this.ndtipheader && col.header ? col.header + '：' : '') +  '</span>{'+col.columnName+'}</div>';
+				}
+			});
+		}else{
+			templateString += _this.userTipTemplate;
+		}
+		templateString += '</div>';
+		_this.tipTemplate = new Ext.XTemplate(templateString);
+	},
+	showTips : function(e){
+		var _this = this;
+		var index = this.cTipIndex;
+		var record = _this.store.getAt(index);
+		if(!_this.tipEl){
+			_this.tipEl = _this.tipTemplate.append(Ext.getBody(), record.data, true);
+		}else{
+			_this.tipEl.remove();
+			_this.tipEl = _this.tipTemplate.append(Ext.getBody(), record.data, true);
+		}
+		_this.locationTips(e);
+	},
+	hideTips : function(e){
+		var _this = this;
+		if(_this.tipEl){
+			_this.tipEl.hide();
+		}
+	},
+	locationTips : function(e){
+		var _this = this;
+		if(!_this.tipEl) return;
+		_this.tipEl.show();
+		_this.tipEl.setXY(e.getXY());
+	}
+}); 
+
+/**
+ * 首页3X3表格浮动提示表格
+ * @class Wlj.widgets.views.index.grid.FloatTipMaxTileGrid
+ * @extends Wlj.widgets.views.index.grid.MaxTileGrid
+ */
+Wlj.widgets.views.index.grid.FloatTipMaxTileGrid = Ext.extend(Wlj.widgets.views.index.grid.MaxTileGrid,{
+	ndtipheader : false,  //浮动提示是否显示label
+	floatTitle : false,
+	userTipTemplate : false,
+	tipTemplate : false,
+	tipEl : false,
+	initComponent : function(){
+		Wlj.widgets.views.index.grid.FloatTipMaxTileGrid.superclass.initComponent.call(this);
+		this.buildTipsTemplate();
+	},	
+	destroy : function(){
+		if(this.tipEl){
+			this.tipEl.remove();
+			this.tipEl = false;
+		}
+		Wlj.widgets.views.index.grid.FloatTipMaxTileGrid.superclass.destroy.call(this);
+	},
+	refresh : function(){
+		var _this = this;
+		Wlj.widgets.views.index.grid.FloatTipTileGrid.superclass.refresh.call(_this);
+		this.el.select('div.in_sys_line',true, true).on('mouseenter', function(e, html){
+			e.stopEvent();
+			var vIndex = _this.needheader ? (Array.prototype.indexOf.call(Ext.fly(html).parent('.in_sys_ul ul').dom.childNodes,Ext.fly(html).parent('li').dom) -1) :
+				(Array.prototype.indexOf.call(Ext.fly(html).parent('.in_sys_ul ul').dom.childNodes,Ext.fly(html).parent('li').dom));
+			if(vIndex !== _this.cTipIndex){
+				_this.cTipIndex = vIndex;
+				_this.showTips(e);
+			}
+		});
+		this.el.select('div.in_sys_line',true, true).on('mouseleave', function(e, html){
+			e.stopEvent();
+			_this.hideTips(e);
+			_this.cTipIndex = -1;
+		});
+	},
+	buildTipsTemplate : function(){
+		var _this = this;
+		var columns = this.columns;
+		var templateString = '<div class="yc-tips" style="z-index:15000;">';
+		if(!_this.userTipTemplate){
+			Ext.each(columns, function(col){
+				if(col.tipshow !== false){
+					templateString += '<div><span>'+(_this.ndtipheader && col.header ? col.header + '：' : '') +  '</span>{'+col.columnName+'}</div>';
+				}
+			});
+		}else{
+			templateString += _this.userTipTemplate;
+		}
+		templateString += '</div>';
+		_this.tipTemplate = new Ext.XTemplate(templateString);
+	},
+	showTips : function(e){
+		var _this = this;
+		var index = this.cTipIndex;
+		var record = _this.store.getAt(index);
+		if(!_this.tipEl){
+			_this.tipEl = _this.tipTemplate.append(Ext.getBody(), record.data, true);
+		}else{
+			_this.tipEl.remove();
+			_this.tipEl = _this.tipTemplate.append(Ext.getBody(), record.data, true);
+		}
+		_this.locationTips(e);
+	},
+	hideTips : function(e){
+		var _this = this;
+		if(_this.tipEl){
+			_this.tipEl.hide();
+		}
+	},
+	locationTips : function(e){
+		var _this = this;
+		if(!_this.tipEl) return;
+		_this.tipEl.show();
+		_this.tipEl.setXY(e.getXY());
 	}
 });

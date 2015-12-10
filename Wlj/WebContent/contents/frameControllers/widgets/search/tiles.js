@@ -296,7 +296,7 @@ Wlj.widgets.search.tile.Tile = Ext.extend(Ext.Container, {
 			position:'absolute'
 		}
 	},
-	layoutTpl : new Ext.XTemplate('<div style="overflow-x:hidden;overflow-y:hidden; position: relative;"></div>'),
+	layoutTpl : new Ext.XTemplate('<div style="overflow-x:hidden;overflow-y:hidden;"></div>'),
 	toolTemplate : new Ext.Template(
             '<div style="position:absolute;top:0;right:0; " class="x-tool x-tool-{id}">&#160;</div>'),
     logoTemplate : new Ext.XTemplate(
@@ -340,7 +340,7 @@ Wlj.widgets.search.tile.Tile = Ext.extend(Ext.Container, {
 				this.style = {};
 			}
 			this.style.float = this.float;
-			this.style.position = 'relative';
+			this.style.position = '';
 			this.style.margin = this.baseMargin + 'px';
 		}
 		Wlj.widgets.search.tile.Tile.superclass.initComponent.call(this);
@@ -804,6 +804,7 @@ Wlj.widgets.search.tile.IndexTile = Ext.extend(Wlj.widgets.search.tile.ResizeTil
 		this.reBuiltTile();
 	},
 	reBuiltTile : function(){
+		var _this = this;
 		delete this.contentObject;
 		this.clearTileContent();
 		this.buildTileSize();

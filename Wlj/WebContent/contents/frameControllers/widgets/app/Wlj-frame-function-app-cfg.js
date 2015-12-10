@@ -1,3 +1,9 @@
+/**
+ * TODO 1、defualt_patch.js之属加载机制，或可采用配置解析，增加可控性，且同化部署逻辑；需确定配置范围
+ * TODO 2、
+ */
+
+
 Ext.ns('Wlj.frame.functions.app');
 Wlj.frame.functions.app.Util = {
 		
@@ -8,9 +14,10 @@ Wlj.frame.functions.app.Util = {
 	needInfo : true,                                                
 	needDebug : true,                                              
 	
-	pluginTrigger : true,															//应用插件开关
+	pluginTrigger : false,															//应用插件开关
 	
-	hoverXY : true,																//是否开启行列鼠标悬浮效果
+	columnResizable : true,															//是否开启列宽调整功能
+	hoverXY : false,																//是否开启行列鼠标悬浮效果
 	pagSrollingLevel : 0,														// 当出现多层分组表头时，左右滑动图标的滚动基准表头层级，默认值包括：'top'：顶层, buttom：底层,title：字段表头（暂未实现）,{groupLevel}：表头层级（数值），从下向上计数，从0开始。如超出层级，则无任何动作。
 	
 	defaultDateFormat : 'Y-m-d',													//默认日期类型转JSON格式	
@@ -37,6 +44,8 @@ Wlj.frame.functions.app.Util = {
 	tbarButtonAlign : 'left',														//tbar中button的居左或居右的布局；可选：left、right；默认left；
 	tbarViewAlign : 'left',														//tbar中，面板按钮的居左或居右布局；可选：left、right；默认left；如果tbarButtonAlign居右，则面板按钮同样居右。
 
+	enableDataDD : true,															//是否可以拖动数据单元格
+	
 	easingStrategy : ['settimeout', 'scrolling'],									//延迟加载数据行策略集合<scrolling暂未实现>
 	dataLineEasing : 'settimeout',													//是否启用数据行延迟加载策略.无值或非法值，则不启用延迟策略。可选参数见于easingStrategy属性；
 	firstStep : 50,																	//当延迟加载策略生效时，初始化数据条数;如实际数据数未达到初始值，则延迟策略不再生效。
@@ -73,7 +82,6 @@ Wlj.frame.functions.app.Util = {
 			}
 		}
 	},
-	
 	contextMenuAble : true,															//是否启动页面右键操作菜单
 	contextMenus : {																//全局右键操作配置
 		cell : {																	//列表子字段级别右键菜单配置

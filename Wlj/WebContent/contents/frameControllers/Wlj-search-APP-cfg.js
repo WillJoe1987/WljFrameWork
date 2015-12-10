@@ -3,6 +3,8 @@ Ext.ns('Wlj.search.App');
 Wlj.search.App.UTIL = {
 	needSearchArea : false,				//是否需要点击开始后的主查询页面，该配置项会影响到的开始、返回主功能图标的展示
 	menuInWindow : true,				//是否构建任务窗口顶部内置菜单
+	menuInWindowExpand : false, 		//窗口内部一级菜单是否平铺开
+	menuInWindowSeporator : true,		//展开一级菜单是否添加一个分隔符
 	buildComsits : true,				//是否为任务构建相关功能菜单
 	headerFunctions : 'HEADBUTTONS', 	//首页主功能导航区展示内容：menuRoot，或者某个菜单下的子菜单：res：XXX，或者HEADBUTTONS;
 	menuHeaderCount : 6,				//如首页展示菜单（一级菜单，或者某子菜单）时，主功能区的展示的菜单个数。
@@ -193,7 +195,7 @@ Wlj.search.App.HEADERBUTTONS = [{
 ////		Ext.Ajax.request({
 ////			url : basepath+'/lookup.json',
 ////			method : 'GET',
-////			success : function(a,b,c){debugger;}
+////			success : function(a,b,c){}
 ////			
 ////		});
 //		
@@ -330,6 +332,9 @@ Wlj.search.App.THEME = [{
 },{
 	preBG : '/contents/wljFrontFrame/styles/search/searchthemes/blue/pics/index/themes_pic_02.jpg',
 	themeName : 'orange'
+},{
+	preBG : '/contents/wljFrontFrame/styles/search/searchthemes/blue/pics/index/themes_pic_03.jpg',
+	themeName : 'grayred'
 }];
 /**
  * 背景图片
@@ -346,6 +351,9 @@ Wlj.search.App.BACKGROUND = [{
 },{
 	preBG : '/contents/wljFrontFrame/styles/search/searchthemes/blue/pics/index/index_bg_04_small.gif',
 	reaBG : '/contents/wljFrontFrame/styles/search/searchthemes/blue/pics/index/index_bg_04.jpg'
+},{
+	preBG : '/contents/wljFrontFrame/styles/search/searchthemes/grayred/pics/index/index_bg_05_small.gif',
+	reaBG : '/contents/wljFrontFrame/styles/search/searchthemes/grayred/pics/index/index_bg_05.jpg'
 }];
 /**
  * 字号设置

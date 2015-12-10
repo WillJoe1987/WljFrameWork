@@ -3,6 +3,7 @@ Ext.ns('Wlj.frame.functions.app.widgets');
 Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 	pageSize : 10,
 	pagable : true,
+	enableDataDD : true,
 	easingStrtegy : false,
 	store : false,
 	currentParams : {},
@@ -94,7 +95,7 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 						}
 						pars = _this._APP.searchDomain.searchPanel.getForm().getFieldValues();
 						for(var key in pars){
-							if(!pars[key]){
+							if (pars[key] === "" || pars[key] === undefined || pars[key] === null){
 								delete pars[key];
 							}
 						}
@@ -185,6 +186,8 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 			fieldlock : true,
 			fieldunlock : true
 		});
+		
+		
 		var _this = this;
 		this.getLayoutTarget().on('click',function(eve, html, obj){
 			_this.onRowClick(eve, html, obj);
@@ -203,13 +206,15 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 			eve.stopEvent();
 			_this.onRowDblclick(eve, html, obj);
 		});
-		this.getLayoutTarget().on('mousedown', function(eve, html, obj){
-			eve.stopEvent();
-			if(Ext.fly(html).hasClass('ygc-cell-no') || Ext.fly(html).hasClass('ygc-row')){
-				return false;
-			}
-			_this.createDragGhost(eve, html, obj);
-		});
+		if(_this.enableDataDD){
+			this.getLayoutTarget().on('mousedown', function(eve, html, obj){
+				eve.stopEvent();
+				if(Ext.fly(html).hasClass('ygc-cell-no') || Ext.fly(html).hasClass('ygc-row')){
+					return false;
+				}
+				_this.createDragGhost(eve, html, obj);
+			});
+		}
 		this.el.on('contextmenu',function(eve, html, obj){
 			eve.stopEvent();
 			_this.onContextMenu(eve, html, obj, []);
@@ -268,7 +273,7 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 				//row.removeClass('ygc-row-selected');
 			}
 		}
-		
+		_this.searchDomain.fireEvent('selectchagne',html, this.store.getAt(rowIndex));
 	},
 	onRowDblclick : function(eve, html, obj){
 		var _this = this;
@@ -358,7 +363,8 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 			searchGridView : _this,
 			needRN : _this.needRN,
 			easingStrtegy : _this.easingStrtegy,
-			columnGroups : _this.columnGroups ? _this.columnGroups : false
+			columnGroups : _this.columnGroups ? _this.columnGroups : false,
+			enableDataDD : _this.enableDataDD
 		});
 		this.titleTile.titleTile.render(this.hdElement);
 		this.titleHeight = this.titleTile.titleTile.el.getViewSize().height;
@@ -423,14 +429,13 @@ Wlj.frame.functions.app.widgets.SearchGrid = Ext.extend(Ext.Panel, {
 		var scrollLeft = this.scrollElement.dom.scrollLeft;
 		innerHd.scrollLeft = scrollLeft;
 		innerHd.scrollLeft = scrollLeft; // second time for IE (1/2 time first fails, other browsers ignore)
-		
-//		if(innerHd.scrollLeft<scrollLeft){
-//			innerHd.style.marginLeft = (innerHd.scrollLeft-scrollLeft) + 'px'
-//		}else{
-//			if(parseInt(innerHd.style.marginLeft)!=0){
-//				innerHd.style.marginLeft = 0;
-//			}
-//		}
+		if(innerHd.scrollLeft<scrollLeft){
+			innerHd.style.marginLeft = (innerHd.scrollLeft-scrollLeft) + 'px'
+		}else{
+			if(parseInt(innerHd.style.marginLeft)!=0){
+				innerHd.style.marginLeft = 0;
+			}
+		}
 	},
 	booterDataElements : function(store, records){
 		var _this = store.resultContainer;
@@ -753,6 +758,7 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 	defaultFieldWidth : 150,
 	rnWidth : 40,
 	needRN : false,
+	enableDataDD : true,
 	easingStrtegy : false,
 	multiSelectSeparator : ',',
 	grouped : false,
@@ -877,7 +883,7 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 		var _this = this;
 		var display = 'block';
 		if(!this.needRN) display = 'none';
-		var indexHTML = '<div class="ygc-cell ygc-cell-no" style="display:'+display+';width:'+_this.rnWidth+'px;position: relative; margin: 0px; float: left; height: 27px;">'+
+		var indexHTML = '<div class="ygc-cell ygc-cell-no" style="display:'+display+';width:'+_this.rnWidth+'px; margin: 0px; float: left; height: 27px;">'+
 			'{index+1}' + 
 			'</div>';
 		return indexHTML;
@@ -888,7 +894,7 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 		if(tf.text && (tf.gridField !== false)){
 				fieldHTML =
 					'<tpl for="'+tf.name+'">'+
-					'<div title="{title}" class="ygc-cell '+_this.getFieldClass(tf)+'" style="position: relative; margin: 0px; width: '+
+					'<div title="{title}" class="ygc-cell '+_this.getFieldClass(tf)+'" style=" margin: 0px; width: '+
 					(tf.resutlWidth?tf.resutlWidth:_this.defaultFieldWidth)+'px; float: left; height: 27px; '+((tf.hidden || tf.lockingView)?'display:none;':'')+'">'+
 					'{display}'+
 					'</div>'+
@@ -902,7 +908,7 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 		var store = this.store;
 		var fields = store.fields;
 		var ElBuffer = [];
-		var createString = '<div class="ygc-row {oddc}" style="position: relative; overflow-x: hidden; margin: 0px; width: '+this.recordWidth+'px; float: left; height: 27px;" rowIndex="{index}">';
+		var createString = '<div class="ygc-row {oddc}" style=" overflow-x: hidden; margin: 0px; width: '+this.recordWidth+'px; float: left; height: 27px;" rowIndex="{index}">';
 		ElBuffer.push(createString);
 		ElBuffer.push(this.createDataIndexEl());
 		ElBuffer.push('<tpl for="data">');
@@ -912,18 +918,7 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 		});
 		ElBuffer.push('</tpl>');
 		ElBuffer.push('</div>');
-		_this.recordTemplate = new Ext.XTemplate(ElBuffer.join(''),{
-			formatFieldData : function(field, data){
-				var dataFormat = '&nbsp;';
-				if(data){
-					dataFormat = data;
-				}
-				if(Ext.isFunction(field.viewFn)){
-					dataFormat = field.viewFn(dataFormat);
-				}
-				return dataFormat;
-			}
-		});
+		_this.recordTemplate = new Ext.XTemplate(ElBuffer.join(''));
 	},
 	bootEls : function(){
 		var _this = this;
@@ -947,11 +942,24 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 		store.data.each(function(item, index, length){
 			var oddc = index % 2 ===0 ? "ygc-row-odd" : "";
 			var data = _this.buildData(item);
-			_this.recordTemplate.append(layoutEl, {
+			var theRow = _this.recordTemplate.append(layoutEl, {
 				oddc : oddc,
 				index : index,
 				data : data
 			});
+			for(var key in data){
+				if(Ext.isString(data[key])){
+					continue;
+				}else {
+					if(Ext.isObject(data[key])){
+						if(data[key].display && data[key].display.render){
+							var fieldIndex = _this.indexedField.indexOf(key);
+							theRow.childNodes[fieldIndex + 1].innerHTML = '';
+							data[key].display.render(theRow.childNodes[fieldIndex + 1]);
+						}
+					}
+				}
+			}
 		});
 	},
 	settimeoutDataLineRender : function(initialConfig){
@@ -964,18 +972,44 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 			var oddc = index % 2 ===0 ? "ygc-row-odd" : "";
 			var data = _this.buildData(item);
 			if(index < firstStep){
-				_this.recordTemplate.append(layoutEl, {
+				var theRow = _this.recordTemplate.append(layoutEl, {
 					oddc : oddc,
 					index : index,
 					data : data
 				});
+				for(var key in data){
+					if(Ext.isString(data[key])){
+						continue;
+					}else {
+						if(Ext.isObject(data[key])){
+							if(data[key].display && data[key].display.render){
+								var fieldIndex = _this.indexedField.indexOf(key);
+								theRow.childNodes[fieldIndex + 1].innerHTML = '';
+								data[key].display.render(theRow.childNodes[fieldIndex + 1]);
+							}
+						}
+					}
+				}
 			}else{
 				setTimeout(function(){
-					_this.recordTemplate.append(layoutEl, {
+					var theRow = _this.recordTemplate.append(layoutEl, {
 						oddc : oddc,
 						index : index,
 						data : data
 					});
+					for(var key in data){
+						if(Ext.isString(data[key])){
+							continue;
+						}else {
+							if(Ext.isObject(data[key])){
+								if(data[key].display && data[key].display.render){
+									var fieldIndex = _this.indexedField.indexOf(key);
+									theRow.childNodes[fieldIndex + 1].innerHTML = '';
+									data[key].display.render(theRow.childNodes[fieldIndex + 1]);
+								}
+							}
+						}
+					}
 				},1);
 			}
 		});
@@ -1108,16 +1142,18 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 							eve.stopEvent();
 							_this.onTitleFieldContextMenu(eve, html, obj, [], tf);
 						});
-						this.RESIZEABLE = new Ext.Resizable(this.el, {
-							handles : 'e',
-							height : this.el.getHeight(),
-							width : this.el.getWidth()
-						});
-						this.RESIZEABLE.on('resize',function(res, width, height, e){
-							e.stopEvent();
-							var index = _this.titleTile.items.indexOf(tileThis);
-							_this.onColumnResize(index, res, width, height, e, tileThis.data.name);
-						});
+						if(WLJUTIL.columnResizable){
+							this.RESIZEABLE = new Ext.Resizable(this.el, {
+								handles : 'e',
+								height : this.el.getHeight(),
+								width : this.el.getWidth()
+							});
+							this.RESIZEABLE.on('resize',function(res, width, height, e){
+								e.stopEvent();
+								var index = _this.titleTile.items.indexOf(tileThis);
+								_this.onColumnResize(index, res, width, height, e, tileThis.data.name);
+							});
+						}
 						if(this.dragable){
 							this.dd.startDrag = function(){
 								this.tile.el.applyStyles({
@@ -1201,7 +1237,7 @@ Ext.extend(Wlj.frame.functions.app.widgets.TitleTile, Ext.util.Observable, {
 		this.titleTile.doLayout();
 		this.createRecordTileEl();
 		var addedTemp = new Ext.XTemplate(
-				'<div class="ygc-cell" style="position: relative; margin: 0px; width: '+
+				'<div class="ygc-cell" style=" margin: 0px; width: '+
 				(field.resutlWidth ? field.resutlWidth : this.defaultFieldWidth)+'px; float: left; height: 27px;">'+
 				'</div>');
 		var rows = this.searchGridView.getRows();
@@ -1713,10 +1749,12 @@ Ext.extend(Wlj.frame.functions.app.widgets.LockingTitles, Ext.util.Observable, {
 		this.dataContainer = this.dataContainer.append(this.el,{},true);
 		this.dataScrollContaienr = this.dataScrollContaienr.append(this.dataContainer , {}, true);
 		var _this = this;
-		this.dataContainer.on('mousedown', function(eve, html, obj){
-			eve.stopEvent();
-			_this.createDragGhost(eve, html, obj);
-		});
+		if(_this.gridView.enableDataDD){
+			this.dataContainer.on('mousedown', function(eve, html, obj){
+				eve.stopEvent();
+				_this.createDragGhost(eve, html, obj);
+			});
+		}
 		this.dataContainer.on('click', function(eve, html, obj){
 			_this.gridView.clearSelect();
 			_this.gridView.selectByIndex(parseInt(html.getAttribute('rowIndex')));
@@ -1834,16 +1872,18 @@ Ext.extend(Wlj.frame.functions.app.widgets.LockingTitles, Ext.util.Observable, {
 						eve.stopEvent();
 						_this.onTitleFieldContextMenu(eve, html, obj, [], tileThis.ownerCt.items.indexOf(tileThis));
 					});
-					this.RESIZEABLE = new Ext.Resizable(this.el, {
-						handles : 'e',
-						height : this.el.getHeight(),
-						width : this.el.getWidth()
-					});
-					this.RESIZEABLE.on('resize',function(res, width, height, e){
-						e.stopEvent();
-						var index = _this.titleTile.items.indexOf(tileThis);
-						_this.onColumnResize(index, res, width, height, e, tileThis.data.name);
-					});
+					if(WLJUTIL.columnResizable){
+						this.RESIZEABLE = new Ext.Resizable(this.el, {
+							handles : 'e',
+							height : this.el.getHeight(),
+							width : this.el.getWidth()
+						});
+						this.RESIZEABLE.on('resize',function(res, width, height, e){
+							e.stopEvent();
+							var index = _this.titleTile.items.indexOf(tileThis);
+							_this.onColumnResize(index, res, width, height, e, tileThis.data.name);
+						});
+					}
 					if(this.dragable){
 						this.dd.startDrag = function(){
 							this.tile.el.applyStyles({

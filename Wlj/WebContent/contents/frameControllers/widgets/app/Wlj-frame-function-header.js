@@ -309,6 +309,61 @@ var localLookup = false;
  * 			buttom:
  * 				类型: object;
  * 				说明：工作区上部边缘配置;配置信息同：Ext.TabPanel;默认配置参看：Wlj.frame.functions.app.App.prototype.edgeViewBaseCfg.buttom;
+ *                  items : 
+ *                      类型: array[object];
+ *                      说明: 可配置EXT对象,亦可配置为联动/从属表格对象{hypotaxisgrid object} :
+ *                          xtype : 
+ *                          	类型: string;
+ *                              说明：联动表格类型,必须配置为：hypotaxisgrid;
+ *                              必选：是;
+ *                          url : 
+ *                              类型: string;
+ *                              说明：联动表格URL地址;
+ *                              必选：是;
+ *                          linktable : 
+ *                              类型: string;
+ *                              说明：联动表格关联主表配置,若配置为searchGridView,则表示关联功能首页磁贴表格,也可配置为其它EXT原生表格;
+ *                              必选：是;
+ *                          linkfields : 
+ *                              类型: array[string/object];
+ *                              说明：联动表格关联查询参数配置,默认能需要配置field/value属性,若value属性带有@变量,则表格取主表对应列值;
+ *                              必选：是;
+ *                          fields.fields :
+ *                              类型: array[string/object];
+ *                              说明：联动表格展示列配置，配置同自定义面板type=grid属性fields.fields;
+ *                              必选：是;
+ *                          pageable : 
+ *                              类型: boolean;
+ *                              说明：是否分页,默认为true表示要分页;
+ *                              必选：否;
+ *                          isRn : 
+ *                              类型: boolean;
+ *                              说明：是否显示序号,默认为true表示要显示序号;
+ *                              必选：否;
+ *                          isCsm : 
+ *                              类型: boolean;
+ *                              说明：是否多选,默认为true表示要显示复选框;
+ *                              必选：否;
+ *                          grideditable : 
+ *                              类型: boolean;
+ *                              说明：是否可编辑表格,默认为false表示为不可编辑表格;
+ *                              必选：否;
+ *                          singleSelect : 
+ *                              类型: boolean;
+ *                              说明：表格单复选配置,默认为false表示可复选;
+ *                              必选：否;
+ *                          gridlisteners : 
+ *                              类型: object;
+ *                              说明：同EXT原生GridPanel的listeners配置;
+ *                              必选：否;
+ *                          buildParams : 
+ *                              类型: function;
+ *                              说明：构建查询条件参数,若不构建则默认所有参数都直接添加至condition条件上去,即后台getJson对象上;
+ *                              必选：否;
+ *                          gridButtons :
+ *                              类型: array[object];
+ *                              说明：联动表格工具条配置，配置同自定义面板type=grid属性gridButtons;
+ *                              必选：否;
  * 				必选：否;
  * 
  * 		必选：否;
